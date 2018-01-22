@@ -36,7 +36,18 @@ Configure each webhook the app will create (if any):
     LucidShopify.webhooks << {topic: '...', fields: %w(...)}
 
 
-### Configure webhook handlers
+### Register webhook handlers
+
+For each webhook, register one or more handlers:
+
+    webhooks = LucidShopify::DelegateWebhooks.default
+
+    webhooks.register('orders/create', OrdersCreateWebhook)
+
+See the inline method documentation for more detail.
+
+
+### Call webhook handlers
 
 _TODO_
 
