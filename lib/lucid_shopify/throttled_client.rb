@@ -50,7 +50,7 @@ module LucidShopify
     # @return [String]
     #
     private def interval_key
-      '%s[%d].timestamp' % [self.class, shop.id]
+      '%s[%s].timestamp' % [self.class, shop_credentials.myshopify_domain]
     end
 
     #

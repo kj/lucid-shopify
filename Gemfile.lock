@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    lucid_shopify (0.0.1)
+    lucid_shopify (0.0.3)
       http (~> 3.0.0)
 
 GEM
