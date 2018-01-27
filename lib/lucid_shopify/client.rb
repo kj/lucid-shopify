@@ -51,6 +51,8 @@ module LucidShopify
       attr_reader :original_exception
     end
 
+    ATTEMPTS = 3
+
     #
     # @param myshopify_domain [String]
     #
@@ -120,7 +122,7 @@ module LucidShopify
       request(:delete, path)
     end
 
-    private def request(method, path, options = {})
+    private def request(method, path, options = {}, attempts = ATTEMPTS)
       res = client.__send__(method, url(path), options)
       if res.code >= 400
         raise RequestError.new(method, url(path), options, res), 'bad response code'
@@ -130,7 +132,9 @@ module LucidShopify
     rescue JSON::ParserError
       {}
     rescue HTTP::ConnectionError, HTTP::ResponseError, HTTP::TimeoutError => e
-      raise ClientError.new(e), e.message
+      raise ClientError.new(e), e.message if attempts.zero?
+
+      request(method, url, options, attempts - 1)
     end
 
     private def client
