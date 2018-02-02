@@ -9,8 +9,10 @@ module LucidShopify
     # @param topic [String]
     # @param data [String] the raw JSON request data
     #
-    def initialize(*args)
-      @myshopify_domain, @topic, @data = *args
+    def initialize(myshopify_domain, topic, data)
+      @myshopify_domain = myshopify_domain
+      @topic = topic
+      @data = data
     end
 
     # @return [String]

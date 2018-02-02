@@ -42,7 +42,7 @@ For each webhook, register one or more handlers:
 
     webhooks = LucidShopify::DelegateWebhooks.default
 
-    webhooks.register('orders/create', OrdersCreateWebhook)
+    webhooks.register('orders/create', OrdersCreateWebhook.new)
 
 See the inline method documentation for more detail.
 
