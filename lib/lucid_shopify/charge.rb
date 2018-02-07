@@ -54,8 +54,8 @@ module LucidShopify
           terms: price_terms,
           return_url: credentials.billing_callback_uri,
           test: test,
-          trial_days: trial ? TRIAL_DAYS : 0
-        }
+          trial_days: trial ? TRIAL_DAYS : 0,
+        },
       }
     end
 

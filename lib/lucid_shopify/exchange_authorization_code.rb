@@ -46,7 +46,7 @@ module LucidShopify
       {
         client_id: credentials.api_key,
         client_secret: credentials.shared_secret,
-        code: authorization_code
+        code: authorization_code,
       }
     end
   end

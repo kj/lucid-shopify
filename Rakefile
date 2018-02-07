@@ -1,17 +1,10 @@
-$: << "#{__dir__}/lib"
+# frozen_string_literal: true
+
+$LOAD_PATH << "#{__dir__}/lib"
 
 require 'lucid_shopify/version'
 
-task default: :build
-
-task :build do
-  system 'gem build lucid_shopify.gemspec'
-end
-
-task install: :build do
-  system "gem install lucid_shopify-#{LucidShopify::VERSION}.gem"
-end
-
-task :clean do
-  system 'rm lucid_shopify-*.gem'
-end
+task(default: :build)
+task(:build) { system 'gem build lucid_shopify.gemspec' }
+task(install: :build) { system "gem install lucid_shopify-#{LucidShopify::VERSION}.gem" }
+task(:clean) { system 'rm lucid_shopify-*.gem' }

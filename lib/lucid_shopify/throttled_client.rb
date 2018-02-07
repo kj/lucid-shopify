@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'date'
 require 'lucid_shopify/authorized_client'
 
 module LucidShopify
@@ -59,7 +58,7 @@ module LucidShopify
     # @return [Integer]
     #
     private def timestamp
-      DateTime.now.strftime('%Q').to_i
+      (Time.now.to_f * 1000).to_i
     end
   end
 end

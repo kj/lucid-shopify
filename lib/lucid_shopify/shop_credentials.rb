@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LucidShopify
   #
   # @!attribute [rw] myshopify_domain

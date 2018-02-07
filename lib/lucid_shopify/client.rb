@@ -20,12 +20,12 @@ module LucidShopify
         @request = {
           method: method.to_s.upcase,
           url: url,
-          options: options
+          options: options,
         }
 
         @response = {
           status_code: response.code,
-          errors: parse_errors(response.to_s)
+          errors: parse_errors(response.to_s),
         }
       end
 
