@@ -46,12 +46,9 @@ For each webhook, register one or more handlers:
 
 See the inline method documentation for more detail.
 
+To call/delegate a webhook to its handler for processing, you will likely want
+to create a worker around something like this:
 
-### Call webhook handlers
-
-You will likely create a worker class to wrap this.
-
-    deletegate_webhooks = LucidShopify::DelegateWebhooks.default
     webhook = LucidShopify::Webhook.new(myshopify_domain, topic, data)
 
     delegate_webhooks.(webhook)
