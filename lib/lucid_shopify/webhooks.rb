@@ -5,18 +5,18 @@ require 'lucid_shopify/authorized_client'
 module LucidShopify
   class Webhooks
     #
-    # @param shop_credentials [LucidShopify::ShopCredentials]
-    # @param credentials [LucidShopify::Credentials]
+    # @param client [AuthorizedClient]
+    # @param credentials [Credentials]
     #
-    def initialize(shop_credentials, credentials: LucidShopify.credentials)
+    def initialize(client, credentials: LucidShopify.credentials)
+      @client = client
       @credentials = credentials
-      @shop_credentials = shop_credentials
     end
 
-    # @return [LucidShopify::ShopCredentials]
+    # @return [AuthorizedClient]
+    attr_reader :client
+    # @return [Credentials]
     attr_reader :credentials
-    # @return [LucidShopify::ShopCredentials]
-    attr_reader :shop_credentials
 
     #
     # Delete any existing webhooks, then (re)create all webhooks for the shop.
@@ -61,10 +61,6 @@ module LucidShopify
     #
     def delete(id)
       client.delete("webhooks/#{id}")
-    end
-
-    private def client
-      @client ||= AuthorizedClient.new(shop_credentials)
     end
   end
 end

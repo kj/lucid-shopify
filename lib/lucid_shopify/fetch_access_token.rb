@@ -3,22 +3,22 @@
 require 'lucid_shopify/client'
 
 module LucidShopify
-  class ExchangeAuthorizationCode
+  class FetchAccessToken
     Error = Class.new(StandardError)
 
     #
-    # @param myshopify_domain [String]
+    # @param client [Client]
     # @param credentials [Credentials]
     #
-    def initialize(myshopify_domain, credentials: LucidShopify.credentials)
+    def initialize(client, credentials: LucidShopify.credentials)
+      @client = client
       @credentials = credentials
-      @myshopify_domain = myshopify_domain
     end
 
+    # @return [Client]
+    attr_reader :client
     # @return [Credentials]
     attr_reader :credentials
-    # @return [String]
-    attr_reader :myshopify_domain
 
     #
     # Exchange an authorization code for a new Shopify access token.
@@ -38,10 +38,11 @@ module LucidShopify
       data['access_token']
     end
 
-    private def client
-      @client ||= Client.new(myshopify_domain)
-    end
-
+    #
+    # @param authorization_code [String]
+    #
+    # @return [Hash]
+    #
     private def post_data(authorization_code)
       {
         client_id: credentials.api_key,

@@ -1,19 +1,21 @@
 # frozen_string_literal: true
 
+require 'lucid_shopify/immutable_struct'
+
 module LucidShopify
   #
-  # @!attribute [rw] api_key
+  # @!attribute [r] api_key
   #   @return [String]
-  # @!attribute [rw] shared_secret
+  # @!attribute [r] shared_secret
   #   @return [String]
-  # @!attribute [rw] scope
+  # @!attribute [r] scope
   #   @return [String]
-  # @!attribute [rw] billing_callback_uri
+  # @!attribute [r] billing_callback_uri
   #   @return [String]
-  # @!attribute [rw] webhook_uri
+  # @!attribute [r] webhook_uri
   #   @return [String]
   #
-  Credentials = Struct.new(:api_key, :shared_secret, :scope, :billing_callback_uri, :webhook_uri)
+  Credentials = ImmutableStruct.new(:api_key, :shared_secret, :scope, :billing_callback_uri, :webhook_uri)
 end
 
 class << LucidShopify

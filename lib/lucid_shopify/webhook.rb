@@ -2,31 +2,25 @@
 
 require 'json'
 
-module LucidShopify
-  class Webhook
-    #
-    # @param myshopify_domain [String]
-    # @param topic [String]
-    # @param data [String] the raw JSON request data
-    #
-    def initialize(myshopify_domain, topic, data)
-      @myshopify_domain = myshopify_domain
-      @topic = topic
-      @data = data
-    end
+require 'lucid_shopify/immutable_struct'
 
-    # @return [String]
-    attr_reader :myshopify_domain
-    # @return [String]
-    attr_reader :topic
-    # @return [String]
-    attr_reader :data
+module LucidShopify
+  #
+  # @!attribute [r] myshopify_domain
+  #   @return [String]
+  # @!attribute [r] topic
+  #   @return [String]
+  # @!attribute [r] data
+  #   @return [String] the raw JSON request data
+  #
+  Webhook = ImmutableStruct.new(:myshopify_domain, :topic, :data) do
+    def post_initialize
+      @data_hash = JSON.parse(data)
+    end
 
     #
     # @return [Hash] the parsed JSON data
     #
-    def data_hash
-      @data_hash ||= JSON.parse(@data)
-    end
+    attr_reader :data_hash
   end
 end

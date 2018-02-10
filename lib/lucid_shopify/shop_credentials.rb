@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
+require 'lucid_shopify/immutable_struct'
+
 module LucidShopify
   #
-  # @!attribute [rw] myshopify_domain
+  # @!attribute [r] myshopify_domain
   #   @return [String]
-  # @!attribute [rw] access_token
+  # @!attribute [r] access_token
   #   @return [String]
   #
-  ShopCredentials = Struct.new(:myshopify_domain, :access_token)
+  ShopCredentials = ImmutableStruct.new(:myshopify_domain, :access_token)
 end

@@ -2,29 +2,28 @@
 
 require 'lucid_shopify/authorized_client'
 require 'lucid_shopify/credentials'
-require 'lucid_shopify/shop_credentials'
 
 module LucidShopify
   class Charge
     TRIAL_DAYS = 7
 
     #
-    # @param shop_credentials [ShopCredentials]
+    # @param client [AuthorizedClient]
     # @param credentials [Credentials]
     # @param test [Boolean] is this a test charge?
     # @param trial [Boolean]
     #
-    def initialize(shop_credentials, credentials: LucidShopify.credentials, test: false, trial: false)
+    def initialize(client, credentials: LucidShopify.credentials, test: false, trial: false)
+      @client = client
       @credentials = credentials
-      @shop_credentials = shop_credentials
       @test = test
       @trial = trial
     end
 
+    # @return [AuthorizedClient]
+    attr_reader :client
     # @return [Credentials]
     attr_reader :credentials
-    # @return [ShopCredentials]
-    attr_reader :shop_credentials
     # @return [Boolean]
     attr_reader :test
     # @return [Boolean]
@@ -109,10 +108,6 @@ module LucidShopify
 
     private def activate_path(charge_id)
       "recurring_application_charges/#{charge_id}/activate"
-    end
-
-    private def client
-      @client ||= AuthorizedClient.new(shop_credentials)
     end
   end
 end
