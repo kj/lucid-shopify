@@ -3,7 +3,8 @@
 require 'base64'
 require 'openssl'
 
-require 'lucid_shopify/predicate_result'
+require 'lucid_shopify/credentials'
+require 'lucid_shopify/result'
 
 module LucidShopify
   class VerifyWebhook
@@ -25,14 +26,15 @@ module LucidShopify
     # @param data [String] the signed request data
     # @param hmac [String] the signature
     #
-    # @return [PredicateResult]
+    # @return [Result]
     #
     def call(data, hmac)
       digest = OpenSSL::Digest::SHA256.new
       digest = OpenSSL::HMAC.digest(digest, credentials.shared_secret, data)
       digest = Base64.encode64(digest).strip
+      result = digest == hmac
 
-      PredicateResult.new(digest == hmac)
+      Result.new(result, 'invalid request' unless result)
     end
   end
 end

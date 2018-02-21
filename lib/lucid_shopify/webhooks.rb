@@ -1,66 +1,68 @@
 # frozen_string_literal: true
 
-require 'lucid_shopify/authorized_client'
+require 'dry-initializer'
+
+require 'lucid_shopify/client'
+require 'lucid_shopify/credentials'
 
 module LucidShopify
   class Webhooks
-    #
-    # @param client [AuthorizedClient]
-    # @param credentials [Credentials]
-    #
-    def initialize(client, credentials: LucidShopify.credentials)
-      @client = client
-      @credentials = credentials
-    end
+    extend Dry::Initializer
 
-    # @return [AuthorizedClient]
-    attr_reader :client
+    # @return [Client]
+    option :client, default: proc { Client.new }
     # @return [Credentials]
-    attr_reader :credentials
+    option :credentials, default: proc { LucidShopify.credentials }
 
     #
     # Delete any existing webhooks, then (re)create all webhooks for the shop.
     #
-    def create_all
+    # @param request_credentials [RequestCredentials]
+    #
+    def create_all(request_credentials)
       delete_all
 
-      LucidShopify.webhooks.map do |w|
-        Thread.new { create(w) }
+      LucidShopify.webhooks.map do |webhook|
+        Thread.new { create(request_credentials, webhook) }
       end.map(&:value)
     end
 
     #
     # Create a webhook.
     #
+    # @param request_credentials [RequestCredentials]
     # @param webhook [Hash]
     #
-    def create(webhook)
+    def create(request_credentials, webhook)
       data = {}
       data[:address] = credentials.webhook_uri
       data[:fields] = webhook[:fields] if webhook[:fields]
       data[:topic] = webhook[:topic]
 
-      client.post_json('webhooks', webhook: data)
+      client.post_json(request_credentials, 'webhooks', webhook: data)
     end
 
     #
     # Delete any existing webhooks.
     #
-    def delete_all
+    # @param request_credentials [RequestCredentials]
+    #
+    def delete_all(request_credentials)
       webhooks = client.get('webhooks')['webhooks']
 
-      webhooks.map do |w|
-        Thread.new { delete(w['id']) }
+      webhooks.map do |webhook|
+        Thread.new { delete(request_credentials, webhook['id']) }
       end.map(&:value)
     end
 
     #
     # Delete a webhook.
     #
+    # @param request_credentials [RequestCredentials]
     # @param id [Integer]
     #
-    def delete(id)
-      client.delete("webhooks/#{id}")
+    def delete(request_credentials, id)
+      client.delete(request_credentials, "webhooks/#{id}")
     end
   end
 end

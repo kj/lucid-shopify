@@ -1,155 +1,48 @@
 # frozen_string_literal: true
 
-require 'json'
-require 'http'
+require 'lucid_shopify/send_request'
+
+%w(delete get post put).each do |method|
+  require "lucid_shopify/#{method}_request"
+end
 
 module LucidShopify
-  #
-  # An interface to the Shopify API for a given myshopify domain, without an
-  # authorization header.
-  #
   class Client
-    class RequestError < StandardError
-      #
-      # @param method [String, Symbol]
-      # @param url [String]
-      # @param options [Hash]
-      # @param response [HTTP::Response]
-      #
-      def initialize(method, url, options, response)
-        @request = {
-          method: method.to_s.upcase,
-          url: url,
-          options: options,
-        }
-
-        @response = {
-          status_code: response.code,
-          errors: parse_errors(response.to_s),
-        }
-      end
-
-      # @return [Hash]
-      attr_reader :request
-      # @return [HTTP::Response]
-      attr_reader :response
-
-      private def parse_errors(response_body)
-        JSON.parse(response_body)['errors'] || []
-      end
+    #
+    # @param send_request [SendRequest]
+    #
+    def initialize(send_request: SendRequest.new)
+      @send_request = send_request
     end
 
-    class ClientError < StandardError
-      #
-      # @param original_exception [HTTP::Error]
-      #
-      def initialize(original_exception)
-        @original_exception = original_exception
-      end
-
-      # @return [HTTP::Error]
-      attr_reader :original_exception
-    end
-
-    ATTEMPTS = 3
+    # @return [SendRequest]
+    attr_reader :send_request
 
     #
-    # @param myshopify_domain [String]
+    # @see {DeleteRequest#initialize}
     #
-    def initialize(myshopify_domain)
-      @myshopify_domain = myshopify_domain
-    end
-
-    # @return [String]
-    attr_reader :myshopify_domain
-
-    #
-    # Make a GET request to the Shopify API.
-    #
-    # @param path [String] the endpoint relative to the base URL
-    # @param params [Hash] the query params
-    #
-    # @return [Hash] the JSON response body or `{}`
-    #
-    # @raise [ClientError] if the request failed
-    # @raise [RequestError] if the response status >= 400
-    #
-    def get(path, params = {})
-      request(:get, path, params: params)
+    def delete(*args)
+      send_request.(DeleteRequest.new(*args))
     end
 
     #
-    # Make a POST request to the Shopify API with a JSON formatted body.
+    # @see {GetRequest#initialize}
     #
-    # @param path [String] the endpoint relative to the base URL
-    # @param data [Hash] the JSON request body
-    #
-    # @return [Hash] the JSON response body or `{}`
-    #
-    # @raise [ClientError] if the request failed
-    # @raise [RequestError] if the response status >= 400
-    #
-    def post_json(path, data = {})
-      request(:post, path, json: data)
+    def get(*args)
+      send_request.(GetRequest.new(*args))
     end
 
     #
-    # Make a PUT request to the Shopify API with a JSON formatted body.
+    # @see {PostRequest#initialize}
     #
-    # @param path [String] the endpoint relative to the base URL
-    # @param data [Hash] the JSON request body
-    #
-    # @return [Hash] the JSON response body or `{}`
-    #
-    # @raise [ClientError] if the request failed
-    # @raise [RequestError] if the response status >= 400
-    #
-    def put_json(path, data = {})
-      request(:put, path, json: data)
+    def post_json(*args)
+      send_request.(PostRequest.new(*args))
     end
-
     #
-    # Make a DELETE request to the Shopify API.
+    # @see {PutRequest#initialize}
     #
-    # @param path [String] the endpoint relative to the base URL
-    #
-    # @return [Hash] the JSON response body or `{}`
-    #
-    # @raise [ClientError] if the request failed
-    # @raise [RequestError] if the response status >= 400
-    #
-    def delete(path)
-      request(:delete, path)
-    end
-
-    private def request(method, path, options = {}, attempts = ATTEMPTS)
-      res = client.__send__(method, url(path), options)
-      if res.code >= 400
-        raise RequestError.new(method, url(path), options, res), 'bad response code'
-      end
-
-      JSON.parse(res.to_s)
-    rescue JSON::ParserError
-      {}
-    rescue HTTP::ConnectionError, HTTP::ResponseError, HTTP::TimeoutError => e
-      raise ClientError.new(e), e.message if attempts.zero?
-
-      request(method, url, options, attempts - 1)
-    end
-
-    private def client
-      HTTP.headers(
-        'Accept' => 'application/json'
-      )
-    end
-
-    private def url(path)
-      @shop_url ||= "https://#{myshopify_domain}/admin"
-
-      path = path.sub(/^\//, '')
-      path = path.sub(/\.json$/, '')
-
-      @shop_url + '/' + path + '.json'
+    def put_json(*args)
+      send_request.(PutRequest.new(*args))
     end
   end
 end

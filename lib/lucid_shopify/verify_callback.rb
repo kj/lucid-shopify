@@ -2,7 +2,8 @@
 
 require 'openssl'
 
-require 'lucid_shopify/predicate_result'
+require 'lucid_shopify/credentials'
+require 'lucid_shopify/result'
 
 module LucidShopify
   class VerifyCallback
@@ -21,30 +22,46 @@ module LucidShopify
     #
     # @param params_hash [Hash] the request params
     #
-    # @return [PredicateResult]
+    # @return [Result]
     #
     def call(params_hash)
       digest = OpenSSL::Digest::SHA256.new
       digest = OpenSSL::HMAC.hexdigest(digest, credentials.shared_secret, encoded_params(params_hash))
+      result = digest == params_hash[:hmac]
 
-      PredicateResult.new(digest == params_hash[:hmac])
+      Result.new(result, 'invalid request' unless result)
     end
 
+    #
+    # @param params_hash [Hash]
+    #
+    # @return [String]
+    #
     private def encoded_params(params_hash)
       params_hash.reject do |k, _|
         k == :hmac
       end.map do |k, v|
-        encode_k(k) + '=' + encode_v(v)
+        encode_key(k) + '=' + encode_value(v)
       end.join('&')
     end
 
-    private def encode_k(k)
+    #
+    # @param k [String, Symbol]
+    #
+    # @return [String]
+    #
+    private def encode_key(k)
       k.to_s.gsub(/./) do |chr|
         {'%' => '%25', '&' => '%26', '=' => '%3D'}[chr] || chr
       end
     end
 
-    private def encode_v(v)
+    #
+    # @param v [String]
+    #
+    # @return [String]
+    #
+    private def encode_value(v)
       v.gsub(/./) do |chr|
         {'%' => '%25', '&' => '%26'}[chr] || chr
       end

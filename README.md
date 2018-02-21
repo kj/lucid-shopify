@@ -14,18 +14,28 @@ Add the following lines to your ‘Gemfile’:
 Usage
 -----
 
-### Configure the default API credentials
+### Configure the default API client credentials
 
     LucidShopify.credentials = LucidShopify::Credentials.new(
-        '...', # api_key
-        '...', # shared_secret
-        '...', # scope
-        '...', # billing_callback_uri
-        '...'  # webhook_uri
+      '...', # api_key
+      '...', # shared_secret
+      '...', # scope
+      '...', # billing_callback_uri
+      '...', # webhook_uri
     )
 
 Alternatively, a credentials object may be passed as a keyword
 argument to any of the classes that make use of it.
+
+Additionally, each API request requires authorization:
+
+    request_credentials = LucidShopify::RequestCredentials.new(
+      '...', # myshopify_domain
+      '...', # access_token
+    )
+
+If the access token is omitted, the request will be unauthorized.
+This is only useful during the OAuth2 process.
 
 
 ### Configure webhooks
@@ -58,17 +68,17 @@ to create a worker around something like this:
 
 Create/delete all configured webhooks (see above):
 
-    webhooks = LucidShopify::Webhooks.new(shop_credentials)
+    webhooks = LucidShopify::Webhooks.new
 
-    webhooks.create_all
-    webhooks.delete_all
+    webhooks.create_all(request_credentials)
+    webhooks.delete_all(request_credentials)
 
 Create/delete webhooks manually:
 
     webhook = {topic: 'orders/create', fields: %w(id tags)}
 
-    webhooks.create(webhook)
-    webhooks.delete(webhook_id)
+    webhooks.create(request_credentials, webhook)
+    webhooks.delete(request_credentials, webhook_id)
 
 
 ### Verification

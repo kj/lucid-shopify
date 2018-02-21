@@ -1,29 +1,15 @@
 # frozen_string_literal: true
 
-require 'lucid_shopify/authorized_client'
+require 'lucid_shopify/send_request'
 
 module LucidShopify
-  #
-  # A throttled interface to the Shopify API, authorized for a given shop.
-  #
-  class ThrottledClient < AuthorizedClient
+  class SendThrottledRequest < SendRequest
     MINIMUM_INTERVAL = 500 # ms
 
     #
-    # @return [ThrottledClient]
+    # @see {SendRequest#call}
     #
-    def throttled
-      self
-    end
-
-    #
-    # @return [AuthorizedClient]
-    #
-    def unthrottled
-      @authorized_client ||= AuthorizedClient.new(shop)
-    end
-
-    private def request(*)
+    private def call(*)
       interval
 
       super
@@ -49,7 +35,7 @@ module LucidShopify
     # @return [String]
     #
     private def interval_key
-      '%s[%s].timestamp' % [self.class, shop_credentials.myshopify_domain]
+      '%s[%s].timestamp' % [self.class, request.credentials.myshopify_domain]
     end
 
     #

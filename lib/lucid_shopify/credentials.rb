@@ -1,21 +1,24 @@
 # frozen_string_literal: true
 
-require 'lucid_shopify/immutable_struct'
+require 'dry-initializer'
 
 module LucidShopify
-  #
-  # @!attribute [r] api_key
-  #   @return [String]
-  # @!attribute [r] shared_secret
-  #   @return [String]
-  # @!attribute [r] scope
-  #   @return [String]
-  # @!attribute [r] billing_callback_uri
-  #   @return [String]
-  # @!attribute [r] webhook_uri
-  #   @return [String]
-  #
-  Credentials = ImmutableStruct.new(:api_key, :shared_secret, :scope, :billing_callback_uri, :webhook_uri)
+  MissingCredentialsError = Class.new(StandardError)
+
+  class Credentials
+    extend Dry::Initializer
+
+    # @return [String]
+    param :api_key
+    # @return [String]
+    param :shared_secret
+    # @return [String]
+    param :scope
+    # @return [String]
+    param :billing_callback_uri
+    # @return [String]
+    param :webhook_uri
+  end
 end
 
 class << LucidShopify

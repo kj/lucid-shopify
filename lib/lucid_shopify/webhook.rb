@@ -1,26 +1,28 @@
 # frozen_string_literal: true
 
+require 'dry-initializer'
 require 'json'
 
-require 'lucid_shopify/immutable_struct'
-
 module LucidShopify
-  #
-  # @!attribute [r] myshopify_domain
-  #   @return [String]
-  # @!attribute [r] topic
-  #   @return [String]
-  # @!attribute [r] data
-  #   @return [String] the raw JSON request data
-  #
-  Webhook = ImmutableStruct.new(:myshopify_domain, :topic, :data) do
-    def post_initialize
-      @data_hash = JSON.parse(data)
-    end
+  class Webhook
+    extend Dry::Initializer
+
+    # @return [String]
+    param :myshopify_domain
+    # @return [String]
+    param :topic
+    # @return [String]
+    param :data
+    # @return [Hash] the parsed request body
+    param :data_hash, default: proc { parse_data }
 
     #
-    # @return [Hash] the parsed JSON data
+    # @return [Hash]
     #
-    attr_reader :data_hash
+    private def parse_data
+      JSON.parse(data)
+    rescue JSON::ParserError
+      {}
+    end
   end
 end
