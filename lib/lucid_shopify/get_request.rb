@@ -9,7 +9,7 @@ module LucidShopify
     # @param path [String] the endpoint relative to the base URL
     # @param params [Hash] the query params
     #
-    def initialize(credentials, path, params)
+    def initialize(credentials, path, params = {})
       super(credentials, :get, path, params: params)
     end
   end
