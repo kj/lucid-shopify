@@ -29,7 +29,7 @@ module LucidShopify
       digest = OpenSSL::HMAC.hexdigest(digest, credentials.shared_secret, encoded_params(params_hash))
       result = digest == params_hash[:hmac]
 
-      Result.new(result, 'invalid request' unless result)
+      Result.new(result, result ? nil : 'invalid request')
     end
 
     #

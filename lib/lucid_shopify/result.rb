@@ -11,9 +11,9 @@ module LucidShopify
       @error = error
     end
 
-    # @return [Object] 
+    # @return [Object]
     attr_reader :value
-    # @return [Object] 
+    # @return [Object]
     attr_reader :error
 
     #

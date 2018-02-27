@@ -19,9 +19,9 @@ module LucidShopify
     param :options, default: proc { {} }
 
     # @return [Hash]
-    param :http_headers, default: { build_headers }
+    param :http_headers, default: proc { build_headers }
     # @return [String]
-    param :url, default: { build_url }
+    param :url, default: proc { build_url }
 
     #
     # @return [String]

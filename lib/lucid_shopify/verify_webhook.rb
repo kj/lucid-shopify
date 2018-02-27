@@ -34,7 +34,7 @@ module LucidShopify
       digest = Base64.encode64(digest).strip
       result = digest == hmac
 
-      Result.new(result, 'invalid request' unless result)
+      Result.new(result, result ? nil : 'invalid request')
     end
   end
 end

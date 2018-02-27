@@ -38,6 +38,7 @@ module LucidShopify
     def post_json(*args)
       send_request.(PostRequest.new(*args))
     end
+
     #
     # @see {PutRequest#initialize}
     #
