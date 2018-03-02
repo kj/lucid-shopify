@@ -4,11 +4,9 @@ lucid_shopify
 Installation
 ------------
 
-Add the following lines to your ‘Gemfile’:
+Add the gem to your ‘Gemfile’:
 
-    git_source :lucid { |r| "https://github.com/lucidnz/gem-lucid_#{r}.git" }
-
-    gem 'lucid_shopify', lucid: 'shopify'
+    gem 'lucid_shopify'
 
 
 Usage
