@@ -80,10 +80,10 @@ module LucidShopify
     end
 
     #
+    # @return [self]
+    #
     # @raise [ClientError] for status 4xx
     # @raise [ServerError] for status 5xx
-    #
-    # @return [self]
     #
     def assert!
       case status_code
