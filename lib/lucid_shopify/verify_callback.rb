@@ -1,21 +1,17 @@
 # frozen_string_literal: true
 
+require 'dry-initializer'
 require 'openssl'
 
-require 'lucid_shopify/credentials'
+require 'lucid_shopify/config'
 require 'lucid_shopify/result'
 
 module LucidShopify
   class VerifyCallback
-    #
-    # @param credentials [LucidShopify::Credentials]
-    #
-    def initialize(credentials: LucidShopify.credentials)
-      @credentials = credentials
-    end
+    extend Dry::Initializer
 
-    # @return [LucidShopify::Credentials]
-    attr_reader :credentials
+    # @return [Config]
+    option :config, default: proc { LucidShopify.config }
 
     #
     # Verify that the callback request originated from Shopify.
@@ -26,7 +22,7 @@ module LucidShopify
     #
     def call(params_hash)
       digest = OpenSSL::Digest::SHA256.new
-      digest = OpenSSL::HMAC.hexdigest(digest, credentials.shared_secret, encoded_params(params_hash))
+      digest = OpenSSL::HMAC.hexdigest(digest, config.shared_secret, encoded_params(params_hash))
       result = digest == params_hash[:hmac]
 
       Result.new(result, result ? nil : 'invalid request')
@@ -41,30 +37,30 @@ module LucidShopify
       params_hash.reject do |k, _|
         k == :hmac
       end.map do |k, v|
-        encode_key(k) + '=' + encode_value(v)
+        [].tap do |param|
+          param << k.gsub(/./) { |c| encode_k(c) }
+          param << '='
+          param << v.gsub(/./) { |c| encode_v(c) }
+        end.join
       end.join('&')
     end
 
     #
-    # @param k [String, Symbol]
+    # @param c [String]
     #
     # @return [String]
     #
-    private def encode_key(k)
-      k.to_s.gsub(/./) do |chr|
-        {'%' => '%25', '&' => '%26', '=' => '%3D'}[chr] || chr
-      end
+    private def encode_k(c)
+      {'%' => '%25', '&' => '%26', '=' => '%3D'}[c] || c
     end
 
     #
-    # @param v [String]
+    # @param c [String]
     #
     # @return [String]
     #
-    private def encode_value(v)
-      v.gsub(/./) do |chr|
-        {'%' => '%25', '&' => '%26'}[chr] || chr
-      end
+    private def encode_v(c)
+      {'%' => '%25', '&' => '%26'}[c] || c
     end
   end
 end

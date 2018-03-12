@@ -2,7 +2,7 @@
 
 require 'dry-initializer'
 
-require 'lucid_shopify/credentials'
+require 'lucid_shopify/config'
 
 module LucidShopify
   #
@@ -23,8 +23,8 @@ module LucidShopify
     option :test, default: proc { false }
     # @return [Integer]
     option :trial_days, default: proc { 7 }
-    # @return [Credentials]
-    option :credentials, default: proc { LucidShopify.credentials }
+    # @return [Config]
+    option :config, default: proc { LucidShopify.config }
 
     #
     # Map to the Shopify API structure.
@@ -37,7 +37,7 @@ module LucidShopify
         hash[:price] = price
         hash[:capped_amount] = price_cap if usage_based_billing?
         hash[:terms] = price_terms if usage_based_billing?
-        hash[:return_url] = credentials.billing_callback_uri
+        hash[:return_url] = config.billing_callback_uri
         hash[:test] = test if test
         hash[:trial_days] = trial_days if trial_days
       end

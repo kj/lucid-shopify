@@ -11,8 +11,8 @@ module LucidShopify
 
     # @return [Client]
     option :client, default: proc { Client.new }
-    # @return [Credentials]
-    option :credentials, default: proc { LucidShopify.credentials }
+    # @return [Config]
+    option :config, default: proc { LucidShopify.config }
 
     #
     # Delete any existing webhooks, then (re)create all webhooks for the shop.
@@ -35,7 +35,7 @@ module LucidShopify
     #
     def create(request_credentials, webhook)
       data = {}
-      data[:address] = credentials.webhook_uri
+      data[:address] = config.webhook_uri
       data[:fields] = webhook[:fields] if webhook[:fields]
       data[:topic] = webhook[:topic]
 
