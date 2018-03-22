@@ -5,6 +5,27 @@ require 'dry-initializer'
 module LucidShopify
   NotConfiguredError = Class.new(StandardError)
 
+  class << self
+    extend Forwardable
+
+    # TODO: *Config.dry_initializer.attributes (version 2.0.0+)
+    def_delegators :config, :api_key, :shared_secret, :scope, :billing_callback_uri, :webhook_uri
+
+    # @param config [Config]
+    attr_writer :config
+
+    #
+    # @return [Config]
+    #
+    # @raise [NotConfiguredError] if credentials are unset
+    #
+    def config
+      raise NotConfiguredError unless @config
+
+      @config
+    end
+  end
+
   class Config
     extend Dry::Initializer
 
@@ -18,26 +39,5 @@ module LucidShopify
     param :billing_callback_uri
     # @return [String]
     param :webhook_uri
-  end
-end
-
-class << LucidShopify
-  extend Forwardable
-
-  # TODO: *Config.dry_initializer.attributes (version 2.0.0+)
-  def delegators :config, :api_key, :shared_secret, :scope, :billing_callback_uri, :webhook_uri
-
-  # @param config [Config]
-  attr_writer :config
-
-  #
-  # @return [Config]
-  #
-  # @raise [NotConfiguredError] if credentials are unset
-  #
-  def config
-    raise NotConfiguredError unless @config
-
-    @config
   end
 end
