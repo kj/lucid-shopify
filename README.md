@@ -14,7 +14,7 @@ Usage
 
 ### Configure the default API client credentials
 
-    LucidShopify.credentials = LucidShopify::Credentials.new(
+    LucidShopify.config = LucidShopify::Config.new(
       '...', # api_key
       '...', # shared_secret
       '...', # scope
