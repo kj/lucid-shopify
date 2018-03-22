@@ -3,11 +3,12 @@
 require 'dry-initializer'
 require 'http'
 
+require 'lucid_shopify/error'
 require 'lucid_shopify/response'
 
 module LucidShopify
   class SendRequest
-    class NetworkError < StandardError
+    class NetworkError < Error
       extend Dry::Initializer
 
       # @return [HTTP::Error]

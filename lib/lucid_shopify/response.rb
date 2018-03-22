@@ -3,12 +3,14 @@
 require 'dry-initializer'
 require 'json'
 
+require 'lucid_shopify/error'
+
 module LucidShopify
   class Response
     #
     # @abstract
     #
-    class Error < StandardError
+    class Error < Error
       extend Dry::Initializer
 
       # @return [Request]

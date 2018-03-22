@@ -3,10 +3,11 @@
 require 'dry-initializer'
 
 require 'lucid_shopify/client'
+require 'lucid_shopify/error'
 
 module LucidShopify
   class FetchAccessToken
-    Error = Class.new(StandardError)
+    Error = Class.new(Error)
 
     extend Dry::Initializer
 
