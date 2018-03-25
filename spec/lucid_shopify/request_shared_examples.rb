@@ -14,22 +14,22 @@ RSpec.shared_examples 'request' do
     expect(request.options).to be_a(Hash) # client options
   end
 
-  context 'when authenticated' do
-    let(:credentials) { credentials_authenticated }
-
-    it 'includes access token header' do
-      expect(request.http_headers).to include(
-        'X-Shopify-Access-Token' => access_token
-      )
-    end
-  end
-
   context 'when unauthenticated' do
     let(:credentials) { credentials_unauthenticated }
 
     it 'excludes access token header' do
       expect(request.http_headers).not_to include(
         'X-Shopify-Access-Token'
+      )
+    end
+  end
+
+  context 'when authenticated' do
+    let(:credentials) { credentials_authenticated }
+
+    it 'includes access token header' do
+      expect(request.http_headers).to include(
+        'X-Shopify-Access-Token' => access_token
       )
     end
   end

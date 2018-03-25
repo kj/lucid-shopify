@@ -9,7 +9,7 @@ module CredentialsHelpers
     base.let(:myshopify_domain) { 'example.myshopify.com' }
     base.let(:access_token) { 'example_access_token' }
     base.let(:credentials) { credentials_unauthenticated }
-    base.let(:credentials_authenticated) { LucidShopify::RequestCredentials.new(myshopify_domain, access_token) }
     base.let(:credentials_unauthenticated) { LucidShopify::RequestCredentials.new(myshopify_domain) }
+    base.let(:credentials_authenticated) { LucidShopify::RequestCredentials.new(myshopify_domain, access_token) }
   end
 end
