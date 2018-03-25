@@ -29,10 +29,10 @@ module LucidShopify
     private def build_url
       admin_url = "https://#{credentials.myshopify_domain}/admin"
 
-      path = path.sub(/^\//, '')
-      path = path.sub(/\.json$/, '')
+      path2 = path.sub(/^\//, '')
+      path2 = path.sub(/\.json$/, '')
 
-      admin_url + '/' + path + '.json'
+      admin_url + '/' + path2 + '.json'
     end
 
     #
@@ -43,7 +43,7 @@ module LucidShopify
 
       {}.tap do |headers|
         headers['Accept'] = 'application/json'
-        headers['X-Shopify-Access-token'] = access_token if access_token
+        headers['X-Shopify-Access-Token'] = access_token if access_token
       end
     end
   end
