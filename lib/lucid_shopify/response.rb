@@ -64,24 +64,6 @@ module LucidShopify
     end
 
     #
-    # @return [String]
-    #
-    # @see {#assert!}
-    #
-    def data!
-      assert!.data
-    end
-
-    #
-    # @return [Hash] the parsed response body
-    #
-    # @see {#assert!}
-    #
-    def data_hash!
-      assert!.data_hash
-    end
-
-    #
     # @return [self]
     #
     # @raise [ClientError] for status 4xx

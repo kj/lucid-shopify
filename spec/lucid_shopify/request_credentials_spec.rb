@@ -2,22 +2,20 @@
 
 require 'lucid_shopify/request_credentials'
 
-RSpec.describe LucidShopify::RequestCredentials do
-  context 'without access token' do
-    let(:credentials) { credentials_unauthenticated }
+unauthenticated = {
+  myshopify_domain: 'example.myshopify.com',
+  access_token: nil,
+}
 
-    it 'has attributes (unauthenticated)' do
-      expect(credentials.myshopify_domain).to eq(myshopify_domain)
-      expect(credentials.access_token).to be_nil
-    end
-  end
+authenticated = {
+  myshopify_domain: 'example.myshopify.com',
+  access_token: 'example',
+}
 
-  context 'with access token' do
-    let(:credentials) { credentials_authenticated }
+RSpec.describe LucidShopify::RequestCredentials.new(unauthenticated.values.first) do
+  it { is_expected.to have_attributes(unauthenticated) }
+end
 
-    it 'has attributes (authenticated)' do
-      expect(credentials.myshopify_domain).to eq(myshopify_domain)
-      expect(credentials.access_token).to eq(access_token)
-    end
-  end
+RSpec.describe LucidShopify::RequestCredentials.new(*authenticated.values) do
+  it { is_expected.to have_attributes(authenticated) }
 end

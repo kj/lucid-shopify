@@ -3,8 +3,9 @@
 require 'lucid_shopify/client'
 
 RSpec.describe LucidShopify::Client do
-  let(:send_request) { double }
-  let(:client) do
+  let(:send_request) { double('send_request') }
+
+  subject(:client) do
     LucidShopify::Client.new(
       send_request: send_request
     )

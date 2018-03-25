@@ -30,7 +30,7 @@ module LucidShopify
       res = send(req.http_method, req.url, req.options)
       res = Response.new(req, res.code, res.headers.to_h, res.to_s)
 
-      res.data_hash!
+      res.assert!.data_hash
     rescue *http_network_errors => e
       raise NetworkError.new(e), e.message if attempts.zero?
 
