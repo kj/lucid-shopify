@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'dry-initializer'
+require 'lucid_shopify'
 
 module LucidShopify
   #
@@ -29,10 +29,10 @@ module LucidShopify
     private def build_url
       admin_url = "https://#{credentials.myshopify_domain}/admin"
 
-      path2 = path.sub(/^\//, '')
-      path2 = path.sub(/\.json$/, '')
+      normalized_path = path.sub(/^\//, '')
+      normalized_path = path.sub(/\.json$/, '')
 
-      admin_url + '/' + path2 + '.json'
+      admin_url + '/' + normalized_path + '.json'
     end
 
     #

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'lucid_shopify/request'
+require 'lucid_shopify'
 
 module LucidShopify
   class PostRequest < Request

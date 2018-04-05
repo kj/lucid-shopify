@@ -1,17 +1,12 @@
 # frozen_string_literal: true
 
-require 'dry-initializer'
 require 'openssl'
 
-require 'lucid_shopify/config'
-require 'lucid_shopify/result'
+require 'lucid_shopify'
 
 module LucidShopify
   class VerifyCallback
     extend Dry::Initializer
-
-    # @return [Config]
-    option :config, default: proc { LucidShopify.config }
 
     #
     # Verify that the callback request originated from Shopify.
@@ -22,7 +17,7 @@ module LucidShopify
     #
     def call(params_hash)
       digest = OpenSSL::Digest::SHA256.new
-      digest = OpenSSL::HMAC.hexdigest(digest, config.shared_secret, encoded_params(params_hash))
+      digest = OpenSSL::HMAC.hexdigest(digest, LucidShopify.config.shared_secret, encoded_params(params_hash))
       result = digest == params_hash[:hmac]
 
       Result.new(result, result ? nil : 'invalid request')

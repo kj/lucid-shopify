@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
-require 'dry-initializer'
-
-require 'lucid_shopify/client'
+require 'lucid_shopify/container'
 
 module LucidShopify
   class ActivateCharge
     extend Dry::Initializer
 
-    # @return [Client]
-    option :client, default: proc { Client.new }
+    # @return [#post_json]
+    option :client, default: proc { Container[:client] }
 
     #
     # Activate a recurring application charge.

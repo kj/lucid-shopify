@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
-require 'dry-initializer'
-
-require 'lucid_shopify/client'
-require 'lucid_shopify/error'
+require 'lucid_shopify/container'
 
 module LucidShopify
   class FetchAccessToken
@@ -11,10 +8,8 @@ module LucidShopify
 
     extend Dry::Initializer
 
-    # @return [Client]
-    option :client, default: proc { Client.new }
-    # @return [Config]
-    option :config, default: proc { LucidShopify.config }
+    # @return [#post_json]
+    option :client, default: proc { Container[:client] }
 
     #
     # Exchange an authorization code for a new Shopify access token.
@@ -30,7 +25,7 @@ module LucidShopify
       data = client.post_json(request_credentials, 'oauth/access_token', post_data(authorization_code))
 
       raise Error if data['access_token'].nil?
-      raise Error if data['scope'] != config.scope
+      raise Error if data['scope'] != LucidShopify.config.scope
 
       data['access_token']
     end
@@ -42,8 +37,8 @@ module LucidShopify
     #
     private def post_data(authorization_code)
       {
-        client_id: config.api_key,
-        client_secret: config.shared_secret,
+        client_id: LucidShopify.config.api_key,
+        client_secret: LucidShopify.config.shared_secret,
         code: authorization_code,
       }
     end

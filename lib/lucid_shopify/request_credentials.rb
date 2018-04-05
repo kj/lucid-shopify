@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'dry-initializer'
+require 'lucid_shopify'
 
 module LucidShopify
   class RequestCredentials

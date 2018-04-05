@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-require 'dry-initializer'
 require 'http'
 
-require 'lucid_shopify/error'
-require 'lucid_shopify/response'
+require 'lucid_shopify'
 
 module LucidShopify
   class SendRequest

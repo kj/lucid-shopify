@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
-require 'dry-initializer'
 require 'forwardable'
 
-require 'lucid_shopify/error'
+require 'lucid_shopify'
 
 module LucidShopify
   NotConfiguredError = Class.new(Error)

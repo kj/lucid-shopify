@@ -14,7 +14,7 @@ RSpec.describe LucidShopify::Result do
 
   context 'with error' do
     subject(:result) { LucidShopify::Result.new('foo', 'bar') }
-    
+
     it { is_expected.to have_attributes(value: 'foo') }
     it { is_expected.to have_attributes(error: 'bar') }
     it { is_expected.not_to satisfy('succeed', &:success?) }

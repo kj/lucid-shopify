@@ -22,7 +22,7 @@ module LucidShopify
     # Call each of the handlers registered for the given topic in turn. See
     # {#register} below for more on webhook handlers.
     #
-    # @param webhook [LucidShopify::Webhook]
+    # @param webhook [Webhook]
     #
     def call(webhook)
       handlers[webhook.topic]&.each { |handler| handler.(webhook) }

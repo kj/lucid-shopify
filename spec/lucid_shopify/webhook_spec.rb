@@ -6,7 +6,7 @@ RSpec.describe LucidShopify::Webhook do
   let(:myshopify_domain) { 'example.myshopify.com' }
   let(:topic) { 'shop/update' }
   let(:data) { '{"name": "Example"}' }
-  
+
   subject(:webhook) { LucidShopify::Webhook.new(myshopify_domain, topic, data) }
 
   it { is_expected.to have_attributes(myshopify_domain: myshopify_domain) }

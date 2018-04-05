@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'lucid_shopify/send_request'
+require 'lucid_shopify/container'
 
 %w(delete get post put).each do |method|
   require "lucid_shopify/#{method}_request"
@@ -11,11 +11,11 @@ module LucidShopify
     #
     # @param send_request [SendRequest]
     #
-    def initialize(send_request: SendRequest.new)
+    def initialize(send_request: Container[:send_request])
       @send_request = send_request
     end
 
-    # @return [SendRequest]
+    # @return [#call]
     attr_reader :send_request
 
     #

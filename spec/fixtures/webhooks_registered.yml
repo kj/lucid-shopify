@@ -1,0 +1,5 @@
+---
+- topic: 'orders/create'
+  fields: 'id,line_items'
+- topic: 'orders/update'
+  fields: 'id,line_items'

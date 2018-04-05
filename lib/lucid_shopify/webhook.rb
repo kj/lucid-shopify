@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-require 'dry-initializer'
 require 'json'
+
+require 'lucid_shopify'
 
 module LucidShopify
   class Webhook
