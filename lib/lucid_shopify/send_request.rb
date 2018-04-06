@@ -23,7 +23,7 @@ module LucidShopify
     # @raise [Response::ClientError] for status 4xx
     # @raise [Response::ServerError] for status 5xx
     #
-    def call(request, attempts = default_attempts)
+    def call(request, attempts: default_attempts)
       req = request
       res = send(req.http_method, req.url, req.options)
       res = Response.new(req, res.code, res.headers.to_h, res.to_s)
@@ -32,7 +32,7 @@ module LucidShopify
     rescue *http_network_errors => e
       raise NetworkError.new(e), e.message if attempts.zero?
 
-      call(request, attempts - 1)
+      call(request, attempts: attempts - 1)
     end
 
     #
