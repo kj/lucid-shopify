@@ -5,7 +5,7 @@ require 'lucid_shopify/create_all_webhooks'
 require_relative 'register_webhooks_shared_examples'
 
 RSpec.describe LucidShopify::CreateAllWebhooks do
-  let(:create_webhook) { double(:call) }
+  let(:create_webhook) { double('create_webhook') }
 
   subject(:create_all_webhooks) do
     LucidShopify::CreateAllWebhooks.new(

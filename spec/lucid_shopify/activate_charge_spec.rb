@@ -4,7 +4,7 @@ require 'lucid_shopify/activate_charge'
 
 RSpec.describe LucidShopify::ActivateCharge do
   let(:charge) { charge_api['plus_accepted'] }
-  let(:client) { double }
+  let(:client) { double('client') }
 
   subject(:activate_charge) do
     LucidShopify::ActivateCharge.new(

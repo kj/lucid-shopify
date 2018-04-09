@@ -5,8 +5,8 @@ require 'lucid_shopify/delete_all_webhooks'
 require_relative 'register_webhooks_shared_examples'
 
 RSpec.describe LucidShopify::DeleteAllWebhooks do
-  let(:client) { double.as_null_object }
-  let(:delete_webhook) { double(:call) }
+  let(:client) { double('client') }
+  let(:delete_webhook) { double('delete_webhook') }
 
   subject(:delete_all_webhooks) do
     LucidShopify::DeleteAllWebhooks.new(

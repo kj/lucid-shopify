@@ -3,7 +3,7 @@
 require 'lucid_shopify/create_charge'
 
 RSpec.describe LucidShopify::CreateCharge do
-  let(:client) { double }
+  let(:client) { double('client') }
 
   subject(:create_charge) do
     LucidShopify::CreateCharge.new(
