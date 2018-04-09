@@ -13,9 +13,13 @@ authenticated = {
 }
 
 RSpec.describe LucidShopify::RequestCredentials.new(unauthenticated.values.first) do
-  it { is_expected.to have_attributes(unauthenticated) }
+  unauthenticated.each do |k, v|
+    it { is_expected.to have_attributes(k => v) }
+  end
 end
 
 RSpec.describe LucidShopify::RequestCredentials.new(*authenticated.values) do
-  it { is_expected.to have_attributes(authenticated) }
+  authenticated.each do |k, v|
+    it { is_expected.to have_attributes(k => v) }
+  end
 end
