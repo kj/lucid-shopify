@@ -13,12 +13,12 @@ module LucidShopify
     # Activate a recurring application charge.
     #
     # @param request_credentials [RequestCredentials]
-    # @param charge [Hash, #to_h] an accepted charge received from Shopify via callback
+    # @param charge [#to_h] an accepted charge received from Shopify via callback
     #
     # @return [Hash] the active charge
     #
     def call(request_credentials, charge)
-      data = client.post_json(request_credentials, "recurring_application_charges/#{charge_id}/activate", charge.to_h)
+      data = client.post_json(request_credentials, "recurring_application_charges/#{charge.to_h['id']}/activate", charge.to_h)
 
       data['recurring_application_charge']
     end

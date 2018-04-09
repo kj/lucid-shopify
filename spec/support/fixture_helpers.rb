@@ -15,7 +15,7 @@ module FixtureHelpers
         h[path] = path.split('.')[1..-1].reverse.reduce(raw_data) do |data, ext|
           case ext
           when 'erb' then ERB.new(data).result
-          when 'yml' then YAML.safe_load(data)
+          when 'yml' then YAML.safe_load(data, [], [], true)
           else
             data
           end

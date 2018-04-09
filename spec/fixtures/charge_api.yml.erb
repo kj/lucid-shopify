@@ -1,0 +1,16 @@
+---
+plus: &plus
+  name: plus
+  price: 19
+  return_url: <%= LucidShopify.config.billing_callback_uri %>
+  trial_days: 30
+
+plus_accepted:
+  <<: *plus
+  id: 1
+  status: accepted
+
+plus_active:
+  <<: *plus
+  id: 1
+  status: active
