@@ -3,7 +3,8 @@
 require 'lucid_shopify/create_charge'
 
 RSpec.describe LucidShopify::CreateCharge do
-  let(:client) { double('client') }
+  let(:charge) { charge_api['plus'] }
+  let(:client) { instance_double('LucidShopify::Client') }
 
   subject(:create_charge) do
     LucidShopify::CreateCharge.new(
@@ -14,12 +15,16 @@ RSpec.describe LucidShopify::CreateCharge do
   include_fixtures 'charge_api.yml.erb'
 
   it 'creates a charge via the API' do
-    args = [credentials, 'recurring_application_charges', charge_api['plus']]
-    data = {'recurring_application_charge' => charge_api['plus_accepted']}
-    expect(client).to receive(:post_json).with(*args).and_return(data)
+    expect(client).to receive(:post_json) do |*args|
+      expect(args[0]).to be(credentials)
+      expect(args[1]).to eq('recurring_application_charges')
+      expect(args[2]).to eq(charge)
 
-    new_charge = create_charge.(credentials, charge_api['plus'])
+      {'recurring_application_charge' => charge_api['plus accepted']}
+    end
 
-    expect(new_charge).to eq(charge_api['plus_accepted'])
+    new_charge = create_charge.(credentials, charge)
+
+    expect(new_charge).to eq(charge_api['plus accepted'])
   end
 end
