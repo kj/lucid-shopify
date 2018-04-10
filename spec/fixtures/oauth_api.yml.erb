@@ -2,10 +2,10 @@
 post data:
   :client_id: <%= LucidShopify.config.api_key %>
   :client_secret: <%= LucidShopify.config.shared_secret %>
-  :code: fake_authorization_code
+  :code: e449ca701e5f96e20718e32a1851c8a2d98cc2da
 
 okay:
-  access_token: fake_access_token
+  access_token: 751984e8317406f501a9cab82ed2425920f3ec93
   scope: <%= LucidShopify.config.scope %>
 
 fail with no access token:
@@ -13,5 +13,5 @@ fail with no access token:
   scope: <%= LucidShopify.config.scope %>
 
 fail with wrong scope:
-  access_token: fake_access_token
+  access_token: 751984e8317406f501a9cab82ed2425920f3ec93
   scope: wrong,scope
