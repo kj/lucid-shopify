@@ -2,9 +2,7 @@
 
 require 'lucid_shopify/container'
 
-%w(delete get post put).each do |method|
-  require "lucid_shopify/#{method}_request"
-end
+%w(delete get post put).each { |m| require "lucid_shopify/#{m}_request" }
 
 module LucidShopify
   class Client

@@ -10,7 +10,7 @@ RSpec.describe LucidShopify::DelegateWebhooks do
       double('handler 3 of 3'),
     ]
   end
-  let(:webhook) { double('webhook', :topic => webhook_topic) }
+  let(:webhook) { instance_double('LucidShopify::Webhook', :topic => webhook_topic) }
   let(:webhook_topic) { 'orders/create' }
 
   subject(:delegate_webhooks) { LucidShopify::DelegateWebhooks.new }

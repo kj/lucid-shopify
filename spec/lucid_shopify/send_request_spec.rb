@@ -2,15 +2,13 @@
 
 require 'lucid_shopify/send_request'
 
-%w(delete get post put).each do |method|
-  require "lucid_shopify/#{method}_request"
-end
+%w(delete get post put).each { |m| require "lucid_shopify/#{m}_request" }
 
 RSpec.describe LucidShopify::SendRequest do
   subject(:send_request) { LucidShopify::SendRequest.new }
 
   shared_examples 'request' do |content_type, data, expected_data|
-    let(:http_response) { double('http_response', code: status_code, headers: {'Content-Type' => content_type}, to_s: data) }
+    let(:http_response) { instance_double('HTTP::Response', code: status_code, headers: {'Content-Type' => content_type}, to_s: data) }
 
     before do
       allow(send_request).to receive(:send).and_return(http_response)
@@ -24,20 +22,22 @@ RSpec.describe LucidShopify::SendRequest do
       end
     end
 
+    shared_examples 'error' do |type, error_class|
+      it "raises a #{name} error" do
+        expect { send_request.(request) }.to raise_error(error_class)
+      end
+    end
+
     context 'responding 400' do
       let(:status_code) { 400 }
 
-      it 'raises a client error' do
-        expect { send_request.(request) }.to raise_error(LucidShopify::Response::ClientError)
-      end
+      include_examples 'error', 'client', LucidShopify::Response::ClientError
     end
 
     context 'responding 500' do
       let(:status_code) { 500 }
 
-      it 'raises a server error' do
-        expect { send_request.(request) }.to raise_error(LucidShopify::Response::ServerError)
-      end
+      include_examples 'error', 'server', LucidShopify::Response::ServerError
     end
   end
 

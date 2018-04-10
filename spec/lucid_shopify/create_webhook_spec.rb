@@ -3,7 +3,7 @@
 require 'lucid_shopify/create_webhook'
 
 RSpec.describe LucidShopify::CreateWebhook do
-  let(:client) { double('client') }
+  let(:client) { instance_double('LucidShopify::Client') }
   let(:data) { {webhook: {**webhook, address: LucidShopify.config.webhook_uri}} }
 
   subject(:create_webhook) do

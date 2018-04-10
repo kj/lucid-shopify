@@ -3,7 +3,7 @@
 require 'lucid_shopify/delete_webhook'
 
 RSpec.describe LucidShopify::DeleteWebhook do
-  let(:client) { double('client') }
+  let(:client) { instance_double('LucidShopify::Client') }
   let(:id) { 1 }
 
   subject(:delete_webhook) do
