@@ -8,9 +8,16 @@ RSpec.describe LucidShopify::SendRequest do
   subject(:send_request) { LucidShopify::SendRequest.new }
 
   shared_examples 'request' do |content_type, data, expected_data|
-    let(:http_response) { instance_double('HTTP::Response', code: status_code, headers: {'Content-Type' => content_type}, to_s: data) }
+    let(:http_response) { instance_double('HTTP::Response') }
 
     before do
+      allow(http_response).to receive(:code) { status_code }
+      allow(http_response).to receive(:headers) do
+        {
+          'Content-Type' => content_type
+        }
+      end
+      allow(http_response).to receive(:to_s) { data }
       allow(send_request).to receive(:send).and_return(http_response)
     end
 
