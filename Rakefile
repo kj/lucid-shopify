@@ -8,4 +8,8 @@ task :test do
   system 'bundle exec rspec -r./spec/spec_helper spec/lucid_shopify'
 end
 
+task :test_integration do
+  system 'bundle exec rspec -r./spec/spec_helper spec/integration/lucid_shopify'
+end
+
 task default: :test

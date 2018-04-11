@@ -6,10 +6,12 @@ module LucidShopify
   class FetchAccessToken
     Error = Class.new(Error)
 
-    extend Dry::Initializer
-
-    # @return [#post_json]
-    option :client, default: proc { Container[:client] }
+    #
+    # @param [#post_json] client
+    #
+    def initialize(client: Container[:client])
+      @client = client
+    end
 
     #
     # Exchange an authorization code for a new Shopify access token.
@@ -22,7 +24,7 @@ module LucidShopify
     # @raise [Error] if the response is invalid
     #
     def call(request_credentials, authorization_code)
-      data = client.post_json(request_credentials, 'oauth/access_token', post_data(authorization_code))
+      data = @client.post_json(request_credentials, 'oauth/access_token', post_data(authorization_code))
 
       raise Error if data['access_token'].nil?
       raise Error if data['scope'] != LucidShopify.config.scope

@@ -4,12 +4,15 @@ require 'lucid_shopify/container'
 
 module LucidShopify
   class DeleteAllWebhooks
-    extend Dry::Initializer
-
-    # @return [#get]
-    option :client, default: proc { Container[:client] }
-    # @return [#call]
-    option :delete_webhook, default: proc { Container[:delete_webhook] }
+    #
+    # @param [#get] client
+    # @param [#call] delete_webhook
+    #
+    def initialize(client: Container[:client],
+                   delete_webhook: Container[:delete_webhook])
+      @client = client
+      @delete_webhook = delete_webhook
+    end
 
     #
     # Delete any existing webhooks.
@@ -17,10 +20,10 @@ module LucidShopify
     # @param request_credentials [RequestCredentials]
     #
     def call(request_credentials)
-      webhooks = client.get('webhooks')['webhooks']
+      webhooks = @client.get('webhooks')['webhooks']
 
       webhooks.map do |webhook|
-        Thread.new { delete_webhook.(request_credentials, webhook['id']) }
+        Thread.new { @delete_webhook.(request_credentials, webhook['id']) }
       end.map(&:value)
     end
   end

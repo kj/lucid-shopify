@@ -7,8 +7,6 @@ require 'lucid_shopify'
 
 module LucidShopify
   class VerifyWebhook
-    extend Dry::Initializer
-
     #
     # Verify that the webhook request originated from Shopify.
     #

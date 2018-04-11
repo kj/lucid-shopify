@@ -4,10 +4,12 @@ require 'lucid_shopify/container'
 
 module LucidShopify
   class CreateAllWebhooks
-    extend Dry::Initializer
-
-    # @return [#call]
-    option :create_webhook, default: proc { Container[:create_webhook] }
+    #
+    # @param [#call] create_webhook
+    #
+    def initialize(create_webhook: Container[:create_webhook])
+      @create_webhook = create_webhook
+    end
 
     #
     # Create all webhooks for the shop. Shopify ignores any webhooks which
@@ -17,7 +19,7 @@ module LucidShopify
     #
     def call(request_credentials)
       LucidShopify.webhooks.map do |webhook|
-        Thread.new { create_webhook.(request_credentials, webhook) }
+        Thread.new { @create_webhook.(request_credentials, webhook) }
       end.map(&:value)
     end
   end

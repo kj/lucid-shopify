@@ -6,8 +6,6 @@ require 'lucid_shopify'
 
 module LucidShopify
   class VerifyCallback
-    extend Dry::Initializer
-
     #
     # Verify that the callback request originated from Shopify.
     #
