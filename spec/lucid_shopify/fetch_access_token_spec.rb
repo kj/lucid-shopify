@@ -2,55 +2,57 @@
 
 require 'lucid_shopify/fetch_access_token'
 
-RSpec.describe LucidShopify::FetchAccessToken do
-  let(:post_data) { oauth_api['post data'] }
-  let(:client) { instance_double('LucidShopify::Client') }
+module LucidShopify
+  RSpec.describe FetchAccessToken do
+    let(:post_data) { oauth_api['post data'] }
+    let(:client) { instance_double('Client') }
 
-  subject(:fetch_access_token) do
-    LucidShopify::FetchAccessToken.new(
-      client: client
-    )
-  end
-
-  include_fixtures 'oauth_api.yml.erb'
-
-  before do
-    expect(client).to receive(:post_json) do |*args|
-      expect(args[0]).to be(credentials)
-      expect(args[1]).to eq('oauth/access_token')
-      expect(args[2]).to eq(post_data)
-
-      data
+    subject(:fetch_access_token) do
+      FetchAccessToken.new(
+        client: client
+      )
     end
-  end
 
-  context 'when okay' do
-    let(:data) { oauth_api['okay'] }
+    include_fixtures 'oauth_api.yml.erb'
 
-    it 'fetches access token' do
-      access_token = fetch_access_token.(credentials, post_data[:code])
+    before do
+      expect(client).to receive(:post_json) do |*args|
+        expect(args[0]).to be(credentials)
+        expect(args[1]).to eq('oauth/access_token')
+        expect(args[2]).to eq(post_data)
 
-      expect(access_token).to eq(data['access_token'])
+        data
+      end
     end
-  end
 
-  shared_examples 'fail' do
-    it 'raises an error' do
-      call = proc { fetch_access_token.(credentials, post_data[:code]) }
+    context 'when okay' do
+      let(:data) { oauth_api['okay'] }
 
-      expect(&call).to raise_error(LucidShopify::FetchAccessToken::Error)
+      it 'fetches access token' do
+        access_token = fetch_access_token.(credentials, post_data[:code])
+
+        expect(access_token).to eq(data['access_token'])
+      end
     end
-  end
 
-  context 'when fail with no access token' do
-    let(:data) { oauth_api['fail with no access token'] }
+    shared_examples 'fail' do
+      it 'raises an error' do
+        call = proc { fetch_access_token.(credentials, post_data[:code]) }
 
-    include_examples 'fail'
-  end
+        expect(&call).to raise_error(FetchAccessToken::Error)
+      end
+    end
 
-  context 'when fail with wrong scope' do
-    let(:data) { oauth_api['fail with wrong scope'] }
+    context 'when fail with no access token' do
+      let(:data) { oauth_api['fail with no access token'] }
 
-    include_examples 'fail'
+      include_examples 'fail'
+    end
+
+    context 'when fail with wrong scope' do
+      let(:data) { oauth_api['fail with wrong scope'] }
+
+      include_examples 'fail'
+    end
   end
 end

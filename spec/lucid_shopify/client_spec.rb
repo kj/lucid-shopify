@@ -2,36 +2,38 @@
 
 require 'lucid_shopify/client'
 
-RSpec.describe LucidShopify::Client do
-  let(:send_request) { instance_double('LucidShopify::SendRequest') }
+module LucidShopify
+  RSpec.describe Client do
+    let(:send_request) { instance_double('SendRequest') }
 
-  subject(:client) do
-    LucidShopify::Client.new(
-      send_request: send_request
-    )
-  end
+    subject(:client) do
+      Client.new(
+        send_request: send_request
+      )
+    end
 
-  it 'sends a delete request' do
-    expect(send_request).to receive(:call).with(instance_of(LucidShopify::DeleteRequest))
+    it 'sends a delete request' do
+      expect(send_request).to receive(:call).with(instance_of(DeleteRequest))
 
-    client.delete(credentials, 'example/path')
-  end
+      client.delete(credentials, 'example/path')
+    end
 
-  it 'sends a get request' do
-    expect(send_request).to receive(:call).with(instance_of(LucidShopify::GetRequest))
+    it 'sends a get request' do
+      expect(send_request).to receive(:call).with(instance_of(GetRequest))
 
-    client.get(credentials, 'example/path', {})
-  end
+      client.get(credentials, 'example/path', {})
+    end
 
-  it 'sends a post request' do
-    expect(send_request).to receive(:call).with(instance_of(LucidShopify::PostRequest))
+    it 'sends a post request' do
+      expect(send_request).to receive(:call).with(instance_of(PostRequest))
 
-    client.post_json(credentials, 'example/path', example: 'data')
-  end
+      client.post_json(credentials, 'example/path', example: 'data')
+    end
 
-  it 'sends a put request' do
-    expect(send_request).to receive(:call).with(instance_of(LucidShopify::PutRequest))
+    it 'sends a put request' do
+      expect(send_request).to receive(:call).with(instance_of(PutRequest))
 
-    client.put_json(credentials, 'example/path', example: 'data')
+      client.put_json(credentials, 'example/path', example: 'data')
+    end
   end
 end
