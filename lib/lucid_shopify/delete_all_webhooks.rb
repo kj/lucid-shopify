@@ -5,8 +5,8 @@ require 'lucid_shopify/container'
 module LucidShopify
   class DeleteAllWebhooks
     #
-    # @param [#get] client
-    # @param [#call] delete_webhook
+    # @param client [#get]
+    # @param delete_webhook [#call]
     #
     def initialize(client: Container[:client],
                    delete_webhook: Container[:delete_webhook])

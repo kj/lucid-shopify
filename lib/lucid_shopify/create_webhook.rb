@@ -5,7 +5,7 @@ require 'lucid_shopify/container'
 module LucidShopify
   class CreateWebhook
     #
-    # @param [#post_json] client
+    # @param client [#post_json]
     #
     def initialize(client: Container[:client])
       @client = client

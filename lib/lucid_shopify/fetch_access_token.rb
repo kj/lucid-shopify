@@ -7,7 +7,7 @@ module LucidShopify
     Error = Class.new(Error)
 
     #
-    # @param [#post_json] client
+    # @param client [#post_json]
     #
     def initialize(client: Container[:client])
       @client = client

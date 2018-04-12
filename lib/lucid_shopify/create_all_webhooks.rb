@@ -5,7 +5,7 @@ require 'lucid_shopify/container'
 module LucidShopify
   class CreateAllWebhooks
     #
-    # @param [#call] create_webhook
+    # @param create_webhook [#call]
     #
     def initialize(create_webhook: Container[:create_webhook])
       @create_webhook = create_webhook
