@@ -24,22 +24,27 @@ module LucidShopify
     # @raise [Response::ServerError] for status 5xx
     #
     def call(request, attempts: default_attempts)
-      req = request
-      res = send(req.http_method, req.url, req.options)
-      res = Response.new(req, res.code, res.headers.to_h, res.to_s)
+      res = send(request)
+      res = Response.new(request, res.code, res.headers.to_h, res.to_s)
 
       res.assert!.data_hash
-    rescue *http_network_errors => e
+    rescue HTTP::ConnectionError,
+           HTTP::ResponseError,
+           HTTP::TimeoutError => e
       raise NetworkError.new(e), e.message if attempts.zero?
 
       call(request, attempts: attempts - 1)
     end
 
     #
+    # @param request [Request]
+    #
     # @return [HTTP::Response]
     #
-    private def send(http_method, url, options)
-      HTTP.headers(request.headers).__send__(http_method, url, options)
+    private def send(request)
+      req = request
+
+      HTTP.headers(req.http_headers).__send__(req.http_method, req.url, req.options)
     end
 
     #
@@ -47,17 +52,6 @@ module LucidShopify
     #
     private def default_attempts
       3
-    end
-
-    #
-    # @return [Array<Class>]
-    #
-    private def http_network_errors
-      [
-        HTTP::ConnectionError,
-        HTTP::ResponseError,
-        HTTP::TimeoutError,
-      ]
     end
   end
 end
