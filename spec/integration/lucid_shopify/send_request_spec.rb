@@ -17,5 +17,9 @@ module LucidShopify
         expect(data).to include('id')
       end
     end
+
+    # TODO: 1. POST (create) something; test existence
+    # TODO: 2. PUT (update) something; test changed
+    # TODO: 3. DELETE something; test lack of existence
   end
 end
