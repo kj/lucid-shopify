@@ -4,23 +4,32 @@ require 'lucid_shopify'
 
 module LucidShopify
   #
-  # Provides a convenient way to build the charge hash for {CreateCharge}.
+  # Convenient way to build the charge hash for {CreateCharge}.
   #
   class Charge
-    extend Dry::Initializer
+    #
+    # @param plan_name [String]
+    # @param price [Integer]
+    # @param price_cap [Integer] requires price_terms
+    # @param price_terms [String] requires price_cap
+    # @param test [Boolean] is this a test_charge?
+    # @param trial_days [Integer]
+    #
+    def initialize(plan_name,
+                   price,
+                   price_cap: nil,
+                   price_terms: nil,
+                   test: false,
+                   trial_days: 7)
+      @plan_name = plan_name
+      @price = price
+      @price_cap = price_cap
+      @price_terms = price_terms
+      @test = test
+      @trial_days = trial_days
 
-    # @return [String]
-    param :plan_name
-    # @return [Integer]
-    param :price
-    # @return [Integer] requires price_terms
-    option :price_cap, optional: true
-    # @return [String] requires price_cap
-    option :price_terms, optional: true
-    # @return [Boolean] is this a test charge?
-    option :test, default: proc { false }
-    # @return [Integer]
-    option :trial_days, default: proc { 7 }
+      freeze
+    end
 
     #
     # Map to the Shopify API structure.
@@ -28,14 +37,14 @@ module LucidShopify
     # @return [Hash]
     #
     def to_h
-      {}.tap do |hash|
-        hash[:name] = plan_name
-        hash[:price] = price
-        hash[:capped_amount] = price_cap if usage_based_billing?
-        hash[:terms] = price_terms if usage_based_billing?
-        hash[:return_url] = LucidShopify.config.billing_callback_uri
-        hash[:test] = test if test
-        hash[:trial_days] = trial_days if trial_days
+      {}.tap do |h|
+        h[:name] = @plan_name
+        h[:price] = @price
+        h[:capped_amount] = @price_cap if usage_based_billing?
+        h[:terms] = @price_terms if usage_based_billing?
+        h[:return_url] = LucidShopify.config.billing_callback_uri
+        h[:test] = @test if @test
+        h[:trial_days] = @trial_days if @trial_days
       end
     end
 
@@ -43,7 +52,7 @@ module LucidShopify
     # @return [Boolean]
     #
     private def usage_based_billing?
-      price_cap && price_terms
+      @price_cap && @price_terms
     end
   end
 end

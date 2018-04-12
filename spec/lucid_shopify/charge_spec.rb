@@ -18,8 +18,6 @@ module LucidShopify
 
       subject(:charge) { Charge.new(*attributes.values[0, 2]) }
 
-      it { is_expected.to have_attributes(attributes) }
-
       context '#to_h' do
         subject { charge.to_h }
 
@@ -46,8 +44,6 @@ module LucidShopify
       end
 
       subject(:charge) { Charge.new(*attributes.values[0, 2], trial_days: nil) }
-
-      it { is_expected.to have_attributes(attributes) }
 
       context '#to_h' do
         subject { charge.to_h }
@@ -76,8 +72,6 @@ module LucidShopify
 
       subject(:charge) { Charge.new(*attributes.values[0, 2], test: true) }
 
-      it { is_expected.to have_attributes(attributes) }
-
       context '#to_h' do
         subject { charge.to_h }
 
@@ -104,8 +98,6 @@ module LucidShopify
       end
 
       subject(:charge) { Charge.new(*attributes.values[0, 2], **attributes.select { |k| %i(price_cap price_terms).include?(k) }) }
-
-      it { is_expected.to have_attributes(attributes) }
 
       context '#to_h' do
         subject { charge.to_h }
