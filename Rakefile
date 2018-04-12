@@ -5,6 +5,10 @@ task :lint do
 end
 
 task :test_integration do
+  require 'dotenv'
+
+  Dotenv.load
+
   missing_env = %w(
     SHOPIFY_MYSHOPIFY_DOMAIN
     SHOPIFY_PASSWORD

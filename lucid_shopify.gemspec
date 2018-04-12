@@ -5,6 +5,7 @@ $LOAD_PATH.unshift "#{__dir__}/lib"
 require 'lucid_shopify/version'
 
 Gem::Specification.new do |s|
+  s.add_development_dependency 'dotenv', '~> 2.2'
   s.add_development_dependency 'rake', '~> 12.3'
   s.add_development_dependency 'rspec', '~> 3.6'
   s.add_development_dependency 'rubocop', '0.52.0'
