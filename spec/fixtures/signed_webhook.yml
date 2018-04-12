@@ -1,0 +1,10 @@
+---
+valid:
+  data: >
+    {"product":{"id":"123"}}
+  hmac: 9COhva4I+YCphbBIqMvaOEzHzJUQ4TDcmHO8j08RbYw=
+
+invalid:
+  data: >
+    {"product":{"id":"123"}}
+  hmac: some_invalid_signature

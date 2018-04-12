@@ -66,28 +66,34 @@ to create a worker around something like this:
 
 Create/delete all configured webhooks (see above):
 
-    webhooks = LucidShopify::Webhooks.new
-
-    webhooks.create_all(request_credentials)
-    webhooks.delete_all(request_credentials)
+    LucidShopify::CreateAllWebhooks.new.(request_credentials)
+    LucidShopify::DeleteAllWebhooks.new.(request_credentials)
 
 Create/delete webhooks manually:
 
     webhook = {topic: 'orders/create', fields: %w(id tags)}
 
-    webhooks.create(request_credentials, webhook)
-    webhooks.delete(request_credentials, webhook_id)
+    LucidShopify::CreateWebhook.new.(request_credentials, webhook)
+    LucidShopify::DeleteWebhook.new.(request_credentials, webhook_id)
 
 
 ### Verification
 
 Verify callback requests with the request params:
 
-    LucidShopify::Verify::Callback.new.(params_hash).success?
+    begin
+      LucidShopify::AssertCallback.new.(params)
+    rescue LucidShopify::Error => e
+      # ...
+    end
 
 Verify webhook requests with the request data and the HMAC header:
 
-    LucidShopify::Verify::Webhook.new.(data, hmac).success?
+    begin
+      LucidShopify::AssertWebhook.new.(data, hmac)
+    rescue LucidShopify::Error => e
+      # ...
+    end
 
 
 ### Authorization

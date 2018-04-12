@@ -1,0 +1,10 @@
+---
+valid:
+  shop: example.myshopify.com
+  code: example %&special
+  hmac: 0133f6739dbeb4153357594dcb3e7cf561a4b2aa8f6e0f72fb61bfeadf2ed76c
+
+invalid:
+  shop: example.myshopify.com
+  code: example %&special
+  hmac: some_incorrect_signature

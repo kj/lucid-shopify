@@ -18,12 +18,12 @@ module LucidShopify
 
     include_examples 'register webhooks'
 
-    let(:data) { {'webhooks' => webhooks_shopify} }
+    let(:data) { {'webhooks' => webhooks['shopify']} }
 
     it 'deletes any existing webhooks' do
       expect(client).to receive(:get).and_return(data)
 
-      webhooks_shopify.each do |webhook|
+      webhooks['shopify'].each do |webhook|
         expect(delete_webhook).to receive(:call).with(credentials, webhook['id'])
       end
 
