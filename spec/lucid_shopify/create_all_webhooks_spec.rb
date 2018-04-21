@@ -2,7 +2,7 @@
 
 require 'lucid_shopify/create_all_webhooks'
 
-require_relative 'register_webhooks_shared_examples'
+require_relative 'register_webhooks_shared_context'
 
 module LucidShopify
   RSpec.describe CreateAllWebhooks do
@@ -14,7 +14,7 @@ module LucidShopify
       )
     end
 
-    include_examples 'register webhooks'
+    include_context 'register webhooks'
 
     it 'creates all registered webhooks' do
       expect(LucidShopify.webhooks.length).to be(webhooks['registered'].length)

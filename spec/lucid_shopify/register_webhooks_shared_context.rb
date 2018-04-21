@@ -2,7 +2,7 @@
 
 require 'lucid_shopify/create_all_webhooks'
 
-RSpec.shared_examples 'register webhooks' do
+RSpec.shared_context 'register webhooks' do
   include_fixtures 'webhooks.yml.erb'
 
   before do

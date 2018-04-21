@@ -2,7 +2,7 @@
 
 require 'lucid_shopify/delete_all_webhooks'
 
-require_relative 'register_webhooks_shared_examples'
+require_relative 'register_webhooks_shared_context'
 
 module LucidShopify
   RSpec.describe DeleteAllWebhooks do
@@ -16,7 +16,7 @@ module LucidShopify
       )
     end
 
-    include_examples 'register webhooks'
+    include_context 'register webhooks'
 
     let(:data) { {'webhooks' => webhooks['shopify']} }
 
