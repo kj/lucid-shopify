@@ -9,6 +9,8 @@ module LucidShopify
 
   # Services only (dependencies); no value objects, entities.
   Container.register(:activate_charge) { ActivateCharge.new }
+  Container.register(:assert_callback) { AssertCallback.new }
+  Container.register(:assert_webhook) { AssertWebhook.new }
   Container.register(:client) { Client.new }
   Container.register(:create_all_webhooks) { CreateAllWebhooks.new }
   Container.register(:create_charge) { CreateCharge.new }
@@ -18,6 +20,4 @@ module LucidShopify
   Container.register(:fetch_access_token) { FetchAccessToken.new }
   Container.register(:send_request) { SendRequest.new }
   Container.register(:send_throttled_request) { SendThrottledRequest.new }
-  Container.register(:verify_callback) { VerifyCallback.new }
-  Container.register(:verify_webhook) { VerifyWebhook.new }
 end

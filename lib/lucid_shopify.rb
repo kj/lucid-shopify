@@ -4,6 +4,8 @@ require 'dry/initializer'
 
 module LucidShopify
   autoload :ActivateCharge, 'lucid_shopify/activate_charge'
+  autoload :AssertCallback, 'lucid_shopify/assert_callback'
+  autoload :AssertWebhook, 'lucid_shopify/assert_webhook'
   autoload :Charge, 'lucid_shopify/charge'
   autoload :Client, 'lucid_shopify/client'
   autoload :Config, 'lucid_shopify/config'
@@ -26,8 +28,6 @@ module LucidShopify
   autoload :Result, 'lucid_shopify/result'
   autoload :SendRequest, 'lucid_shopify/send_request'
   autoload :ThrottledRequest, 'lucid_shopify/send_throttled_request'
-  autoload :VerifyCallback, 'lucid_shopify/verify_callback'
-  autoload :VerifyWebhook, 'lucid_shopify/verify_webhook'
   autoload :VERSION, 'lucid_shopify/version'
   autoload :Webhook, 'lucid_shopify/webhook'
   autoload :Webhooks, 'lucid_shopify/webhooks'
