@@ -14,28 +14,28 @@ module LucidShopify
     end
 
     #
-    # @see {DeleteRequest#initialize}
+    # @see DeleteRequest#initialize
     #
     def delete(*args)
       @send_request.(DeleteRequest.new(*args))
     end
 
     #
-    # @see {GetRequest#initialize}
+    # @see GetRequest#initialize
     #
     def get(*args)
       @send_request.(GetRequest.new(*args))
     end
 
     #
-    # @see {PostRequest#initialize}
+    # @see PostRequest#initialize
     #
     def post_json(*args)
       @send_request.(PostRequest.new(*args))
     end
 
     #
-    # @see {PutRequest#initialize}
+    # @see PutRequest#initialize
     #
     def put_json(*args)
       @send_request.(PutRequest.new(*args))

@@ -7,7 +7,7 @@ module LucidShopify
     MINIMUM_INTERVAL = 500 # ms
 
     #
-    # @see {SendRequest#call}
+    # @see SendRequest#call
     #
     private def call(*)
       interval
