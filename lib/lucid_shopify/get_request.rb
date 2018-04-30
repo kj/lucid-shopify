@@ -5,6 +5,8 @@ require 'lucid_shopify'
 module LucidShopify
   class GetRequest < Request
     #
+    # @private
+    #
     # @param credentials [RequestCredentials]
     # @param path [String] the endpoint relative to the base URL
     # @param params [Hash] the query params
