@@ -51,36 +51,36 @@ module LucidShopify
 
     shared_examples 'request method' do
       context 'responding with application/json' do
-        include_examples 'request', 'application/json', '{"id": 1}', {'id' => 1}
+        it_behaves_like 'request', 'application/json', '{"id": 1}', {'id' => 1}
       end
 
       context 'responding with text/plain' do
-        include_examples 'request', 'text/plain', '{"id": 1}', {}
+        it_behaves_like 'request', 'text/plain', '{"id": 1}', {}
       end
     end
 
     context 'with a DeleteRequest' do
       let(:request) { DeleteRequest.new(credentials, '/') }
 
-      include_examples 'request method'
+      it_behaves_like 'request method'
     end
 
     context 'with a GetRequest' do
       let(:request) { GetRequest.new(credentials, '/') }
 
-      include_examples 'request method'
+      it_behaves_like 'request method'
     end
 
     context 'with a PostRequest' do
       let(:request) { PostRequest.new(credentials, '/', {}) }
 
-      include_examples 'request method'
+      it_behaves_like 'request method'
     end
 
     context 'with a PutRequest' do
       let(:request) { PutRequest.new(credentials, '/', {}) }
 
-      include_examples 'request method'
+      it_behaves_like 'request method'
     end
   end
 end

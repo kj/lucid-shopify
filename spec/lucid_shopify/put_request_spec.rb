@@ -8,12 +8,12 @@ module LucidShopify
   RSpec.describe PutRequest do
     subject(:request) { PutRequest.new(credentials, 'example/path', example: 'data') }
 
-    include_examples 'request'
+    it_behaves_like 'request' do
+      it { is_expected.to have_attributes(http_method: :put) }
 
-    it { is_expected.to have_attributes(http_method: :put) }
-
-    it 'exposes json in options' do
-      expect(request.options).to include(json: {example: 'data'})
+      it 'exposes json in options' do
+        expect(request.options).to include(json: {example: 'data'})
+      end
     end
   end
 end
