@@ -20,13 +20,13 @@ task :test_integration do
     true
   end
 
-  exit if missing_env.any?
+  exit 1 if missing_env.any?
 
   system 'bundle exec rspec -r./spec/spec_helper spec/integration/lucid_shopify'
 end
 
 task :test do
-  system 'bundle exec rspec -r./spec/spec_helper spec/lucid_shopify'
+  system 'bundle exec rspec -r./spec/spec_helper spec/lucid_shopify_spec.rb spec/lucid_shopify'
 end
 
 task default: :test
