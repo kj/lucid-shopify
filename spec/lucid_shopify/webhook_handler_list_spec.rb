@@ -29,11 +29,11 @@ module LucidShopify
 
     it 'registers handlers' do
       expect(webhook_handler_list['orders/create']).to contain_exactly(
-        handlers[0][:handler],
+        handlers[0][:handler]
       )
       expect(webhook_handler_list['orders/update']).to contain_exactly(
         handlers[1][:handler],
-        handlers[2][:handler],
+        handlers[2][:handler]
       )
     end
 
@@ -42,7 +42,7 @@ module LucidShopify
     end
 
     it 'delegates to topic handlers' do
-      handlers.select { |h| h[:topic] != webhook.topic }.each do |handler|
+      handlers.reject { |h| h[:topic] == webhook.topic }.each do |handler|
         expect(handler[:handler]).not_to receive(:call)
       end
       handlers.select { |h| h[:topic] == webhook.topic }.each do |handler|

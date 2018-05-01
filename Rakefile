@@ -9,10 +9,10 @@ task :test_integration do
 
   Dotenv.load
 
-  missing_env = %w(
+  missing_env = %w[
     SHOPIFY_MYSHOPIFY_DOMAIN
     SHOPIFY_PASSWORD
-  ).select do |var|
+  ].select do |var|
     next if ENV[var]
 
     puts "Missing environment variable #{var}"

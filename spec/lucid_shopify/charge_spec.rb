@@ -95,7 +95,7 @@ module LucidShopify
         }
       end
 
-      subject(:charge) { Charge.new(*attributes.values[0, 2], **attributes.select { |k| %i(price_cap price_terms).include?(k) }) }
+      subject(:charge) { Charge.new(*attributes.values[0, 2], **attributes.select { |k| %i[price_cap price_terms].include?(k) }) }
 
       context '#to_h' do
         subject { charge.to_h }

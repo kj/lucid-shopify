@@ -2,7 +2,7 @@
 
 require 'lucid_shopify/send_request'
 
-%w(delete get post put).each { |m| require "lucid_shopify/#{m}_request" }
+%w[delete get post put].each { |m| require "lucid_shopify/#{m}_request" }
 
 module LucidShopify
   RSpec.describe SendRequest do
@@ -15,7 +15,7 @@ module LucidShopify
         allow(http_response).to receive(:code) { status_code }
         allow(http_response).to receive(:headers) do
           {
-            'Content-Type' => content_type
+            'Content-Type' => content_type,
           }
         end
         allow(http_response).to receive(:to_s) { data }
@@ -31,7 +31,7 @@ module LucidShopify
       end
 
       shared_examples 'error' do |type, error_class|
-        it "raises a #{name} error" do
+        it "raises a #{type} error" do
           expect { send_request.(request) }.to raise_error(error_class)
         end
       end
@@ -51,7 +51,7 @@ module LucidShopify
 
     shared_examples 'request method' do
       context 'responding with application/json' do
-        it_behaves_like 'request', 'application/json', '{"id": 1}', {'id' => 1}
+        it_behaves_like 'request', 'application/json', '{"id": 1}', 'id' => 1
       end
 
       context 'responding with text/plain' do

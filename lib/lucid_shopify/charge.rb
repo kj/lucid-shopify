@@ -4,7 +4,19 @@ require 'lucid_shopify'
 
 module LucidShopify
   #
-  # Convenient way to build the charge hash for {CreateCharge}.
+  # @example Subclass to provide application defaults
+  #   class Charge < LucidShopify::Charge
+  #     def initialize(shop)
+  #       super('Application name',
+  #             9,
+  #             test: test?,
+  #             trial_days: shop.trial_started_at?.nil? ? 30 : nil)
+  #     end
+  #
+  #     def test?
+  #       # ...
+  #     end
+  #   end
   #
   class Charge
     #
