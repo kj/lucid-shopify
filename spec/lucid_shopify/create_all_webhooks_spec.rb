@@ -17,7 +17,7 @@ module LucidShopify
     include_context 'register webhooks'
 
     it 'creates all registered webhooks' do
-      expect(LucidShopify.webhooks.length).to be(webhooks['registered'].length)
+      expect(LucidShopify.webhooks.count).to be(webhooks['registered'].length)
 
       LucidShopify.webhooks.each do |webhook|
         expect(create_webhook).to receive(:call).with(credentials, webhook)

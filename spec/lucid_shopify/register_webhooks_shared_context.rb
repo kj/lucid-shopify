@@ -6,6 +6,8 @@ RSpec.shared_context 'register webhooks' do
   include_fixtures 'webhooks.yml.erb'
 
   before do
-    webhooks['registered'].each { |w| LucidShopify.webhooks << w }
+    webhooks['registered'].each do |webhook|
+      LucidShopify.webhooks.register(webhook['topic'], fields: webhook['fields'])
+    end
   end
 end

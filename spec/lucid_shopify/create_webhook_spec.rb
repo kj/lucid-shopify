@@ -24,7 +24,7 @@ module LucidShopify
     end
 
     context 'with fields' do
-      let(:webhook) { {topic: 'orders/create', fields: 'id,line_items'} }
+      let(:webhook) { {topic: 'orders/create', fields: 'id,tags'} }
 
       it 'creates a webhook via the API' do
         expect(client).to receive(:post_json).with(credentials, 'webhooks', data)

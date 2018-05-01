@@ -13,7 +13,6 @@ module LucidShopify
   autoload :CreateAllWebhooks, 'lucid_shopify/create_all_webhooks'
   autoload :CreateCharge, 'lucid_shopify/create_charge'
   autoload :CreateWebhook, 'lucid_shopify/create_webhook'
-  autoload :DelegateWebhooks, 'lucid_shopify/delegate_webhooks'
   autoload :DeleteAllWebhooks, 'lucid_shopify/delete_all_webhooks'
   autoload :DeleteRequest, 'lucid_shopify/delete_request'
   autoload :DeleteWebhook, 'lucid_shopify/delete_webhook'
@@ -27,8 +26,40 @@ module LucidShopify
   autoload :Response, 'lucid_shopify/response'
   autoload :Result, 'lucid_shopify/result'
   autoload :SendRequest, 'lucid_shopify/send_request'
-  autoload :ThrottledRequest, 'lucid_shopify/send_throttled_request'
+  autoload :SendThrottledRequest, 'lucid_shopify/send_throttled_request'
   autoload :VERSION, 'lucid_shopify/version'
   autoload :Webhook, 'lucid_shopify/webhook'
-  autoload :Webhooks, 'lucid_shopify/webhooks'
+  autoload :WebhookHandlerList, 'lucid_shopify/webhook_handler_list'
+  autoload :WebhookList, 'lucid_shopify/webhook_list'
+
+  class << self
+    #
+    # Webhooks created for each shop.
+    #
+    # @return [WebhookList]
+    #
+    # @example
+    #   LucidShopify.webhooks.register('orders/create', fields: 'id,tags')
+    #
+    def webhooks
+      @webhooks ||= WebhookList.new
+    end
+
+    #
+    # Handlers for webhook topics.
+    #
+    # @return [WebhookHandlerList]
+    #
+    # @example
+    #   LucidShopify.handlers.register('orders/create', OrdersCreateWebhook.new)
+    #
+    # @example Call topic handlers
+    #   webhook = Webhook.new(myshopify_domain, topic, data)
+    #
+    #   LucidShopify.handlers.delegate(webhook)
+    #
+    def handlers
+      @handlers ||= WebhookHandlerList.new
+    end
+  end
 end

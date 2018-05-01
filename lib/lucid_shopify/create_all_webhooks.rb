@@ -23,18 +23,4 @@ module LucidShopify
       end.map(&:value)
     end
   end
-
-  class << self
-    #
-    # Webhooks created for each shop.
-    #
-    # @return [Array<Hash>]
-    #
-    # @example
-    #   LucidShopify.webhooks << {topic: 'orders/create', fields: 'id,line_items'}
-    #
-    def webhooks
-      @webhooks ||= []
-    end
-  end
 end

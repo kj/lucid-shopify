@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-require 'lucid_shopify/delegate_webhooks'
-
+=begin
 module LucidShopify
   RSpec.describe DelegateWebhooks do
     let(:handlers) do
@@ -43,3 +42,4 @@ module LucidShopify
     end
   end
 end
+=end
