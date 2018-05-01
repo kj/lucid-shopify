@@ -12,7 +12,7 @@ module LucidShopify
           price_cap: nil,
           price_terms: nil,
           test: false,
-          trial_days: 7,
+          trial_days: nil,
         }
       end
 
@@ -27,11 +27,10 @@ module LucidShopify
         it { is_expected.not_to include(:terms) }
         it { is_expected.to include(:return_url) }
         it { is_expected.not_to include(:test) }
-        it { is_expected.to include(:trial_days) }
       end
     end
 
-    context 'with no trial' do
+    context 'with trial' do
       let(:attributes) do
         {
           plan_name: 'plus',
@@ -39,11 +38,11 @@ module LucidShopify
           price_cap: nil,
           price_terms: nil,
           test: false,
-          trial_days: nil,
+          trial_days: 7,
         }
       end
 
-      subject(:charge) { Charge.new(*attributes.values[0, 2], trial_days: nil) }
+      subject(:charge) { Charge.new(*attributes.values[0, 2], trial_days: 7) }
 
       context '#to_h' do
         subject { charge.to_h }
@@ -54,7 +53,7 @@ module LucidShopify
         it { is_expected.not_to include(:terms) }
         it { is_expected.to include(:return_url) }
         it { is_expected.not_to include(:test) }
-        it { is_expected.not_to include(:trial_days) }
+        it { is_expected.to include(:trial_days) }
       end
     end
 
@@ -81,7 +80,6 @@ module LucidShopify
         it { is_expected.not_to include(:terms) }
         it { is_expected.to include(:return_url) }
         it { is_expected.to include(:test) }
-        it { is_expected.to include(:trial_days) }
       end
     end
 
@@ -108,7 +106,7 @@ module LucidShopify
         it { is_expected.to include(:terms) }
         it { is_expected.to include(:return_url) }
         it { is_expected.not_to include(:test) }
-        it { is_expected.to include(:trial_days) }
+        it { is_expected.not_to include(:trial_days) }
       end
     end
   end

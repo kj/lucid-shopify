@@ -20,7 +20,7 @@ module LucidShopify
                    price_cap: nil,
                    price_terms: nil,
                    test: false,
-                   trial_days: 7)
+                   trial_days: nil)
       @plan_name = plan_name
       @price = price
       @price_cap = price_cap
