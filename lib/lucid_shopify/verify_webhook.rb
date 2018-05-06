@@ -6,11 +6,11 @@ require 'openssl'
 require 'lucid_shopify'
 
 module LucidShopify
-  class AssertWebhook
+  class VerifyWebhook
     Error = Class.new(Error)
 
     #
-    # Assert that the webhook request originated from Shopify.
+    # Verify that the webhook request originated from Shopify.
     #
     # @param data [String] the signed request data
     # @param hmac [String] the signature

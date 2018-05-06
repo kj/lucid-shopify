@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'lucid_shopify/assert_webhook'
+require 'lucid_shopify/verify_webhook'
 
 module LucidShopify
-  RSpec.describe AssertWebhook do
-    subject(:assert_webhook) { AssertWebhook.new }
+  RSpec.describe VerifyWebhook do
+    subject(:verify_webhook) { VerifyWebhook.new }
 
     include_fixtures 'signed_webhook.yml'
 
@@ -12,8 +12,8 @@ module LucidShopify
       let(:data) { signed_webhook['valid']['data'] }
       let(:hmac) { signed_webhook['valid']['hmac'] }
 
-      it 'asserts signature' do
-        expect { assert_webhook.(data, hmac) }.not_to raise_error
+      it 'verifies signature' do
+        expect { verify_webhook.(data, hmac) }.not_to raise_error
       end
     end
 
@@ -21,8 +21,8 @@ module LucidShopify
       let(:data) { signed_webhook['invalid']['data'] }
       let(:hmac) { signed_webhook['invalid']['hmac'] }
 
-      it 'asserts signature and raises error' do
-        expect { assert_webhook.(data, hmac) }.to raise_error(AssertWebhook::Error)
+      it 'verifies signature and raises error' do
+        expect { verify_webhook.(data, hmac) }.to raise_error(VerifyWebhook::Error)
       end
     end
   end

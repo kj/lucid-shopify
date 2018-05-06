@@ -5,11 +5,11 @@ require 'openssl'
 require 'lucid_shopify'
 
 module LucidShopify
-  class AssertCallback
+  class VerifyCallback
     Error = Class.new(Error)
 
     #
-    # Assert that the callback request originated from Shopify.
+    # Verify that the callback request originated from Shopify.
     #
     # @param params [Hash] the request params
     #

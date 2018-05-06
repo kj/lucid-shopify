@@ -79,7 +79,7 @@ Create/delete webhooks manually:
 Verify callback requests with the request params:
 
     begin
-      LucidShopify::AssertCallback.new.(params)
+      LucidShopify::VerifyCallback.new.(params)
     rescue LucidShopify::Error => e
       # ...
     end
@@ -87,7 +87,7 @@ Verify callback requests with the request params:
 Verify webhook requests with the request data and the HMAC header:
 
     begin
-      LucidShopify::AssertWebhook.new.(data, hmac)
+      LucidShopify::VerifyWebhook.new.(data, hmac)
     rescue LucidShopify::Error => e
       # ...
     end

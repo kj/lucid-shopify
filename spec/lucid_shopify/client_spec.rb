@@ -5,11 +5,21 @@ require 'lucid_shopify/client'
 module LucidShopify
   RSpec.describe Client do
     let(:send_request) { instance_double('SendRequest') }
+    let(:send_throttled_request) { instance_double('SendThrottledRequest') }
 
     subject(:client) do
       Client.new(
-        send_request: send_request
+        send_request: send_request,
+        send_throttled_request: send_throttled_request
       )
+    end
+
+    it '#throttled enables request throttling' do
+      expect(client.throttled).to be_throttled
+    end
+
+    it '#unthrottled disables request throttling' do
+      expect(client.unthrottled).not_to be_throttled
     end
 
     it 'sends a delete request' do
