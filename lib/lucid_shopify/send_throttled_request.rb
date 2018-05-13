@@ -9,7 +9,7 @@ module LucidShopify
     #
     # @see SendRequest#call
     #
-    private def call(*)
+    def call(*)
       interval
 
       super
