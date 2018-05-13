@@ -9,19 +9,21 @@ module LucidShopify
     #
     # @see SendRequest#call
     #
-    def call(*)
-      interval
+    def call(request, attempts: default_attempts)
+      interval(build_interval_key(request))
 
-      super
+      super(request, attempts: attempts)
     end
 
     #
     # Sleep for the difference if time since the last request is less than the
     # MINIMUM_INTERVAL.
     #
+    # @param interval_key [String]
+    #
     # @note Throttling is only maintained across a single thread.
     #
-    private def interval
+    private def interval(interval_key)
       if Thread.current[interval_key]
         (timestamp - Thread.current[interval_key]).tap do |n|
           sleep(Rational(n, 1000)) if n < MINIMUM_INTERVAL
@@ -32,9 +34,11 @@ module LucidShopify
     end
 
     #
+    # @param request [Request]
+    #
     # @return [String]
     #
-    private def interval_key
+    private def build_interval_key(request)
       '%s[%s].timestamp' % [self.class, request.credentials.myshopify_domain]
     end
 
