@@ -3,7 +3,7 @@
 require 'lucid_shopify/container'
 
 module LucidShopify
-  class FetchAccessToken
+  class Authorize
     Error = Class.new(Error)
 
     #

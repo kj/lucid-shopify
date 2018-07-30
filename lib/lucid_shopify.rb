@@ -4,6 +4,7 @@ require 'dry/initializer'
 
 module LucidShopify
   autoload :ActivateCharge, 'lucid_shopify/activate_charge'
+  autoload :Authorize, 'lucid_shopify/authorize'
   autoload :Charge, 'lucid_shopify/charge'
   autoload :Client, 'lucid_shopify/client'
   autoload :Config, 'lucid_shopify/config'
@@ -15,7 +16,6 @@ module LucidShopify
   autoload :DeleteRequest, 'lucid_shopify/delete_request'
   autoload :DeleteWebhook, 'lucid_shopify/delete_webhook'
   autoload :Error, 'lucid_shopify/error'
-  autoload :FetchAccessToken, 'lucid_shopify/fetch_access_token'
   autoload :GetRequest, 'lucid_shopify/get_request'
   autoload :PostRequest, 'lucid_shopify/post_request'
   autoload :PutRequest, 'lucid_shopify/put_request'

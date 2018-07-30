@@ -95,7 +95,26 @@ Verify webhook requests with the request data and the HMAC header:
 
 ### Authorization
 
-_TODO_
+    authorize = LucidShopify::Authorize.new
+
+    access_token = authorize.(request_credentials, authorization_code)
+
+
+### Billing
+
+Create a new charge:
+
+    create_charge = LucidShopify::CreateCharge.new
+
+    charge = create_charge.(request_credentials, charge) # see LucidShopify::Charge
+
+Redirect the user to `charge['confirmation_url']`. When the user
+returns (see `config.billing_callback_uri`), activate the accepted
+charge:
+
+    activate_charge = LucidShopify::ActivateCharge.new
+
+    activate_charge.(request_credentials, accepted_charge)
 
 
 ### Make API requests

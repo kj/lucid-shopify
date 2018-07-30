@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-require 'lucid_shopify/fetch_access_token'
+require 'lucid_shopify/authorize'
 
 module LucidShopify
-  RSpec.describe FetchAccessToken do
+  RSpec.describe Authorize do
     let(:post_data) { oauth_api['post data'] }
     let(:client) { instance_double('Client') }
 
-    subject(:fetch_access_token) do
-      FetchAccessToken.new(
+    subject(:authorize) do
+      Authorize.new(
         client: client
       )
     end
@@ -29,7 +29,7 @@ module LucidShopify
       let(:data) { oauth_api['okay'] }
 
       it 'fetches access token' do
-        access_token = fetch_access_token.(credentials, post_data[:code])
+        access_token = authorize.(credentials, post_data[:code])
 
         expect(access_token).to eq(data['access_token'])
       end
@@ -37,9 +37,9 @@ module LucidShopify
 
     shared_examples 'fail' do
       it 'raises an error' do
-        call = proc { fetch_access_token.(credentials, post_data[:code]) }
+        call = proc { authorize.(credentials, post_data[:code]) }
 
-        expect(&call).to raise_error(FetchAccessToken::Error)
+        expect(&call).to raise_error(Authorize::Error)
       end
     end
 
