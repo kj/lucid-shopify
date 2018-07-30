@@ -129,3 +129,6 @@ charge:
 
     client.throttled.get(request_credentials, 'orders')
     client.throttled.post_json(request_credentials, 'orders', new_order)
+
+Note that throttling currently uses a naive implementation that is
+only maintained across a single thread.
