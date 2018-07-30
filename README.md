@@ -98,6 +98,15 @@ Verify webhook requests with the request data and the HMAC header:
 _TODO_
 
 
-### Make an API request
+### Make API requests
 
-_TODO_
+    client = LucidShopify::Client.new
+
+    client.get(request_credentials, 'orders', since_id: since_id)['orders']
+    client.post_json(request_credentials, 'orders', new_order)
+
+
+### Make throttled API requests
+
+    client.throttled.get(request_credentials, 'orders')
+    client.throttled.post_json(request_credentials, 'orders', new_order)
