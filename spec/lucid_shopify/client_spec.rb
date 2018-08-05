@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'lucid_shopify/client'
-
 module LucidShopify
   RSpec.describe Client do
     let(:send_request) { instance_double('SendRequest') }

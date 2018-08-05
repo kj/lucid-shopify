@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'lucid_shopify/request'
-
 RSpec.shared_examples 'request' do
   let(:path) { 'example/path' }
 

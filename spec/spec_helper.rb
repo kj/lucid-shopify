@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-$LOAD_PATH << __dir__ + '/../lib'
+$LOAD_PATH.unshift(__dir__ + '/../lib')
 
 require_relative 'support/credentials_helpers'
 require_relative 'support/fixture_helpers'
@@ -15,7 +15,7 @@ RSpec.configure do |config|
   # config.order = :random # TODO: use order: :defined metadata for specific specs
 end
 
-require 'lucid_shopify/config'
+require 'lucid_shopify'
 
 LucidShopify.config = LucidShopify::Config.new(
   'fake',

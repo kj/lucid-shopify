@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'lucid_shopify/create_all_webhooks'
-
 require_relative 'register_webhooks_shared_context'
 
 module LucidShopify

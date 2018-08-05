@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'lucid_shopify/verify_webhook'
-
 module LucidShopify
   RSpec.describe VerifyWebhook do
     subject(:verify_webhook) { VerifyWebhook.new }

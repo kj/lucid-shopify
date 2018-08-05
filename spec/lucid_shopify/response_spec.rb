@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require 'lucid_shopify/get_request'
-require 'lucid_shopify/response'
-
 module LucidShopify
   RSpec.describe Response do
     let(:request) { GetRequest.new(credentials, 'example/path') }

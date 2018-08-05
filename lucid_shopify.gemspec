@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'dotenv', '~> 2.2'
   s.add_development_dependency 'rake', '~> 12.3'
   s.add_development_dependency 'rspec', '~> 3.6'
-  s.add_development_dependency 'rubocop', '0.52.0'
+  s.add_development_dependency 'rubocop', '0.58.2'
   s.add_runtime_dependency 'dry-container', '~> 0.6'
   s.add_runtime_dependency 'dry-initializer', '~> 1.3' # for hanami-model 1.1
   s.add_runtime_dependency 'http', '~> 3.0'

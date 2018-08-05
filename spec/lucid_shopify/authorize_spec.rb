@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'lucid_shopify/authorize'
-
 module LucidShopify
   RSpec.describe Authorize do
     let(:post_data) { oauth_api['post data'] }

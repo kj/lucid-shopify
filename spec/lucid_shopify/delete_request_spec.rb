@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'lucid_shopify/delete_request'
-
 require_relative 'request_shared_examples'
 
 module LucidShopify

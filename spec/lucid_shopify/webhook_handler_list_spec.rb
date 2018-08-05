@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require 'lucid_shopify/webhook_handler_list'
-require 'lucid_shopify/webhook'
-
 module LucidShopify
   RSpec.describe WebhookHandlerList do
     let(:handlers) do

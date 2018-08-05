@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'lucid_shopify/create_webhook'
-
 module LucidShopify
   RSpec.describe CreateWebhook do
     let(:client) { instance_double('Client') }

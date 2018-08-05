@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'lucid_shopify/verify_callback'
-
 module LucidShopify
   RSpec.describe VerifyCallback do
     subject(:verify_callback) { VerifyCallback.new }

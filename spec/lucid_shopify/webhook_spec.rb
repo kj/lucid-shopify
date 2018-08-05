@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'lucid_shopify/webhook'
-
 module LucidShopify
   RSpec.describe Webhook do
     let(:myshopify_domain) { 'example.myshopify.com' }

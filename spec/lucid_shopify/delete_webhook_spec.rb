@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'lucid_shopify/delete_webhook'
-
 module LucidShopify
   RSpec.describe DeleteWebhook do
     let(:client) { instance_double('Client') }

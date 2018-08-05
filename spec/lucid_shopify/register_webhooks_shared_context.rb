@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'lucid_shopify/create_all_webhooks'
-
 RSpec.shared_context 'register webhooks' do
   include_fixtures 'webhooks.yml.erb'
 

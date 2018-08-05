@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'lucid_shopify/charge'
-
 module LucidShopify
   RSpec.describe Charge do
     context 'with defaults' do

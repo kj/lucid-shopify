@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'lucid_shopify/create_charge'
-
 module LucidShopify
   RSpec.describe CreateCharge do
     let(:charge) { charge_api['plus'] }

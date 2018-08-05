@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'lucid_shopify/config'
-
 RSpec.describe LucidShopify.config do
   it { is_expected.to have_attributes(api_key: 'fake') }
   it { is_expected.to have_attributes(shared_secret: 'fake') }
