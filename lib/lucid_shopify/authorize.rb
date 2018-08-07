@@ -16,14 +16,16 @@ module LucidShopify
     #
     # Exchange an authorization code for a new Shopify access token.
     #
-    # @param request_credentials [RequestCredentials]
+    # @param myshopify_domain [String]
     # @param authorization_code [String]
     #
     # @return [String] the access token
     #
     # @raise [Error] if the response is invalid
     #
-    def call(request_credentials, authorization_code)
+    def call(myshopify_domain, authorization_code)
+      request_credentials = RequestCredentials.new(myshopify_domain)
+
       data = @client.post_json(request_credentials, 'oauth/access_token', post_data(authorization_code))
 
       raise Error if data['access_token'].nil?

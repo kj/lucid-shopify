@@ -15,7 +15,9 @@ module LucidShopify
 
     before do
       expect(client).to receive(:post_json) do |*args|
-        expect(args[0]).to be(credentials)
+        expect(args[0]).to be_a(RequestCredentials).and have_attributes(
+          myshopify_domain: credentials.myshopify_domain
+        )
         expect(args[1]).to eq('oauth/access_token')
         expect(args[2]).to eq(post_data)
 
@@ -27,7 +29,7 @@ module LucidShopify
       let(:data) { oauth_api['okay'] }
 
       it 'fetches access token' do
-        access_token = authorize.(credentials, post_data[:code])
+        access_token = authorize.(credentials.myshopify_domain, post_data[:code])
 
         expect(access_token).to eq(data['access_token'])
       end
@@ -35,7 +37,7 @@ module LucidShopify
 
     shared_examples 'fail' do
       it 'raises an error' do
-        call = proc { authorize.(credentials, post_data[:code]) }
+        call = proc { authorize.(credentials.myshopify_domain, post_data[:code]) }
 
         expect(&call).to raise_error(Authorize::Error)
       end
