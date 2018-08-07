@@ -5,7 +5,6 @@ require 'dry/initializer'
 module LucidShopify
   autoload :ActivateCharge, 'lucid_shopify/activate_charge'
   autoload :Authorize, 'lucid_shopify/authorize'
-  autoload :Charge, 'lucid_shopify/charge'
   autoload :Client, 'lucid_shopify/client'
   autoload :Config, 'lucid_shopify/config'
   autoload :Container, 'lucid_shopify/container'
