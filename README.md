@@ -40,14 +40,18 @@ This is only useful during the OAuth2 process.
 
 Configure each webhook the app will create (if any):
 
-    LucidShopify.webhooks.register('orders/create', fields: 'id,tags'}
+    webhooks = LucidShopify::Container['webhook_list']
+
+    webhooks.register('orders/create', fields: 'id,tags'}
 
 
 ### Register webhook handlers
 
 For each webhook, register one or more handlers:
 
-    LucidShopify.handlers.register('orders/create', OrdersCreateWebhook.new)
+    handlers = LucidShopify::Container['webhook_handler_list']
+
+    handlers.register('orders/create', OrdersCreateWebhook.new)
 
 See the inline method documentation for more detail.
 
@@ -56,7 +60,7 @@ to create a worker around something like this:
 
     webhook = LucidShopify::Webhook.new(myshopify_domain, topic, data)
 
-    LucidShopify.handlers.delegate(webhook)
+    handlers.delegate(webhook)
 
 
 ### Create and delete webhooks

@@ -20,4 +20,6 @@ module LucidShopify
   Container.register(:send_throttled_request) { SendThrottledRequest.new }
   Container.register(:verify_callback) { VerifyCallback.new }
   Container.register(:verify_webhook) { VerifyWebhook.new }
+  Container.register(:webhook_handler_list) { LucidShopify.handlers }
+  Container.register(:webhook_list) { LucidShopify.webhooks }
 end

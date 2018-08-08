@@ -16,9 +16,10 @@ module LucidShopify
     # already exist remotely.
     #
     # @param request_credentials [RequestCredentials]
+    # @param webhooks [WebhookList]
     #
-    def call(request_credentials)
-      LucidShopify.webhooks.map do |webhook|
+    def call(request_credentials, webhooks: Container[:webhook_list])
+      webhooks.map do |webhook|
         Thread.new { @create_webhook.(request_credentials, webhook) }
       end.map(&:value)
     end
