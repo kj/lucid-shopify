@@ -18,6 +18,8 @@ module LucidShopify
     # @param request_credentials [RequestCredentials]
     # @param webhooks [WebhookList]
     #
+    # @return [Array<Hash>] response data
+    #
     def call(request_credentials, webhooks: Container[:webhook_list])
       webhooks.map do |webhook|
         Thread.new { @create_webhook.(request_credentials, webhook) }

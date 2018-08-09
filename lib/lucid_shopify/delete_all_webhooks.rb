@@ -19,6 +19,8 @@ module LucidShopify
     #
     # @param request_credentials [RequestCredentials]
     #
+    # @return [Array<Hash>] response data
+    #
     def call(request_credentials)
       webhooks = @client.get('webhooks')['webhooks']
 
