@@ -38,6 +38,8 @@ module LucidShopify
     # @return [String]
     param :scope
     # @return [String]
+    param :callback_uri
+    # @return [String]
     param :billing_callback_uri
     # @return [String]
     param :webhook_uri

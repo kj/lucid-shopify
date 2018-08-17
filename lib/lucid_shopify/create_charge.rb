@@ -21,8 +21,8 @@ module LucidShopify
     #
     def call(request_credentials, charge)
       data = @client.post_json(request_credentials, 'recurring_application_charges', {
-        return_url: LucidShopify.config.billing_callback_uri
-      }.merge(charge))
+        'return_url' => LucidShopify.config.billing_callback_uri
+      }.merge(charge.transform_keys(&:to_s)))
 
       data['recurring_application_charge']
     end

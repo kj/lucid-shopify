@@ -18,6 +18,7 @@ Usage
       '...', # api_key
       '...', # shared_secret
       '...', # scope
+      '...', # callback_uri (for OAuth; unused by this gem)
       '...', # billing_callback_uri
       '...', # webhook_uri
     )
