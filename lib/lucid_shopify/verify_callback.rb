@@ -16,7 +16,7 @@ module LucidShopify
     # @raise [Error] if signature is invalid
     #
     def call(params)
-      params = params.to_h
+      params = params.to_h.transform_keys(&:to_s)
       digest = OpenSSL::Digest::SHA256.new
       digest = OpenSSL::HMAC.hexdigest(digest, LucidShopify.config.shared_secret, encoded_params(params))
 
