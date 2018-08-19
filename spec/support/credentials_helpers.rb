@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-require 'lucid_shopify/request_credentials'
+require 'lucid_shopify/credentials'
 
 module CredentialsHelpers
   def credentials
     @credentials ||=
-      LucidShopify::RequestCredentials.new(myshopify_domain)
+      LucidShopify::Credentials.new(myshopify_domain)
   end
 
   def credentials_authenticated
     @credentials_authenticated ||=
-      LucidShopify::RequestCredentials.new(myshopify_domain, access_token)
+      LucidShopify::Credentials.new(myshopify_domain, access_token)
   end
 
   #

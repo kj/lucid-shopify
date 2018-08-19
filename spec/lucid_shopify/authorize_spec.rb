@@ -15,7 +15,7 @@ module LucidShopify
 
     before do
       expect(client).to receive(:post_json) do |*args|
-        expect(args[0]).to be_a(RequestCredentials).and have_attributes(
+        expect(args[0]).to be_a(Credentials).and have_attributes(
           myshopify_domain: credentials.myshopify_domain
         )
         expect(args[1]).to eq('oauth/access_token')

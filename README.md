@@ -28,7 +28,7 @@ argument to any of the classes that make use of it.
 
 Additionally, each API request requires authorization:
 
-    request_credentials = LucidShopify::RequestCredentials.new(
+    credentials = LucidShopify::Credentials.new(
       '...', # myshopify_domain
       '...', # access_token
     )
@@ -68,15 +68,15 @@ to create a worker around something like this:
 
 Create/delete all configured webhooks (see above):
 
-    LucidShopify::CreateAllWebhooks.new.(request_credentials)
-    LucidShopify::DeleteAllWebhooks.new.(request_credentials)
+    LucidShopify::CreateAllWebhooks.new.(credentials)
+    LucidShopify::DeleteAllWebhooks.new.(credentials)
 
 Create/delete webhooks manually:
 
     webhook = {topic: 'orders/create', fields: %w(id tags)}
 
-    LucidShopify::CreateWebhook.new.(request_credentials, webhook)
-    LucidShopify::DeleteWebhook.new.(request_credentials, webhook_id)
+    LucidShopify::CreateWebhook.new.(credentials, webhook)
+    LucidShopify::DeleteWebhook.new.(credentials, webhook_id)
 
 
 ### Verification
@@ -102,7 +102,7 @@ Verify webhook requests with the request data and the HMAC header:
 
     authorize = LucidShopify::Authorize.new
 
-    access_token = authorize.(request_credentials, authorization_code)
+    access_token = authorize.(credentials, authorization_code)
 
 
 ### Billing
@@ -111,7 +111,7 @@ Create a new charge:
 
     create_charge = LucidShopify::CreateCharge.new
 
-    charge = create_charge.(request_credentials, charge) # see LucidShopify::Charge
+    charge = create_charge.(credentials, charge) # see LucidShopify::Charge
 
 Redirect the user to `charge['confirmation_url']`. When the user
 returns (see `config.billing_callback_uri`), activate the accepted
@@ -119,21 +119,21 @@ charge:
 
     activate_charge = LucidShopify::ActivateCharge.new
 
-    activate_charge.(request_credentials, accepted_charge)
+    activate_charge.(credentials, accepted_charge)
 
 
 ### Make API requests
 
     client = LucidShopify::Client.new
 
-    client.get(request_credentials, 'orders', since_id: since_id)['orders']
-    client.post_json(request_credentials, 'orders', new_order)
+    client.get(credentials, 'orders', since_id: since_id)['orders']
+    client.post_json(credentials, 'orders', new_order)
 
 
 ### Make throttled API requests
 
-    client.throttled.get(request_credentials, 'orders')
-    client.throttled.post_json(request_credentials, 'orders', new_order)
+    client.throttled.get(credentials, 'orders')
+    client.throttled.post_json(credentials, 'orders', new_order)
 
 Note that throttling currently uses a naive implementation that is
 only maintained across a single thread.

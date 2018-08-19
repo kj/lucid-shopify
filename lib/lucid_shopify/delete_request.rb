@@ -7,7 +7,7 @@ module LucidShopify
     #
     # @private
     #
-    # @param credentials [RequestCredentials]
+    # @param credentials [Credentials]
     # @param path [String] the endpoint relative to the base URL
     #
     def initialize(credentials, path)

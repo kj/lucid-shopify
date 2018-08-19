@@ -14,13 +14,13 @@ module LucidShopify
     #
     # Create a new recurring application charge.
     #
-    # @param request_credentials [RequestCredentials]
+    # @param credentials [Credentials]
     # @param charge [Hash]
     #
     # @return [Hash] the pending charge
     #
-    def call(request_credentials, charge)
-      data = @client.post_json(request_credentials, 'recurring_application_charges', post_data(charge))
+    def call(credentials, charge)
+      data = @client.post_json(credentials, 'recurring_application_charges', post_data(charge))
 
       data['recurring_application_charge']
     end

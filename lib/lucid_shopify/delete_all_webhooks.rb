@@ -17,15 +17,15 @@ module LucidShopify
     #
     # Delete any existing webhooks.
     #
-    # @param request_credentials [RequestCredentials]
+    # @param credentials [Credentials]
     #
     # @return [Array<Hash>] response data
     #
-    def call(request_credentials)
+    def call(credentials)
       webhooks = @client.get('webhooks')['webhooks']
 
       webhooks.map do |webhook|
-        Thread.new { @delete_webhook.(request_credentials, webhook['id']) }
+        Thread.new { @delete_webhook.(credentials, webhook['id']) }
       end.map(&:value)
     end
   end

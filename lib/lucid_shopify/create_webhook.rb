@@ -12,15 +12,15 @@ module LucidShopify
     end
 
     #
-    # @param request_credentials [RequestCredentials]
+    # @param credentials [Credentials]
     # @param webhook [Hash]
     #
     # @return [Hash] response data
     #
-    def call(request_credentials, webhook)
+    def call(credentials, webhook)
       data = {**webhook, address: LucidShopify.config.webhook_uri}
 
-      @client.post_json(request_credentials, 'webhooks', webhook: data)
+      @client.post_json(credentials, 'webhooks', webhook: data)
     end
   end
 end

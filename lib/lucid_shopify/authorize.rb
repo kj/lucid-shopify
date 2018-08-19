@@ -24,9 +24,9 @@ module LucidShopify
     # @raise [Error] if the response is invalid
     #
     def call(myshopify_domain, authorization_code)
-      request_credentials = RequestCredentials.new(myshopify_domain)
+      credentials = Credentials.new(myshopify_domain)
 
-      data = @client.post_json(request_credentials, 'oauth/access_token', post_data(authorization_code))
+      data = @client.post_json(credentials, 'oauth/access_token', post_data(authorization_code))
 
       raise Error if data['access_token'].nil?
       raise Error if data['scope'] != LucidShopify.config.scope

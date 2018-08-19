@@ -18,7 +18,7 @@ module LucidShopify
   autoload :GetRequest, 'lucid_shopify/get_request'
   autoload :PostRequest, 'lucid_shopify/post_request'
   autoload :PutRequest, 'lucid_shopify/put_request'
-  autoload :RequestCredentials, 'lucid_shopify/request_credentials'
+  autoload :Credentials, 'lucid_shopify/credentials'
   autoload :Request, 'lucid_shopify/request'
   autoload :Response, 'lucid_shopify/response'
   autoload :Result, 'lucid_shopify/result'

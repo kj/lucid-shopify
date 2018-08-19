@@ -3,7 +3,7 @@
 require 'lucid_shopify'
 
 module LucidShopify
-  class RequestCredentials
+  class Credentials
     extend Dry::Initializer
 
     # @return [String]

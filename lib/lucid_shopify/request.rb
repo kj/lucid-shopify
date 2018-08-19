@@ -9,7 +9,7 @@ module LucidShopify
   class Request
     extend Dry::Initializer
 
-    # @return [RequestCredentials]
+    # @return [Credentials]
     param :credentials
     # @return [Symbol]
     param :http_method
