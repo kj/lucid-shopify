@@ -20,11 +20,22 @@ module LucidShopify
     # @return [Hash] the pending charge
     #
     def call(request_credentials, charge)
-      data = @client.post_json(request_credentials, 'recurring_application_charges', {
-        'return_url' => LucidShopify.config.billing_callback_uri
-      }.merge(charge.transform_keys(&:to_s)))
+      data = @client.post_json(request_credentials, 'recurring_application_charges', post_data(charge))
 
       data['recurring_application_charge']
+    end
+
+    #
+    # @param charge [Hash]
+    #
+    # @return [Hash]
+    #
+    private def post_data(charge)
+      {
+        'recurring_application_charge' => {
+          'return_url' => LucidShopify.config.billing_callback_uri
+        }.merge(charge.transform_keys(&:to_s)),
+      }
     end
   end
 end

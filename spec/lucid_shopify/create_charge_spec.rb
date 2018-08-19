@@ -17,7 +17,7 @@ module LucidShopify
       expect(client).to receive(:post_json) do |*args|
         expect(args[0]).to be(credentials)
         expect(args[1]).to eq('recurring_application_charges')
-        expect(args[2]).to eq(charge)
+        expect(args[2]).to eq('recurring_application_charge' => charge)
 
         {'recurring_application_charge' => charge_api['plus accepted']}
       end
