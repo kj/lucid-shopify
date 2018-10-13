@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'dry/container'
+require 'http'
 
 require 'lucid_shopify'
 
@@ -16,6 +17,7 @@ module LucidShopify
   Container.register(:create_webhook) { CreateWebhook.new }
   Container.register(:delete_all_webhooks) { DeleteAllWebhooks.new }
   Container.register(:delete_webhook) { DeleteWebhook.new }
+  Container.register(:http) { ::HTTP::Client.new }
   Container.register(:send_request) { SendRequest.new }
   Container.register(:send_throttled_request) { SendThrottledRequest.new }
   Container.register(:verify_callback) { VerifyCallback.new }

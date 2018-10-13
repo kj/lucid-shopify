@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'http'
-
 require 'lucid_shopify'
 
 module LucidShopify
@@ -11,6 +9,13 @@ module LucidShopify
 
       # @return [HTTP::Error]
       param :original_exception
+    end
+
+    #
+    # @param http [HTTP::Client]
+    #
+    def initialize(http: Container[:http])
+      @http = http
     end
 
     #
@@ -44,7 +49,7 @@ module LucidShopify
     private def send(request)
       req = request
 
-      HTTP.headers(req.http_headers).__send__(req.http_method, req.url, req.options)
+      @http.headers(req.http_headers).__send__(req.http_method, req.url, req.options)
     end
 
     #
