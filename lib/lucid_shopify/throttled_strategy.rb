@@ -3,16 +3,20 @@
 require 'lucid_shopify'
 
 module LucidShopify
-  class SendThrottledRequest < SendRequest
+  class ThrottledStrategy
     MINIMUM_INTERVAL = 500 # ms
 
     #
-    # @see SendRequest#call
+    # @param request [Request]
     #
-    def call(request, attempts: default_attempts)
+    # @yieldreturn [Response]
+    #
+    # @return [Response]
+    #
+    def call(request, &send_request)
       interval(build_interval_key(request))
 
-      super(request, attempts: attempts)
+      send_request.()
     end
 
     #
@@ -26,7 +30,7 @@ module LucidShopify
     private def interval(interval_key)
       if Thread.current[interval_key]
         (timestamp - Thread.current[interval_key]).tap do |n|
-          sleep(Rational(n, 1000)) if n < MINIMUM_INTERVAL
+          sleep(Rational(MINIMUM_INTERVAL - n, 1000)) if n < MINIMUM_INTERVAL
         end
       end
 

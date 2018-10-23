@@ -13,9 +13,12 @@ module LucidShopify
 
     #
     # @param http [HTTP::Client]
+    # @param strategy [#call, nil] unthrottled by default
     #
-    def initialize(http: Container[:http])
+    def initialize(http: Container[:http],
+                   strategy: ->(*, &block) { block.() })
       @http = http
+      @strategy = strategy
     end
 
     #
@@ -29,8 +32,11 @@ module LucidShopify
     # @raise [Response::ServerError] for status 5xx
     #
     def call(request, attempts: default_attempts)
-      res = send(request)
-      res = Response.new(request, res.code, res.headers.to_h, res.to_s)
+      res = @strategy.(request) do
+        res = send(request)
+
+        Response.new(request, res.code, res.headers.to_h, res.to_s)
+      end
 
       res.assert!.data_hash
     rescue HTTP::ConnectionError,

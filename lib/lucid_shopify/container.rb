@@ -19,7 +19,7 @@ module LucidShopify
   Container.register(:delete_webhook) { DeleteWebhook.new }
   Container.register(:http) { ::HTTP::Client.new }
   Container.register(:send_request) { SendRequest.new }
-  Container.register(:send_throttled_request) { SendThrottledRequest.new }
+  Container.register(:send_throttled_request) { SendRequest.new(strategy: ThrottledStrategy.new) }
   Container.register(:verify_callback) { VerifyCallback.new }
   Container.register(:verify_webhook) { VerifyWebhook.new }
   Container.register(:webhook_handler_list) { LucidShopify.handlers }

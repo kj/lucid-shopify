@@ -23,7 +23,7 @@ module LucidShopify
   autoload :Response, 'lucid_shopify/response'
   autoload :Result, 'lucid_shopify/result'
   autoload :SendRequest, 'lucid_shopify/send_request'
-  autoload :SendThrottledRequest, 'lucid_shopify/send_throttled_request'
+  autoload :ThrottledStrategy, 'lucid_shopify/throttled_strategy'
   autoload :VerifyCallback, 'lucid_shopify/verify_callback'
   autoload :VerifyWebhook, 'lucid_shopify/verify_webhook'
   autoload :VERSION, 'lucid_shopify/version'
