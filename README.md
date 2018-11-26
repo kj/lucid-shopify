@@ -129,6 +129,10 @@ charge:
     client.get(credentials, 'orders', since_id: since_id)['orders']
     client.post_json(credentials, 'orders', new_order)
 
+Request logging is disabled by default. To enable it:
+
+    LucidShopify.config.logger = Logger.new(STDOUT)
+
 
 ### Make throttled API requests
 

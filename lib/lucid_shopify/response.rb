@@ -39,7 +39,7 @@ module LucidShopify
     # @return [String]
     param :data
     # @return [Hash] the parsed response body
-    param :data_hash, default: proc { parse_data }
+    param :data_hash, default: -> { parse_data }
 
     #
     # @return [Hash]

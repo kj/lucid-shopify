@@ -37,7 +37,7 @@ module LucidShopify
 
     shared_examples 'fail' do
       it 'raises an error' do
-        call = proc { authorize.(credentials.myshopify_domain, post_data[:code]) }
+        call = -> { authorize.(credentials.myshopify_domain, post_data[:code]) }
 
         expect(&call).to raise_error(Authorize::Error)
       end

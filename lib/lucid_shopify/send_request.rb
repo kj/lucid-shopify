@@ -32,11 +32,17 @@ module LucidShopify
     # @raise [Response::ServerError] for status 5xx
     #
     def call(request, attempts: default_attempts)
-      res = @strategy.(request) do
-        res = send(request)
+      req = request
 
-        Response.new(request, res.code, res.headers.to_h, res.to_s)
+      log_request(req)
+
+      res = @strategy.(req) do
+        res = send(req)
+
+        Response.new(req, res.code, res.headers.to_h, res.to_s)
       end
+
+      log_response(req, res)
 
       res.assert!.data_hash
     rescue HTTP::ConnectionError,
@@ -44,7 +50,7 @@ module LucidShopify
            HTTP::TimeoutError => e
       raise NetworkError.new(e), e.message if attempts.zero?
 
-      call(request, attempts: attempts - 1)
+      call(req, attempts: attempts - 1)
     end
 
     #
@@ -56,6 +62,36 @@ module LucidShopify
       req = request
 
       @http.headers(req.http_headers).__send__(req.http_method, req.url, req.options)
+    end
+
+    #
+    # @param request [Request]
+    #
+    def log_request(request)
+      req = request
+
+      LucidShopify.config.logger.info('<%s> [%i] %s %s %s' % [
+        self.class.to_s,
+        req.object_id,
+        req.http_method.to_s.upcase,
+        req.url,
+        req.options[:params]&.to_json || '{}'
+      ])
+    end
+
+    #
+    # @param request [Request]
+    # @param response [Response]
+    #
+    def log_response(request, response)
+      req = request
+      res = response
+
+      LucidShopify.config.logger.info('<%s> [%i] %i' % [
+        self.class.to_s,
+        req.object_id,
+        res.status_code
+      ])
     end
 
     #

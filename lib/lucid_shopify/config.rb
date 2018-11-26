@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'forwardable'
+require 'logger'
 
 require 'lucid_shopify'
 
@@ -11,7 +12,7 @@ module LucidShopify
     extend Forwardable
 
     # TODO: *Config.dry_initializer.attributes (version 2.0.0+)
-    def_delegators :config, :api_key, :shared_secret, :scope, :billing_callback_uri, :webhook_uri
+    def_delegators :config, :api_key, :shared_secret, :scope, :billing_callback_uri, :webhook_uri, :logger
 
     # @param config [Config]
     attr_writer :config
@@ -43,5 +44,21 @@ module LucidShopify
     param :billing_callback_uri
     # @return [String]
     param :webhook_uri
+
+    #
+    # @return [Logger]
+    #
+    def logger
+      @logger ||= Logger.new(File::NULL)
+    end
+
+    #
+    # @param new_logger [Logger]
+    #
+    def logger=(new_logger)
+      raise ArgumentError, 'not a Logger' unless new_logger.is_a?(Logger)
+
+      @logger = new_logger
+    end
   end
 end

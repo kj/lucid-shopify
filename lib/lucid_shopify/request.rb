@@ -16,12 +16,12 @@ module LucidShopify
     # @return [String] the endpoint relative to the base URL
     param :path, reader: :private
     # @return [Hash]
-    param :options, default: proc { {} }
+    param :options, default: -> { {} }
 
     # @return [Hash]
-    param :http_headers, default: proc { build_headers }
+    param :http_headers, default: -> { build_headers }
     # @return [String]
-    param :url, default: proc { build_url }
+    param :url, default: -> { build_url }
 
     #
     # @return [String]
