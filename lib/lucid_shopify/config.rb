@@ -60,5 +60,7 @@ module LucidShopify
 
       @logger = new_logger
     end
+
+    PRIVATE_APP = new('', '', '', '', '', '')
   end
 end

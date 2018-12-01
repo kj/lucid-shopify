@@ -23,6 +23,10 @@ Usage
       '...', # webhook_uri
     )
 
+For private apps, these may not be required, in which case, use:
+
+    LucidShopify.config = LucidShopify::Config::PRIVATE_APP
+
 Additionally, each API request requires authorization:
 
     credentials = LucidShopify::Credentials.new(
