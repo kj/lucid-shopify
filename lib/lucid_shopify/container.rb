@@ -4,6 +4,7 @@ require 'dry/container'
 require 'http'
 
 require 'lucid_shopify'
+require 'lucid_shopify/config'
 
 module LucidShopify
   Container = Dry::Container.new

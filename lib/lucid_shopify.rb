@@ -6,7 +6,6 @@ module LucidShopify
   autoload :ActivateCharge, 'lucid_shopify/activate_charge'
   autoload :Authorize, 'lucid_shopify/authorize'
   autoload :Client, 'lucid_shopify/client'
-  autoload :Config, 'lucid_shopify/config'
   autoload :Container, 'lucid_shopify/container'
   autoload :CreateAllWebhooks, 'lucid_shopify/create_all_webhooks'
   autoload :CreateCharge, 'lucid_shopify/create_charge'
@@ -62,3 +61,5 @@ module LucidShopify
     end
   end
 end
+
+require 'lucid_shopify/config'
