@@ -12,7 +12,7 @@ Add the gem to your ‘Gemfile’:
 Usage
 -----
 
-### Configure the default API client credentials
+### Configure the default API client
 
     LucidShopify.config = LucidShopify::Config.new(
       '...', # api_key
@@ -22,9 +22,6 @@ Usage
       '...', # billing_callback_uri
       '...', # webhook_uri
     )
-
-Alternatively, a credentials object may be passed as a keyword
-argument to any of the classes that make use of it.
 
 Additionally, each API request requires authorization:
 
