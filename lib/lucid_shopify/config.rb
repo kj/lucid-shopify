@@ -63,4 +63,6 @@ module LucidShopify
 
     PRIVATE_APP = new('', '', '', '', '', '')
   end
+
+  self.config = Config::PRIVATE_APP
 end

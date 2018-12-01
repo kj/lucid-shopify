@@ -23,7 +23,8 @@ Usage
       '...', # webhook_uri
     )
 
-For private apps, these may not be required, in which case, use:
+For private apps, where these credentials may not be not necessary,
+the default unconfigured behaviour is equivalent to:
 
     LucidShopify.config = LucidShopify::Config::PRIVATE_APP
 
