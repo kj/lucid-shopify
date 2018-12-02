@@ -75,7 +75,7 @@ module LucidShopify
         req.object_id,
         req.http_method.to_s.upcase,
         req.url,
-        req.options[:params]&.to_json || '{}'
+        req.options[:params]&.to_json || '{}',
       ])
     end
 
@@ -87,10 +87,11 @@ module LucidShopify
       req = request
       res = response
 
-      LucidShopify.config.logger.info('<%s> [%i] %i' % [
+      LucidShopify.config.logger.info('<%s> [%i] %i (%s)' % [
         self.class.to_s,
         req.object_id,
-        res.status_code
+        res.status_code,
+        res.headers['X-Shopify-Shop-Api-Call-Limit'],
       ])
     end
 
