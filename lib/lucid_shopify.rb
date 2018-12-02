@@ -2,6 +2,11 @@
 
 require 'dry/initializer'
 
+begin
+  require 'redis'
+rescue LoadError
+end
+
 module LucidShopify
   autoload :ActivateCharge, 'lucid_shopify/activate_charge'
   autoload :Authorize, 'lucid_shopify/authorize'
@@ -18,6 +23,7 @@ module LucidShopify
   autoload :GetRequest, 'lucid_shopify/get_request'
   autoload :PostRequest, 'lucid_shopify/post_request'
   autoload :PutRequest, 'lucid_shopify/put_request'
+  autoload :RedisThrottledStrategy, 'lucid_shopify/redis_throttled_strategy'
   autoload :Request, 'lucid_shopify/request'
   autoload :Response, 'lucid_shopify/response'
   autoload :Result, 'lucid_shopify/result'

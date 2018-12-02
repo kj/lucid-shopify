@@ -3,6 +3,9 @@
 require 'lucid_shopify'
 
 module LucidShopify
+  #
+  # Maintain API call limit throttling across a single thread.
+  #
   class ThrottledStrategy
     MINIMUM_INTERVAL = 500 # ms
 
@@ -20,12 +23,10 @@ module LucidShopify
     end
 
     #
-    # Sleep for the difference if time since the last request is less than the
-    # MINIMUM_INTERVAL.
+    # If time since the last request < {MINIMUM_INTERVAL}, then sleep for the
+    # difference.
     #
     # @param interval_key [String]
-    #
-    # @note Throttling is only maintained across a single thread.
     #
     private def interval(interval_key)
       if Thread.current[interval_key]
