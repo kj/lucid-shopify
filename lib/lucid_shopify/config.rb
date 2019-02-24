@@ -11,8 +11,15 @@ module LucidShopify
   class << self
     extend Forwardable
 
-    # TODO: *Config.dry_initializer.attributes (version 2.0.0+)
-    def_delegators :config, :api_key, :shared_secret, :scope, :billing_callback_uri, :webhook_uri, :logger
+    def_delegators(
+      :config,
+      :api_key,
+      :shared_secret,
+      :scope,
+      :billing_callback_uri,
+      :webhook_uri,
+      :logger
+    )
 
     # @param config [Config]
     attr_writer :config
