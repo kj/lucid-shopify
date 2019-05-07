@@ -28,14 +28,14 @@ the default unconfigured behaviour is equivalent to:
 
     LucidShopify.config = LucidShopify::Config::PRIVATE_APP
 
-Additionally, each API request requires authorization:
+Additionally, each API request requires authorisation:
 
     credentials = LucidShopify::Credentials.new(
       '...', # myshopify_domain
       '...', # access_token
     )
 
-If the access token is omitted, the request will be unauthorized.
+If the access token is omitted, the request will be unauthorised.
 This is only useful during the OAuth2 process.
 
 
@@ -100,11 +100,11 @@ Verify webhook requests with the request data and the HMAC header:
     end
 
 
-### Authorization
+### Authorisation
 
-    authorize = LucidShopify::Authorize.new
+    authorise = LucidShopify::Authorise.new
 
-    access_token = authorize.(credentials, authorization_code)
+    access_token = authorise.(credentials, authorisation_code)
 
 
 ### Billing

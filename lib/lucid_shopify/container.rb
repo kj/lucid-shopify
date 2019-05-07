@@ -11,7 +11,7 @@ module LucidShopify
 
   # Services only (dependencies); no value objects, entities.
   Container.register(:activate_charge) { ActivateCharge.new }
-  Container.register(:authorize) { Authorize.new }
+  Container.register(:authorise) { Authorise.new }
   Container.register(:client) { Client.new }
   Container.register(:create_all_webhooks) { CreateAllWebhooks.new }
   Container.register(:create_charge) { CreateCharge.new }

@@ -9,7 +9,7 @@ end
 
 module LucidShopify
   autoload :ActivateCharge, 'lucid_shopify/activate_charge'
-  autoload :Authorize, 'lucid_shopify/authorize'
+  autoload :Authorise, 'lucid_shopify/authorise'
   autoload :Client, 'lucid_shopify/client'
   autoload :Container, 'lucid_shopify/container'
   autoload :CreateAllWebhooks, 'lucid_shopify/create_all_webhooks'

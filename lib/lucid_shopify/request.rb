@@ -29,10 +29,10 @@ module LucidShopify
     private def build_url
       admin_url = "https://#{credentials.myshopify_domain}/admin"
 
-      normalized_path = path.sub(/^\//, '')
-      normalized_path = path.sub(/\.json$/, '')
+      normalised_path = path.sub(/^\//, '')
+      normalised_path = path.sub(/\.json$/, '')
 
-      admin_url + '/' + normalized_path + '.json'
+      admin_url + '/' + normalised_path + '.json'
     end
 
     #

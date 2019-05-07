@@ -3,7 +3,7 @@
 require 'lucid_shopify/container'
 
 module LucidShopify
-  class Authorize
+  class Authorise
     Error = Class.new(Error)
 
     #
@@ -14,19 +14,19 @@ module LucidShopify
     end
 
     #
-    # Exchange an authorization code for a new Shopify access token.
+    # Exchange an authorisation code for a new Shopify access token.
     #
     # @param myshopify_domain [String]
-    # @param authorization_code [String]
+    # @param authorisation_code [String]
     #
     # @return [String] the access token
     #
     # @raise [Error] if the response is invalid
     #
-    def call(myshopify_domain, authorization_code)
+    def call(myshopify_domain, authorisation_code)
       credentials = Credentials.new(myshopify_domain)
 
-      data = @client.post_json(credentials, 'oauth/access_token', post_data(authorization_code))
+      data = @client.post_json(credentials, 'oauth/access_token', post_data(authorisation_code))
 
       raise Error if data['access_token'].nil?
       raise Error if data['scope'] != LucidShopify.config.scope
@@ -35,15 +35,15 @@ module LucidShopify
     end
 
     #
-    # @param authorization_code [String]
+    # @param authorisation_code [String]
     #
     # @return [Hash]
     #
-    private def post_data(authorization_code)
+    private def post_data(authorisation_code)
       {
         client_id: LucidShopify.config.api_key,
         client_secret: LucidShopify.config.shared_secret,
-        code: authorization_code,
+        code: authorisation_code,
       }
     end
   end
