@@ -24,4 +24,5 @@ LucidShopify.config = LucidShopify::Config.new(
   'fake',
   'fake',
   'fake',
+  'fake',
 )

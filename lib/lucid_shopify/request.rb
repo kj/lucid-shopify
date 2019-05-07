@@ -27,7 +27,11 @@ module LucidShopify
     # @return [String]
     #
     private def build_url
-      admin_url = "https://#{credentials.myshopify_domain}/admin"
+      unless path.match?(/oauth/)
+        admin_url = "https://#{credentials.myshopify_domain}/admin/api/#{api_version}"
+      else
+        admin_url = "https://#{credentials.myshopify_domain}/admin"
+      end
 
       normalised_path = path.sub(/^\//, '')
       normalised_path = path.sub(/\.json$/, '')
@@ -45,6 +49,13 @@ module LucidShopify
         headers['Accept'] = 'application/json'
         headers['X-Shopify-Access-Token'] = access_token if access_token
       end
+    end
+
+    #
+    # @return [String]
+    #
+    private def api_version
+      ENV.fetch('SHOPIFY_API_VERSION', LucidShopify.config.api_version)
     end
   end
 end

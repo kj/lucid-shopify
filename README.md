@@ -15,6 +15,7 @@ Usage
 ### Configure the default API client
 
     LucidShopify.config = LucidShopify::Config.new(
+      '...', # api_version, e.g. '2019-04'
       '...', # api_key
       '...', # shared_secret
       '...', # scope

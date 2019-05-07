@@ -6,7 +6,7 @@ RSpec.shared_examples 'request' do
   it { is_expected.to have_attributes(credentials: credentials) }
   it { is_expected.to have_attributes(http_method: instance_of(Symbol)) }
   it { is_expected.to have_attributes(http_headers: hash_including('Accept' => 'application/json')) }
-  it { is_expected.to have_attributes(url: "https://#{myshopify_domain}/admin/#{path}.json") }
+  it { is_expected.to have_attributes(url: "https://#{myshopify_domain}/admin/api/fake/#{path}.json") }
   it { is_expected.to have_attributes(options: instance_of(Hash)) }
 
   context 'when unauthenticated' do
