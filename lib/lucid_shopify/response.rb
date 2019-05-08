@@ -49,11 +49,6 @@ module LucidShopify
 
       JSON.parse(data)
     end
-    # private def parse_data(data)
-    #   JSON.parse(data)
-    # rescue JSON::ParserError
-    #   {}
-    # end
 
     #
     # @return [Boolean]
@@ -91,6 +86,23 @@ module LucidShopify
     #
     def failure?
       !success?
+    end
+
+    #
+    # @return [Boolean]
+    #
+    def errors?
+      data_hash.has_key?('errors')
+    end
+
+    #
+    # A string rather than an object is returned by Shopify in the case of,
+    # e.g., 'Not found'.
+    #
+    # @return [Hash, String]
+    #
+    def errors
+      data_hash['errors']
     end
   end
 end

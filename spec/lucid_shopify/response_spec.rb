@@ -13,6 +13,8 @@ module LucidShopify
     it { is_expected.to have_attributes(status_code: status_code) }
     it { is_expected.to have_attributes(headers: headers) }
     it { is_expected.to have_attributes(data: data) }
+    it { is_expected.to have_attributes(errors: nil) }
+    it { is_expected.to have_attributes(errors?: false) }
 
     context 'with non-json content' do
       let(:headers) { {'Content-Type' => 'text/plain'} }
@@ -31,6 +33,8 @@ module LucidShopify
     shared_examples 'status code' do |range, error_class|
       context "when status code is within #{range}" do
         let(:status_code) { rand(range) }
+        let(:headers) { {'Content-Type' => 'application/json'} }
+        let(:data) { '{"errors": "example"}' }
 
         it { is_expected.not_to satisfy('succeed', &:success?) }
         it { is_expected.to satisfy('fail', &:failure?) }
@@ -41,6 +45,9 @@ module LucidShopify
             expect(error.message).to eq("bad response (#{status_code})")
             expect(error.request).to be(request)
             expect(error.response).to be(response)
+            expect(error.response).to have_attributes(data_hash: {'errors' => 'example'})
+            expect(error.response).to have_attributes(errors: 'example')
+            expect(error.response.errors?).to be(true)
           end
         end
       end
