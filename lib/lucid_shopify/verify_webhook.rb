@@ -15,7 +15,7 @@ module LucidShopify
     # @param data [String] the signed request data
     # @param hmac [String] the signature
     #
-    # @return [Result]
+    # @raise [Error] if signature is invalid
     #
     def call(data, hmac)
       digest = OpenSSL::Digest::SHA256.new
