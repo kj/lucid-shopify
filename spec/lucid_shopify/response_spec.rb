@@ -46,7 +46,7 @@ module LucidShopify
             expect(error.request).to be(request)
             expect(error.response).to be(response)
             expect(error.response).to have_attributes(data_hash: {'errors' => 'example'})
-            expect(error.response).to have_attributes(errors: 'example')
+            expect(error.response).to have_attributes(errors: {'resource' => 'example'})
             expect(error.response.errors?).to be(true)
           end
         end

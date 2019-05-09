@@ -97,12 +97,14 @@ module LucidShopify
 
     #
     # A string rather than an object is returned by Shopify in the case of,
-    # e.g., 'Not found'.
+    # e.g., 'Not found'. In this case, we return it under the 'resource' key.
     #
-    # @return [Hash, String]
+    # @return [Hash, nil]
     #
     def errors
-      data_hash['errors']
+      errors = data_hash['errors']
+      return {'resource' => errors} if errors.is_a?(String)
+      errors
     end
   end
 end
