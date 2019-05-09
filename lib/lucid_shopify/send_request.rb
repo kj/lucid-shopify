@@ -44,7 +44,7 @@ module LucidShopify
 
       log_response(req, res)
 
-      res.assert!.data_hash
+      res.assert!
     rescue HTTP::ConnectionError,
            HTTP::ResponseError,
            HTTP::TimeoutError => e

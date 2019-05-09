@@ -25,16 +25,30 @@ module LucidShopify
 
     context 'with json content' do
       let(:headers) { {'Content-Type' => 'application/json'} }
-      let(:data) { '{"example": "data"}' }
+      let(:data) { '{"example":"data"}' }
 
       it { is_expected.to have_attributes(data_hash: {'example' => 'data'}) }
+
+      it 'is enumerable' do
+        expect { |b| response.each(&b) }.to yield_with_args(
+          ['example', 'data']
+        )
+      end
+
+      it 'is like a hash' do
+        expect(response['example']).to eq('data')
+      end
+
+      it 'serialises to JSON' do
+        expect(response.to_json).to eq(data)
+      end
     end
 
     shared_examples 'status code' do |range, error_class|
       context "when status code is within #{range}" do
         let(:status_code) { rand(range) }
         let(:headers) { {'Content-Type' => 'application/json'} }
-        let(:data) { '{"errors": "example"}' }
+        let(:data) { '{"errors":"example"}' }
 
         it { is_expected.not_to satisfy('succeed', &:success?) }
         it { is_expected.to satisfy('fail', &:failure?) }

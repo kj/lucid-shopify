@@ -24,7 +24,12 @@ module LucidShopify
         let(:status_code) { 200 }
 
         it 'returns expected data' do
-          expect(send_request.(request)).to eq(expected_data)
+          response = send_request.(request)
+
+          expect(response.to_h).to eq(expected_data)
+          expected_data.each do |k, v|
+            expect(response[k]).to eq(v)
+          end
         end
       end
 
