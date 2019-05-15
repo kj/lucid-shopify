@@ -22,7 +22,7 @@ module LucidShopify
     # @return [Array<Hash>] response data
     #
     def call(credentials)
-      webhooks = @client.get('webhooks')['webhooks']
+      webhooks = @client.get(credentials, 'webhooks')['webhooks']
 
       webhooks.map do |webhook|
         Thread.new { @delete_webhook.(credentials, webhook['id']) }
