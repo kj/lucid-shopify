@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    lucid_shopify (0.28.0)
+    lucid_shopify (0.28.1)
       dry-container (~> 0.7)
       dry-initializer (~> 3.0)
       http (~> 4.1)
@@ -23,7 +23,7 @@ GEM
     dry-container (0.7.2)
       concurrent-ruby (~> 1.0)
       dry-configurable (~> 0.1, >= 0.1.3)
-    dry-core (0.4.8)
+    dry-core (0.4.9)
       concurrent-ruby (~> 1.0)
     dry-initializer (3.0.1)
     http (4.1.1)

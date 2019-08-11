@@ -46,7 +46,7 @@ module LucidShopify
     #
     # @return [Hash]
     #
-    private def data_hash
+    def data_hash
       return {} unless json?
 
       @data_hash ||= JSON.parse(data)
