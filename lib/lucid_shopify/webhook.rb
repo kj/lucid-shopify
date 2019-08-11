@@ -14,16 +14,46 @@ module LucidShopify
     param :topic
     # @return [String]
     param :data
-    # @return [Hash] the parsed request body
-    param :data_hash, default: -> { parse_data }
 
     #
     # @return [Hash]
     #
-    private def parse_data
-      JSON.parse(data)
+    def data_hash
+      @data_hash ||= JSON.parse(data)
     rescue JSON::ParserError
       {}
+    end
+
+    #
+    # @see Hash#each
+    #
+    def each(&block)
+      data_hash.each(&block)
+    end
+
+    #
+    # @param key [String]
+    #
+    # @return [Object]
+    #
+    def [](key)
+      data_hash[key]
+    end
+
+    alias_method :to_h, :data_hash
+
+    #
+    # @return [Hash]
+    #
+    def as_json(*)
+      to_h
+    end
+
+    #
+    # @return [String]
+    #
+    def to_json(*args)
+      as_json.to_json(*args)
     end
   end
 end

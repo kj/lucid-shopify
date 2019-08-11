@@ -40,16 +40,16 @@ module LucidShopify
     param :headers
     # @return [String]
     param :data
-    # @return [Hash] the parsed response body
-    param :data_hash, default: -> { parse_data }
 
+    #
+    # The parsed response body.
     #
     # @return [Hash]
     #
-    private def parse_data
+    private def data_hash
       return {} unless json?
 
-      JSON.parse(data)
+      @data_hash ||= JSON.parse(data)
     end
 
     #
