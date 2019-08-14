@@ -4,10 +4,16 @@ require 'yaml'
 
 module FixtureHelpers
   class << self
+    #
+    # @param base [Class, Module]
+    #
     def included(base)
       base.extend(ClassMethods)
     end
 
+    #
+    # @return [Hash]
+    #
     def cache
       @cache ||= Hash.new do |h, path|
         raw_data = File.read("#{__dir__}/../fixtures/#{path}")
@@ -34,6 +40,9 @@ module FixtureHelpers
   end
 
   module ClassMethods
+    #
+    # @param paths [Array<String>]
+    #
     def include_fixtures(*paths)
       paths.each do |path|
         define_method(path.split('.').first) do
