@@ -14,20 +14,19 @@ Usage
 
 ### Configure the default API client
 
-    LucidShopify.config = LucidShopify::Config.new(
-      '...', # api_version, e.g. '2019-04'
-      '...', # api_key
-      '...', # shared_secret
-      '...', # scope
-      '...', # callback_uri (for OAuth; unused by this gem)
-      '...', # billing_callback_uri
-      '...', # webhook_uri
+    LucidShopify.configure(
+      api_key: '...',
+      api_version: '...', # e.g. '2019-07'
+      billing_callback_uri: '...',
+      callback_uri: '...', # (for OAuth; unused by this gem)
+      logger: Logger.new(STDOUT),
+      scope: '...',
+      shared_secret: '...',
+      webhook_uri: '...',
     )
 
-For private apps, where these credentials may not be not necessary,
-the default unconfigured behaviour is equivalent to:
-
-    LucidShopify.config = LucidShopify::Config::PRIVATE_APP
+All keys are optional and in some private apps, you may not require
+any configuration at all.
 
 Additionally, each API request requires authorisation:
 
@@ -134,7 +133,9 @@ charge:
 
 Request logging is disabled by default. To enable it:
 
-    LucidShopify.config.logger = Logger.new(STDOUT)
+    LucidShopify.configure(
+      logger: Logger.new(STDOUT),
+    )
 
 
 ### Make throttled API requests

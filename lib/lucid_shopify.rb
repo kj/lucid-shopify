@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'dry/initializer'
+require 'dry/struct'
 
 begin
   require 'redis'
@@ -29,6 +30,7 @@ module LucidShopify
   autoload :Result, 'lucid_shopify/result'
   autoload :SendRequest, 'lucid_shopify/send_request'
   autoload :ThrottledStrategy, 'lucid_shopify/throttled_strategy'
+  autoload :Types, 'lucid_shopify/types'
   autoload :VerifyCallback, 'lucid_shopify/verify_callback'
   autoload :VerifyWebhook, 'lucid_shopify/verify_webhook'
   autoload :VERSION, 'lucid_shopify/version'
