@@ -71,7 +71,7 @@ module LucidShopify
       @logger = new_logger
     end
 
-    PRIVATE_APP = new(ENV.fetch('SHOPIFY_API_VERSION', '2019-04'), '', '', '', '', '', '') # 2019-04 was the first versioned API
+    PRIVATE_APP = new(ENV.fetch('SHOPIFY_API_VERSION', '2019-07'), '', '', '', '', '', '')
   end
 
   self.config = Config::PRIVATE_APP
