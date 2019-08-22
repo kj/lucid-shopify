@@ -25,6 +25,15 @@ Usage
       webhook_uri: '...',
     )
 
+Alternatively load the configuration from a Ruby file. The Ruby
+file is evaluated and should return a hash.
+
+    LucidShopify.configure_from_file('config/shopify.rb') # the default path
+
+When loading from a file, any environment variables matching the
+upcased key with the prefix ‘SHOPIFY_’ will override values in the
+file. For example ‘SHOPIFY_SHARED_SECRET=...’.
+
 All keys are optional and in some private apps, you may not require
 any configuration at all.
 

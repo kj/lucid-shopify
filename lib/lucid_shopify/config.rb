@@ -3,6 +3,7 @@
 require 'logger'
 
 require 'lucid_shopify'
+require 'lucid_utils'
 
 module LucidShopify
   class << self
@@ -16,6 +17,17 @@ module LucidShopify
         **@config.to_h.compact,
         **options,
       )
+    end
+
+    #
+    # @param path [String]
+    #
+    # @return [Config]
+    #
+    def configure_from_file(path = 'config/shopify.rb')
+      options = LucidUtils::ConfigFromFile.new.(path, env_prefix: 'shopify')
+
+      configure(options)
     end
 
     #

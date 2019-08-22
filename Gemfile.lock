@@ -1,11 +1,12 @@
 PATH
   remote: .
   specs:
-    lucid_shopify (0.30.0)
+    lucid_shopify (0.31.0)
       dry-container (~> 0.7)
       dry-initializer (~> 3.0)
       dry-struct (~> 1.0)
       http (~> 4.1)
+      lucid_utils (~> 0.0)
 
 GEM
   remote: https://rubygems.org/
@@ -56,6 +57,7 @@ GEM
     http_parser.rb (0.6.0)
     ice_nine (0.11.2)
     jaro_winkler (1.5.2)
+    lucid_utils (0.0.1)
     parallel (1.17.0)
     parser (2.6.2.1)
       ast (~> 2.4.0)
