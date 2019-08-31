@@ -51,6 +51,12 @@ module LucidShopify
       raise NetworkError.new(e), e.message if attempts.zero?
 
       call(req, attempts: attempts - 1)
+    rescue Response::ClientError => e
+      raise e unless e.response.status_code == 429
+
+      sleep(e.response.headers['Retry-After']&.to_f || 0)
+
+      call(req, attempts: attempts)
     end
 
     #
