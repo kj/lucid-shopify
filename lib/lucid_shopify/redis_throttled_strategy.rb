@@ -32,7 +32,11 @@ if defined?(Redis)
         interval(interval_key)
 
         send_request.().tap do |res|
-          cur, max = res.headers['X-Shopify-Shop-Api-Call-Limit'].split('/')
+          header = res.headers['X-Shopify-Shop-Api-Call-Limit']
+
+          next if header.nil?
+
+          cur, max = header.split('/')
 
           @redis_client.mapped_hmset(interval_key,
             cur: cur,
