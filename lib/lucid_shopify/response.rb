@@ -27,6 +27,7 @@ module LucidShopify
 
     ClientError = Class.new(Error)
     ServerError = Class.new(Error)
+    ShopError = Class.new(Error)
 
     extend Dry::Initializer
 
@@ -65,8 +66,14 @@ module LucidShopify
     # @raise [ClientError] for status 4xx
     # @raise [ServerError] for status 5xx
     #
+    # @note https://help.shopify.com/en/api/getting-started/response-status-codes
+    #
     def assert!
       case status_code
+      when 402
+        raise ShopError.new(request, self), 'Shop is frozen, awaiting payment'
+      when 423
+        raise ShopError.new(request, self), 'Shop is locked'
       when 400..499
         raise ClientError.new(request, self)
       when 500..599
