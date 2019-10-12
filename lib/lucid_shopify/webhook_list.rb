@@ -8,17 +8,13 @@ module LucidShopify
       @webhooks = []
     end
 
-    #
     # @yield [Hash]
-    #
     def each(&block)
       @webhooks.each(&block)
     end
 
-    #
     # @param topic [String]
     # @param fields [String] e.g. 'id,tags'
-    #
     def register(topic, fields: nil)
       @webhooks << {}.tap do |webhook|
         webhook[:topic] = topic

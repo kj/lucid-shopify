@@ -39,19 +39,16 @@ module LucidShopify
   autoload :WebhookList, 'lucid_shopify/webhook_list'
 
   class << self
-    #
     # Webhooks created for each shop.
     #
     # @return [WebhookList]
     #
     # @example
     #   LucidShopify.webhooks.register('orders/create', fields: 'id,tags')
-    #
     def webhooks
       @webhooks ||= WebhookList.new
     end
 
-    #
     # Handlers for webhook topics.
     #
     # @return [WebhookHandlerList]
@@ -63,7 +60,6 @@ module LucidShopify
     #   webhook = Webhook.new(myshopify_domain, topic, data)
     #
     #   LucidShopify.handlers.delegate(webhook)
-    #
     def handlers
       @handlers ||= WebhookHandlerList.new
     end

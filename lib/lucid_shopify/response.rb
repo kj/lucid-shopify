@@ -6,9 +6,7 @@ require 'lucid_shopify'
 
 module LucidShopify
   class Response
-    #
     # @abstract
-    #
     class Error < Error
       extend Dry::Initializer
 
@@ -17,9 +15,7 @@ module LucidShopify
       # @return [Response]
       param :response
 
-      #
       # @return [String]
-      #
       def message
         "bad response (#{response.status_code})"
       end
@@ -42,32 +38,26 @@ module LucidShopify
     # @return [String]
     param :data
 
-    #
     # The parsed response body.
     #
     # @return [Hash]
-    #
     def data_hash
       return {} unless json?
 
       @data_hash ||= JSON.parse(data)
     end
 
-    #
     # @return [Boolean]
-    #
     private def json?
       headers['Content-Type'] =~ /application\/json/ && !data.empty?
     end
 
-    #
     # @return [self]
     #
     # @raise [ClientError] for status 4xx
     # @raise [ServerError] for status 5xx
     #
     # @note https://help.shopify.com/en/api/getting-started/response-status-codes
-    #
     def assert!
       case status_code
       when 402
@@ -83,67 +73,51 @@ module LucidShopify
       self
     end
 
-    #
     # @return [Boolean]
-    #
     def success?
       status_code.between?(200, 299)
     end
 
-    #
     # @return [Boolean]
-    #
     def failure?
       !success?
     end
 
-    #
     # @return [Boolean]
-    #
     def errors?
       data_hash.has_key?('errors')
     end
 
-    #
     # A string rather than an object is returned by Shopify in the case of,
     # e.g., 'Not found'. In this case, we return it under the 'resource' key.
     #
     # @return [Hash, nil]
-    #
     def errors
       errors = data_hash['errors']
       return {'resource' => errors} if errors.is_a?(String)
       errors
     end
 
-    #
     # @see Hash#each
-    #
     def each(&block)
       data_hash.each(&block)
     end
 
-    #
     # @param key [String]
     #
     # @return [Object]
-    #
     def [](key)
       data_hash[key]
     end
 
     alias_method :to_h, :data_hash
 
-    #
     # @return [Hash]
-    #
     def as_json(*)
       to_h
     end
 
-    #
     # @return [String]
-    #
     def to_json(*args)
       as_json.to_json(*args)
     end

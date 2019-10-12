@@ -8,13 +8,11 @@ module LucidShopify
   class VerifyCallback
     Error = Class.new(Error)
 
-    #
     # Verify that the callback request originated from Shopify.
     #
     # @param params [Hash] the request params
     #
     # @raise [Error] if signature is invalid
-    #
     def call(params)
       params = params.to_h.transform_keys(&:to_s)
       digest = OpenSSL::Digest::SHA256.new
@@ -23,11 +21,9 @@ module LucidShopify
       raise Error, 'invalid signature' unless digest == params['hmac']
     end
 
-    #
     # @param params [Hash]
     #
     # @return [String]
-    #
     private def encoded_params(params)
       params.reject do |k, _|
         k == 'hmac'
@@ -40,20 +36,16 @@ module LucidShopify
       end.join('&')
     end
 
-    #
     # @param chr [String]
     #
     # @return [String]
-    #
     private def encode_key(chr)
       {'%' => '%25', '&' => '%26', '=' => '%3D'}[chr] || chr
     end
 
-    #
     # @param chr [String]
     #
     # @return [String]
-    #
     private def encode_val(chr)
       {'%' => '%25', '&' => '%26'}[chr] || chr
     end

@@ -7,11 +7,9 @@ require 'lucid_utils'
 
 module LucidShopify
   class << self
-    #
     # @param options [Hash]
     #
     # @return [Config]
-    #
     def configure(options = {})
       @config = Config.new(
         **@config.to_h.compact,
@@ -19,20 +17,16 @@ module LucidShopify
       )
     end
 
-    #
     # @param path [String]
     #
     # @return [Config]
-    #
     def configure_from_file(path = 'config/shopify.rb')
       options = LucidUtils::ConfigFromFile.new.(path, env_prefix: 'shopify')
 
       configure(options)
     end
 
-    #
     # @return [Config]
-    #
     def config
       @config ||= configure
     end

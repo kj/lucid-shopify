@@ -3,9 +3,7 @@
 require 'lucid_shopify'
 
 module LucidShopify
-  #
   # @abstract
-  #
   class Request
     extend Dry::Initializer
 
@@ -23,9 +21,7 @@ module LucidShopify
     # @return [String]
     param :url, default: -> { build_url }
 
-    #
     # @return [String]
-    #
     private def build_url
       unless path.match?(/oauth/)
         admin_url = "https://#{credentials.myshopify_domain}/admin/api/#{api_version}"
@@ -39,9 +35,7 @@ module LucidShopify
       admin_url + '/' + normalised_path + '.json'
     end
 
-    #
     # @return [Hash]
-    #
     private def build_headers
       access_token = credentials.access_token
 
@@ -51,9 +45,7 @@ module LucidShopify
       end
     end
 
-    #
     # @return [String]
-    #
     private def api_version
       ENV.fetch('SHOPIFY_API_VERSION', LucidShopify.config.api_version)
     end

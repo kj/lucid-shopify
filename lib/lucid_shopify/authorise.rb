@@ -6,14 +6,11 @@ module LucidShopify
   class Authorise
     Error = Class.new(Error)
 
-    #
     # @param client [#post_json]
-    #
     def initialize(client: Container[:client])
       @client = client
     end
 
-    #
     # Exchange an authorisation code for a new Shopify access token.
     #
     # @param myshopify_domain [String]
@@ -22,7 +19,6 @@ module LucidShopify
     # @return [String] the access token
     #
     # @raise [Error] if the response is invalid
-    #
     def call(myshopify_domain, authorisation_code)
       credentials = Credentials.new(myshopify_domain)
 
@@ -34,11 +30,9 @@ module LucidShopify
       data['access_token']
     end
 
-    #
     # @param authorisation_code [String]
     #
     # @return [Hash]
-    #
     private def post_data(authorisation_code)
       {
         client_id: LucidShopify.config.api_key,

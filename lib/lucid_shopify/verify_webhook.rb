@@ -9,14 +9,12 @@ module LucidShopify
   class VerifyWebhook
     Error = Class.new(Error)
 
-    #
     # Verify that the webhook request originated from Shopify.
     #
     # @param data [String] the signed request data
     # @param hmac [String] the signature
     #
     # @raise [Error] if signature is invalid
-    #
     def call(data, hmac)
       digest = OpenSSL::Digest::SHA256.new
       digest = OpenSSL::HMAC.digest(digest, LucidShopify.config.shared_secret, data)
