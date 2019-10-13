@@ -2,7 +2,7 @@
 plus: &plus
   name: plus
   price: 19
-  return_url: <%= LucidShopify.config.billing_callback_uri %>
+  return_url: <%= Lucid::Shopify.config.billing_callback_uri %>
   trial_days: 30
 
 plus accepted:

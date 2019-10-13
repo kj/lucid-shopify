@@ -1,16 +1,16 @@
 ---
 post data:
-  :client_id: <%= LucidShopify.config.api_key %>
-  :client_secret: <%= LucidShopify.config.shared_secret %>
+  :client_id: <%= Lucid::Shopify.config.api_key %>
+  :client_secret: <%= Lucid::Shopify.config.shared_secret %>
   :code: e449ca701e5f96e20718e32a1851c8a2d98cc2da
 
 okay:
   access_token: 751984e8317406f501a9cab82ed2425920f3ec93
-  scope: <%= LucidShopify.config.scope %>
+  scope: <%= Lucid::Shopify.config.scope %>
 
 fail with no access token:
   access_token: null
-  scope: <%= LucidShopify.config.scope %>
+  scope: <%= Lucid::Shopify.config.scope %>
 
 fail with wrong scope:
   access_token: 751984e8317406f501a9cab82ed2425920f3ec93

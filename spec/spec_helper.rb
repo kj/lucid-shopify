@@ -15,9 +15,9 @@ RSpec.configure do |config|
   # config.order = :random # TODO: use order: :defined metadata for specific specs
 end
 
-require 'lucid_shopify'
+require 'lucid-shopify'
 
-LucidShopify.configure(
+Lucid::Shopify.configure(
   api_key: 'fake',
   api_version: 'fake',
   billing_callback_uri: 'fake',

@@ -9,8 +9,8 @@ shopify:
   - id: 1
     topic: 'orders/create'
     fields: 'id,tags'
-    address: '<%= LucidShopify.config.webhook_uri %>'
+    address: '<%= Lucid::Shopify.config.webhook_uri %>'
   - id: 2
     topic: 'orders/update'
     fields: 'id,tags'
-    address: '<%= LucidShopify.config.webhook_uri %>'
+    address: '<%= Lucid::Shopify.config.webhook_uri %>'

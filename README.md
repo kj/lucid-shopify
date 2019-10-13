@@ -1,4 +1,4 @@
-lucid_shopify
+lucid-shopify
 =============
 
 Installation
@@ -6,7 +6,7 @@ Installation
 
 Add the gem to your ‘Gemfile’:
 
-    gem 'lucid_shopify'
+    gem 'lucid-shopify'
 
 
 Usage
@@ -14,7 +14,7 @@ Usage
 
 ### Configure the default API client
 
-    LucidShopify.configure(
+    Lucid::Shopify.configure(
       api_key: '...',
       api_version: '...', # e.g. '2019-07'
       billing_callback_uri: '...',
@@ -28,7 +28,7 @@ Usage
 Alternatively load the configuration from a Ruby file. The Ruby
 file is evaluated and should return a hash.
 
-    LucidShopify.configure_from_file('config/shopify.rb') # the default path
+    Lucid::Shopify.configure_from_file('config/shopify.rb') # the default path
 
 When loading from a file, any environment variables matching the
 upcased key with the prefix ‘SHOPIFY_’ will override values in the
@@ -39,7 +39,7 @@ any configuration at all.
 
 Additionally, each API request requires authorisation:
 
-    credentials = LucidShopify::Credentials.new(
+    credentials = Lucid::Shopify::Credentials.new(
       '...', # myshopify_domain
       '...', # access_token
     )
@@ -52,7 +52,7 @@ This is only useful during the OAuth2 process.
 
 Configure each webhook the app will create (if any):
 
-    webhooks = LucidShopify::Container['webhook_list']
+    webhooks = Lucid::Shopify::Container['webhook_list']
 
     webhooks.register('orders/create', fields: 'id,tags'}
 
@@ -61,7 +61,7 @@ Configure each webhook the app will create (if any):
 
 For each webhook, register one or more handlers:
 
-    handlers = LucidShopify::Container['webhook_handler_list']
+    handlers = Lucid::Shopify::Container['webhook_handler_list']
 
     handlers.register('orders/create', OrdersCreateWebhook.new)
 
@@ -70,7 +70,7 @@ See the inline method documentation for more detail.
 To call/delegate a webhook to its handler for processing, you will likely want
 to create a worker around something like this:
 
-    webhook = LucidShopify::Webhook.new(myshopify_domain, topic, data)
+    webhook = Lucid::Shopify::Webhook.new(myshopify_domain, topic, data)
 
     handlers.delegate(webhook)
 
@@ -79,15 +79,15 @@ to create a worker around something like this:
 
 Create/delete all configured webhooks (see above):
 
-    LucidShopify::CreateAllWebhooks.new.(credentials)
-    LucidShopify::DeleteAllWebhooks.new.(credentials)
+    Lucid::Shopify::CreateAllWebhooks.new.(credentials)
+    Lucid::Shopify::DeleteAllWebhooks.new.(credentials)
 
 Create/delete webhooks manually:
 
     webhook = {topic: 'orders/create', fields: %w(id tags)}
 
-    LucidShopify::CreateWebhook.new.(credentials, webhook)
-    LucidShopify::DeleteWebhook.new.(credentials, webhook_id)
+    Lucid::Shopify::CreateWebhook.new.(credentials, webhook)
+    Lucid::Shopify::DeleteWebhook.new.(credentials, webhook_id)
 
 
 ### Verification
@@ -95,23 +95,23 @@ Create/delete webhooks manually:
 Verify callback requests with the request params:
 
     begin
-      LucidShopify::VerifyCallback.new.(params)
-    rescue LucidShopify::Error => e
+      Lucid::Shopify::VerifyCallback.new.(params)
+    rescue Lucid::Shopify::Error => e
       # ...
     end
 
 Verify webhook requests with the request data and the HMAC header:
 
     begin
-      LucidShopify::VerifyWebhook.new.(data, hmac)
-    rescue LucidShopify::Error => e
+      Lucid::Shopify::VerifyWebhook.new.(data, hmac)
+    rescue Lucid::Shopify::Error => e
       # ...
     end
 
 
 ### Authorisation
 
-    authorise = LucidShopify::Authorise.new
+    authorise = Lucid::Shopify::Authorise.new
 
     access_token = authorise.(credentials, authorisation_code)
 
@@ -120,29 +120,29 @@ Verify webhook requests with the request data and the HMAC header:
 
 Create a new charge:
 
-    create_charge = LucidShopify::CreateCharge.new
+    create_charge = Lucid::Shopify::CreateCharge.new
 
-    charge = create_charge.(credentials, charge) # see LucidShopify::Charge
+    charge = create_charge.(credentials, charge) # see Lucid::Shopify::Charge
 
 Redirect the user to `charge['confirmation_url']`. When the user
 returns (see `config.billing_callback_uri`), activate the accepted
 charge:
 
-    activate_charge = LucidShopify::ActivateCharge.new
+    activate_charge = Lucid::Shopify::ActivateCharge.new
 
     activate_charge.(credentials, accepted_charge)
 
 
 ### Make API requests
 
-    client = LucidShopify::Client.new
+    client = Lucid::Shopify::Client.new
 
     client.get(credentials, 'orders', since_id: since_id)['orders']
     client.post_json(credentials, 'orders', new_order)
 
 Request logging is disabled by default. To enable it:
 
-    LucidShopify.configure(
+    Lucid::Shopify.configure(
       logger: Logger.new(STDOUT),
     )
 
