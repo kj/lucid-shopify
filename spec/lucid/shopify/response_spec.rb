@@ -14,7 +14,7 @@ module Lucid
       it { is_expected.to have_attributes(status_code: status_code) }
       it { is_expected.to have_attributes(headers: headers) }
       it { is_expected.to have_attributes(data: data) }
-      it { is_expected.to have_attributes(errors: nil) }
+      it { is_expected.to have_attributes(errors: {}) }
       it { is_expected.to have_attributes(errors?: false) }
 
       context 'with non-json content' do
