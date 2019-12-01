@@ -57,12 +57,16 @@ module Lucid
           it 'raises an error on #assert!' do
             expect { response.assert! }.to raise_error do |error|
               expect(error).to be_a(error_class)
-              expect(error.message).to eq("bad response (#{status_code})")
+              expect(error.message).to eq("bad response (#{status_code}) 'resource example'")
               expect(error.request).to be(request)
               expect(error.response).to be(response)
               expect(error.response).to have_attributes(data_hash: {'errors' => 'example'})
               expect(error.response).to have_attributes(errors: {'resource' => 'example'})
+              expect(error.response).to have_attributes(error_messages: ['resource example'])
               expect(error.response.errors?).to be(true)
+              expect(error.response.error_message?(['resource example'])).to be(true)
+              expect(error.response.error_message?(['example'])).to be(false)
+              expect(error.response.error_message?(['not a message'])).to be(false)
             end
           end
         end

@@ -18,7 +18,11 @@ module Lucid
 
         # @return [String]
         def message
-          "bad response (#{response.status_code})"
+          if response.errors?
+            "bad response (#{response.status_code}) '#{response.error_messages.first}'"
+          else
+            "bad response (#{response.status_code})"
+          end
         end
       end
 
@@ -86,7 +90,7 @@ module Lucid
 
       # @return [Boolean]
       def errors?
-        data_hash.has_key?('errors')
+        data_hash.has_key?('errors') # should be only on 422
       end
 
       # A string rather than an object is returned by Shopify in the case of,
@@ -103,6 +107,13 @@ module Lucid
       # @return [Array<String>]
       def error_messages
         errors.map { |field, message| "#{field} #{message}" }
+      end
+
+      # @param messages [Array<String>]
+      #
+      # @return [Boolean]
+      def error_message?(messages)
+        messages.any? { |message| error_messages.include?(message) }
       end
 
       # @see Hash#each

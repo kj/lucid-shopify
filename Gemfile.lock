@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    lucid-shopify (0.35.0)
+    lucid-shopify (0.36.0)
       dry-container (~> 0.7)
       dry-initializer (~> 3.0)
       dry-struct (~> 1.0)

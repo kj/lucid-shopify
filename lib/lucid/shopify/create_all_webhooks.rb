@@ -10,8 +10,7 @@ module Lucid
         @create_webhook = create_webhook
       end
 
-      # Create all webhooks for the shop. Shopify ignores any webhooks which
-      # already exist remotely.
+      # Create all webhooks for the shop.
       #
       # @param credentials [Credentials]
       # @param webhooks [WebhookList]
