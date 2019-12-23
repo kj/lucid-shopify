@@ -50,6 +50,13 @@ module Lucid
         self.class.new(**@params, throttling: false)
       end
 
+      # @param credentials [Credentials]
+      #
+      # @return [AuthenticatedClient]
+      def authenticate(credentials)
+        AuthenticatedClient.new(self, credentials)
+      end
+
       # @see DeleteRequest#initialize
       def delete(*args)
         send_request.(DeleteRequest.new(*args))
@@ -68,6 +75,23 @@ module Lucid
       # @see PutRequest#initialize
       def put_json(*args)
         send_request.(PutRequest.new(*args))
+      end
+    end
+
+    class AuthenticatedClient
+      # @private
+      #
+      # @param client [Client]
+      # @param credentials [Credentials]
+      def initialize(client, credentials)
+        @client = client
+        @credentials = credentials
+      end
+
+      %i[delete get post_json put_json].each do |method|
+        define_method(method) do |*args|
+          @client.__send__(method, @credentials, *args)
+        end
       end
     end
   end
