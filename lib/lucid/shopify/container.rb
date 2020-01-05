@@ -4,7 +4,6 @@ require 'dry/container'
 require 'http'
 
 require 'lucid/shopify'
-require 'lucid/shopify/config'
 
 module Lucid
   module Shopify

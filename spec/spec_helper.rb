@@ -17,12 +17,12 @@ end
 
 require 'lucid-shopify'
 
-Lucid::Shopify.configure(
-  api_key: 'fake',
-  api_version: 'fake',
-  billing_callback_uri: 'fake',
-  callback_uri: 'fake',
-  scope: 'fake',
-  shared_secret: 'fake',
-  webhook_uri: 'fake',
-)
+Lucid::Shopify.configure do |config|
+  config.api_key = 'fake'
+  config.api_version = 'fake'
+  config.billing_callback_uri = 'fake'
+  config.callback_uri = 'fake'
+  config.scope = 'fake'
+  config.shared_secret = 'fake'
+  config.webhook_uri = 'fake'
+end

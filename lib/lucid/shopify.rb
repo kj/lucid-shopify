@@ -39,6 +39,17 @@ module Lucid
     autoload :WebhookHandlerList, 'lucid/shopify/webhook_handler_list'
     autoload :WebhookList, 'lucid/shopify/webhook_list'
 
+    extend Dry::Configurable
+
+    setting :api_key
+    setting :api_version, '2019-07'
+    setting :billing_callback_uri
+    setting :callback_uri
+    setting :logger, Logger.new(File::NULL).freeze
+    setting :scope
+    setting :shared_secret
+    setting :webhook_uri
+
     class << self
       # Webhooks created for each shop.
       #
@@ -67,5 +78,3 @@ module Lucid
     end
   end
 end
-
-require 'lucid/shopify/config'

@@ -14,28 +14,19 @@ Usage
 
 ### Configure the default API client
 
-    Lucid::Shopify.configure(
-      api_key: '...',
-      api_version: '...', # e.g. '2019-07'
-      billing_callback_uri: '...',
-      callback_uri: '...', # (for OAuth; unused by this gem)
-      logger: Logger.new(STDOUT),
-      scope: '...',
-      shared_secret: '...',
-      webhook_uri: '...',
-    )
+    Lucid::Shopify.configure do |config|
+      config.api_key = '...'
+      config.api_version = '...' # e.g. '2019-07'
+      config.billing_callback_uri = '...'
+      config.callback_uri = '...' # (for OAuth; unused by this gem)
+      config.logger = Logger.new(STDOUT)
+      config.scope = '...'
+      config.shared_secret = '...'
+      config.webhook_uri = '...'
+    end
 
-Alternatively load the configuration from a Ruby file. The Ruby
-file is evaluated and should return a hash.
-
-    Lucid::Shopify.configure_from_file('config/shopify.rb') # the default path
-
-When loading from a file, any environment variables matching the
-upcased key with the prefix ‘SHOPIFY_’ will override values in the
-file. For example ‘SHOPIFY_SHARED_SECRET=...’.
-
-All keys are optional and in some private apps, you may not require
-any configuration at all.
+All settings are optional and in some private apps, you may not
+require any configuration at all.
 
 Additionally, each API request requires authorisation:
 
@@ -142,9 +133,7 @@ charge:
 
 Request logging is disabled by default. To enable it:
 
-    Lucid::Shopify.configure(
-      logger: Logger.new(STDOUT),
-    )
+    Lucid::Shopify.config.logger = Logger.new(STDOUT)
 
 
 ### Make throttled API requests
