@@ -19,6 +19,7 @@ module Lucid
     Container.register(:delete_all_webhooks) { DeleteAllWebhooks.new }
     Container.register(:delete_webhook) { DeleteWebhook.new }
     Container.register(:http) { ::HTTP::Client.new }
+    Container.register(:parse_link_header) { ParseLinkHeader.new }
     Container.register(:send_request) { SendRequest.new }
     Container.register(:send_throttled_request) do
       if defined?(Redis)

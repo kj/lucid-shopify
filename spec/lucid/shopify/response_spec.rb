@@ -85,6 +85,9 @@ module Lucid
           expect(response.assert!).to be(response)
         end
       end
+
+      # TODO: #next
+      # TODO: #previous
     end
   end
 end

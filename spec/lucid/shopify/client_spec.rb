@@ -22,25 +22,25 @@ module Lucid
       end
 
       it 'sends a delete request' do
-        expect(send_request).to receive(:call).with(instance_of(DeleteRequest))
+        expect(send_throttled_request).to receive(:call).with(instance_of(DeleteRequest))
 
         client.delete(credentials, 'example/path')
       end
 
       it 'sends a get request' do
-        expect(send_request).to receive(:call).with(instance_of(GetRequest))
+        expect(send_throttled_request).to receive(:call).with(instance_of(GetRequest))
 
         client.get(credentials, 'example/path', {})
       end
 
       it 'sends a post request' do
-        expect(send_request).to receive(:call).with(instance_of(PostRequest))
+        expect(send_throttled_request).to receive(:call).with(instance_of(PostRequest))
 
         client.post_json(credentials, 'example/path', example: 'data')
       end
 
       it 'sends a put request' do
-        expect(send_request).to receive(:call).with(instance_of(PutRequest))
+        expect(send_throttled_request).to receive(:call).with(instance_of(PutRequest))
 
         client.put_json(credentials, 'example/path', example: 'data')
       end

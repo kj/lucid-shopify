@@ -16,7 +16,7 @@ Usage
 
     Lucid::Shopify.configure do |config|
       config.api_key = '...'
-      config.api_version = '...' # e.g. '2019-07'
+      config.api_version = '...' # e.g. '2020-01'
       config.billing_callback_uri = '...'
       config.callback_uri = '...' # (for OAuth; unused by this gem)
       config.logger = Logger.new(STDOUT)
@@ -135,11 +135,26 @@ Request logging is disabled by default. To enable it:
 
     Lucid::Shopify.config.logger = Logger.new(STDOUT)
 
+Request throttling is enabled by default. If you're using Redis, throttling
+will automatically make use of it; otherwise, throttling will only be
+maintained across a single thread.
 
-### Make throttled API requests
 
-    client.throttled.get(credentials, 'orders')
-    client.throttled.post_json(credentials, 'orders', new_order)
+### Make unthrottled API requests
 
-Note that throttling currently uses a naive implementation that is
-only maintained across a single thread.
+    client.unthrottled.get(credentials, 'orders')
+    client.unthrottled.post_json(credentials, 'orders', new_order)
+
+
+### Pagination
+
+Since API version 2019-07, Shopify has encouraged a new method for
+pagination based on the Link header. When you make a GET request,
+you can request the next or the previous page directly from the
+response object.
+
+    page_1 = client.get(credentials, 'orders')
+    page_2 = page_1.next
+    page_1 = page_2.previous
+
+When no page is available, `nil` will be returned.

@@ -2,6 +2,8 @@
 
 module Lucid
   module Shopify
-    VERSION = '0.40.0'
+    RSpec.describe ParseLinkHeader do
+      # TODO
+    end
   end
 end

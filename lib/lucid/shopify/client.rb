@@ -9,9 +9,10 @@ module Lucid
     class Client
       # @param send_request [#call]
       # @param send_throttled_request [#call]
+      # @param throttling [Boolean]
       def initialize(send_request: Container[:send_request],
                      send_throttled_request: Container[:send_throttled_request],
-                     throttling: false)
+                     throttling: true)
         @send_request = send_request
         @send_throttled_request = send_throttled_request
         @throttling = throttling

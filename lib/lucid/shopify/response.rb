@@ -43,6 +43,42 @@ module Lucid
       # @return [String]
       param :data
 
+      # @return [Hash]
+      param :link, default: -> { build_link }
+
+      # @return [Hash]
+      def build_link
+        Container[:parse_link_header].(headers['Link'])
+      end
+
+      # Request the next page of a GET request, if any.
+      #
+      # @param client [Client]
+      #
+      # @return [Response, nil]
+      def next(client: Container[:client], limit: nil)
+        return nil unless link[:next]
+
+        limit = limit ||
+                request.options.dig(:params, :limit) ||
+                link[:next][:limit]
+        client.get(request.credentials, request.path, {**link[:next], limit: limit})
+      end
+
+      # Request the previous page of a GET request, if any.
+      #
+      # @param client [Client]
+      #
+      # @return [Response, nil]
+      def previous(client: Container[:client], limit: nil)
+        return nil unless link[:previous]
+
+        limit = limit ||
+                request.options.dig(:params, :limit) ||
+                link[:previous][:limit]
+        client.get(request.credentials, request.path, {**link[:previous], limit: limit})
+      end
+
       # The parsed response body.
       #
       # @return [Hash]

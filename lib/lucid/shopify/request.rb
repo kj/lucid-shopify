@@ -13,7 +13,7 @@ module Lucid
       # @return [Symbol]
       param :http_method
       # @return [String] the endpoint relative to the base URL
-      param :path, reader: :private
+      param :path
       # @return [Hash]
       param :options, default: -> { {} }
 

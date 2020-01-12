@@ -23,6 +23,7 @@ module Lucid
     autoload :DeleteWebhook, 'lucid/shopify/delete_webhook'
     autoload :Error, 'lucid/shopify/error'
     autoload :GetRequest, 'lucid/shopify/get_request'
+    autoload :ParseLinkHeader, 'lucid/shopify/parse_link_header'
     autoload :PostRequest, 'lucid/shopify/post_request'
     autoload :PutRequest, 'lucid/shopify/put_request'
     autoload :RedisThrottledStrategy, 'lucid/shopify/redis_throttled_strategy'
@@ -42,7 +43,7 @@ module Lucid
     extend Dry::Configurable
 
     setting :api_key
-    setting :api_version, '2019-07'
+    setting :api_version, '2020-01'
     setting :billing_callback_uri
     setting :callback_uri
     setting :logger, Logger.new(File::NULL).freeze
