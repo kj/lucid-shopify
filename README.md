@@ -30,7 +30,7 @@ Add the gem to your ‘Gemfile’:
 Setup
 -----
 
-### Configure the default API client
+### Configure the API client
 
     Lucid::Shopify.configure do |config|
       config.api_key = '...'
