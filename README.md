@@ -1,6 +1,24 @@
 lucid-shopify
 =============
 
+1. [Installation](#installation)
+2. [Setup](#setup)
+    * [Configure the API client](#configure-the-api-client)
+3. [Webhooks](#webhooks)
+    * [Configure webhooks](#configure-webhooks)
+    * [Register webhook handlers](#register-webhook-handlers)
+    * [Create and delete webhooks](#create-and-delete-webhooks)
+4. [Verification](#verification)
+    * [Verify callbacks](#verify-callbacks)
+    * [Verify webhooks](#verify-webhooks)
+5. [Authorisation](#authorisation)
+6. [Billing](#billing)
+7. [Calling the API](#calling-the-api)
+    * [Make API requests](#make-api-requests)
+    * [Make unthrottled API requests](#make-unthrottled-api-requests)
+    * [Pagination](#pagination)
+
+
 Installation
 ------------
 
@@ -9,7 +27,7 @@ Add the gem to your ‘Gemfile’:
     gem 'lucid-shopify'
 
 
-Usage
+Setup
 -----
 
 ### Configure the default API client
@@ -38,6 +56,9 @@ Additionally, each API request requires authorisation:
 If the access token is omitted, the request will be unauthorised.
 This is only useful during the OAuth2 process.
 
+
+Webhooks
+--------
 
 ### Configure webhooks
 
@@ -81,7 +102,10 @@ Create/delete webhooks manually:
     Lucid::Shopify::DeleteWebhook.new.(credentials, webhook_id)
 
 
-### Verification
+Verification
+------------
+
+### Verify callbacks
 
 Verify callback requests with the request params:
 
@@ -90,6 +114,9 @@ Verify callback requests with the request params:
     rescue Lucid::Shopify::Error => e
       # ...
     end
+
+
+### Verify webhooks
 
 Verify webhook requests with the request data and the HMAC header:
 
@@ -100,14 +127,16 @@ Verify webhook requests with the request data and the HMAC header:
     end
 
 
-### Authorisation
+Authorisation
+-------------
 
     authorise = Lucid::Shopify::Authorise.new
 
     access_token = authorise.(credentials, authorisation_code)
 
 
-### Billing
+Billing
+-------
 
 Create a new charge:
 
@@ -123,6 +152,9 @@ charge:
 
     activate_charge.(credentials, accepted_charge)
 
+
+Calling the API
+---------------
 
 ### Make API requests
 
