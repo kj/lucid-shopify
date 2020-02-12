@@ -43,8 +43,8 @@ Setup
       config.webhook_uri = '...'
     end
 
-All settings are optional and in some private apps, you may not
-require any configuration at all.
+All settings are optional and in some private apps, you may not require any
+configuration at all.
 
 Additionally, each API request requires authorisation:
 
@@ -53,8 +53,8 @@ Additionally, each API request requires authorisation:
       '...', # access_token
     )
 
-If the access token is omitted, the request will be unauthorised.
-This is only useful during the OAuth2 process.
+If the access token is omitted, the request will be unauthorised.  This is only
+useful during the OAuth2 process.
 
 
 Calling the API
@@ -71,9 +71,9 @@ Request logging is disabled by default. To enable it:
 
     Lucid::Shopify.config.logger = Logger.new(STDOUT)
 
-Request throttling is enabled by default. If you're using Redis, throttling
-will automatically make use of it; otherwise, throttling will only be
-maintained across a single thread.
+Request throttling is enabled by default. If you're using Redis, throttling will
+automatically make use of it; otherwise, throttling will only be maintained
+across a single thread.
 
 
 ### Make unthrottled API requests
@@ -84,10 +84,9 @@ maintained across a single thread.
 
 ### Pagination
 
-Since API version 2019-07, Shopify has encouraged a new method for
-pagination based on the Link header. When you make a GET request,
-you can request the next or the previous page directly from the
-response object.
+Since API version 2019-07, Shopify has encouraged a new method for pagination
+based on the Link header. When you make a GET request, you can request the next
+or the previous page directly from the response object.
 
     page_1 = client.get(credentials, 'orders')
     page_2 = page_1.next
@@ -113,9 +112,8 @@ Create a new charge:
 
     charge = create_charge.(credentials, charge) # see Lucid::Shopify::Charge
 
-Redirect the user to `charge['confirmation_url']`. When the user
-returns (see `config.billing_callback_uri`), activate the accepted
-charge:
+Redirect the user to `charge['confirmation_url']`. When the user returns (see
+`config.billing_callback_uri`), activate the accepted charge:
 
     activate_charge = Lucid::Shopify::ActivateCharge.new
 
