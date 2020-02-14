@@ -39,6 +39,12 @@ module Lucid
         client.post_json(credentials, 'example/path', example: 'data')
       end
 
+      it 'sends a graphql post request' do
+        expect(send_throttled_request).to receive(:call).with(instance_of(PostGraphQLRequest))
+
+        client.post_graphql(credentials, '{}', {})
+      end
+
       it 'sends a put request' do
         expect(send_throttled_request).to receive(:call).with(instance_of(PutRequest))
 

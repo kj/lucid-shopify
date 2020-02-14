@@ -126,7 +126,16 @@ module Lucid
 
       # @return [Boolean]
       def errors?
+        return user_errors? if user_errors?
+
         data_hash.has_key?('errors') # should be only on 422
+      end
+
+      # GraphQL user errors.
+      #
+      # @return [Boolean]
+      private def user_errors?
+        !!data_hash.dig('data', 'userErrors')
       end
 
       # A string rather than an object is returned by Shopify in the case of,
@@ -135,9 +144,30 @@ module Lucid
       # @return [Hash]
       def errors
         errors = data_hash['errors']
+        errors = case
+        when errors.nil?
+          {}
+        when errors.is_a?(String)
+          {'resource' => errors}
+        else
+          errors
+        end
+
+        errors.merge(user_errors)
+      end
+
+      # GraphQL user errors.
+      #
+      # @return [Hash]
+      private def user_errors
+        errors = data_hash.dig('data', 'userErrors')
         return {} if errors.nil?
-        return {'resource' => errors} if errors.is_a?(String)
-        errors
+        errors.map do |error|
+          [
+            error['field'],
+            error['message'],
+          ]
+        end.to_h
       end
 
       # @return [Array<String>]

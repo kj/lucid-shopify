@@ -86,6 +86,14 @@ module Lucid
         end
       end
 
+      context 'with graphql user errors' do
+        let(:headers) { {'Content-Type' => 'application/json'} }
+        let(:data) { '{"data":{"userErrors":[{"field":"example","message":"example"}]}}' }
+
+        it { is_expected.to have_attributes(errors?: true) }
+        it { is_expected.to have_attributes(errors: {'example' => 'example'}) }
+      end
+
       # TODO: #next
       # TODO: #previous
     end

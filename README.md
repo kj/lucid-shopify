@@ -66,6 +66,18 @@ Calling the API
 
     client.get(credentials, 'orders', since_id: since_id)['orders']
     client.post_json(credentials, 'orders', new_order)
+    client.post_graphql(credentials, <<~QUERY)['data']['orders']
+      {
+        orders {
+          edges {
+            node {
+              id
+              tags
+            }
+          }
+        }
+      }
+    QUERY
 
 Request logging is disabled by default. To enable it:
 

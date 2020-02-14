@@ -25,6 +25,7 @@ module Lucid
     autoload :GetRequest, 'lucid/shopify/get_request'
     autoload :ParseLinkHeader, 'lucid/shopify/parse_link_header'
     autoload :PostRequest, 'lucid/shopify/post_request'
+    autoload :PostGraphQLRequest, 'lucid/shopify/post_graphql_request'
     autoload :PutRequest, 'lucid/shopify/put_request'
     autoload :RedisThrottledStrategy, 'lucid/shopify/redis_throttled_strategy'
     autoload :Request, 'lucid/shopify/request'
