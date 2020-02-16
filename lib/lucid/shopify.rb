@@ -53,6 +53,13 @@ module Lucid
     setting :webhook_uri
 
     class << self
+      # @param version [String]
+      #
+      # @raise [RuntimeError]
+      def assert_api_version!(version)
+        raise "requires API version >= #{version}" if config.api_version < version
+      end
+
       # Webhooks created for each shop.
       #
       # @return [WebhookList]

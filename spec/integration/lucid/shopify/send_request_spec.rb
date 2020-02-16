@@ -9,6 +9,14 @@ module Lucid
     RSpec.describe SendRequest do
       subject(:send_request) { SendRequest.new }
 
+      before(:all) do
+        Shopify.config.logger = Logger.new(STDOUT)
+      end
+
+      after(:all) do
+        Shopify.config.logger = Logger.new(File::NULL)
+      end
+
       context 'requesting shop data' do
         let(:request) { GetRequest.new(credentials_authenticated, 'shop') }
 

@@ -19,7 +19,6 @@ require 'lucid-shopify'
 
 Lucid::Shopify.configure do |config|
   config.api_key = 'fake'
-  config.api_version = 'fake'
   config.billing_callback_uri = 'fake'
   config.callback_uri = 'fake'
   config.scope = 'fake'

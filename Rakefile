@@ -22,7 +22,7 @@ task :test_integration do
 
   exit 1 if missing_env.any?
 
-  system 'bundle exec rspec -r./spec/spec_helper spec/integration/lucid/shopify'
+  system 'bundle exec rspec -r./spec/spec_helper spec/integration/lucid -f documentation'
 end
 
 task :test do

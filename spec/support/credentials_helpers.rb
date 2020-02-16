@@ -18,8 +18,8 @@ module CredentialsHelpers
     ENV.fetch('SHOPIFY_MYSHOPIFY_DOMAIN', 'example.myshopify.com')
   end
 
-  # For integration specs, set SHOPIFY_ACCESS_TOKEN to a private app password.
+  # For integration specs, set SHOPIFY_PASSWORD to a private app password.
   def access_token
-    ENV.fetch('SHOPIFY_PASSWORD', 'access_token')
+    ENV.fetch('SHOPIFY_PASSWORD', 'example')
   end
 end

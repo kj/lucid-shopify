@@ -111,6 +111,11 @@ module Lucid
           raise ServerError.new(request, self)
         end
 
+        # GraphQL always has status 200.
+        if request.is_a?(PostGraphQLRequest) && errors?
+          raise ClientError.new(request, self)
+        end
+
         self
       end
 
@@ -135,7 +140,9 @@ module Lucid
       #
       # @return [Boolean]
       private def user_errors?
-        !!data_hash.dig('data', 'userErrors')
+        errors = data_hash.dig('data', 'userErrors')
+
+        !errors.nil? && !errors.empty?
       end
 
       # A string rather than an object is returned by Shopify in the case of,
@@ -161,7 +168,7 @@ module Lucid
       # @return [Hash]
       private def user_errors
         errors = data_hash.dig('data', 'userErrors')
-        return {} if errors.nil?
+        return {} if errors.nil? || errors.empty?
         errors.map do |error|
           [
             error['field'],

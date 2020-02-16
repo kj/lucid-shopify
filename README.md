@@ -94,6 +94,29 @@ across a single thread.
     client.unthrottled.post_json(credentials, 'orders', new_order)
 
 
+### Make bulk API requests
+
+Since API version 2019-10, Shopify has offered an API for bulk requests (using
+the GraphQL API). The gem wraps this API, by writing the result to a temporary
+file and yielding each line of the result to limit memory usage.
+
+    bulk_request.(client, credentials, <<~QUERY) do |product|
+      {
+        products {
+          edges {
+            node {
+              id
+              title
+            }
+          }
+        }
+      }
+    QUERY
+      puts product['id']
+      puts product['title']
+    end
+
+
 ### Pagination
 
 Since API version 2019-07, Shopify has encouraged a new method for pagination
