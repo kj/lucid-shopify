@@ -101,6 +101,8 @@ Since API version 2019-10, Shopify has offered an API for bulk requests (using
 the GraphQL API). The gem wraps this API, by writing the result to a temporary
 file and yielding each line of the result to limit memory usage.
 
+    bulk_request = Lucid::Shopify::BulkRequest.new
+
     bulk_request.(client, credentials, <<~QUERY) do |product|
       {
         products {
