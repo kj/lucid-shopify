@@ -7,17 +7,21 @@ require 'lucid/shopify/container'
 module Lucid
   module Shopify
     class Client
+      # @param bulk_request [#call]
       # @param send_request [#call]
       # @param send_throttled_request [#call]
       # @param throttling [Boolean]
-      def initialize(send_request: Container[:send_request],
+      def initialize(bulk_request: Container[:bulk_request],
+                     send_request: Container[:send_request],
                      send_throttled_request: Container[:send_throttled_request],
                      throttling: true)
+        @bulk_request = bulk_request
         @send_request = send_request
         @send_throttled_request = send_throttled_request
         @throttling = throttling
 
         @params = {
+          bulk_request: @bulk_request,
           send_request: @send_request,
           send_throttled_request: @send_throttled_request
         }
@@ -56,6 +60,11 @@ module Lucid
       # @return [AuthenticatedClient]
       def authenticate(credentials)
         AuthenticatedClient.new(self, credentials)
+      end
+
+      # @see BulkRequest#call
+      def bulk(*args, &block)
+        @bulk_request.(self, *args, &block)
       end
 
       # @see DeleteRequest#initialize
