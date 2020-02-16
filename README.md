@@ -7,6 +7,7 @@ lucid-shopify
 3. [Calling the API](#calling-the-api)
     * [Make API requests](#make-api-requests)
     * [Make unthrottled API requests](#make-unthrottled-api-requests)
+    * [Make bulk API requests](#make-bulk-api-requests)
     * [Pagination](#pagination)
 4. [Authorisation](#authorisation)
 5. [Billing](#billing)
