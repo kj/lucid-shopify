@@ -131,7 +131,7 @@ module Lucid
 
       # @return [Boolean]
       def errors?
-        return user_errors? if user_errors?
+        return true if user_errors?
 
         data_hash.has_key?('errors') # should be only on 422
       end
@@ -140,9 +140,27 @@ module Lucid
       #
       # @return [Boolean]
       private def user_errors?
-        errors = data_hash.dig('data', 'userErrors')
+        errors = find_user_errors
 
         !errors.nil? && !errors.empty?
+      end
+
+      # GraphQL user errors (find recursively).
+      #
+      # @param hash [Hash]
+      #
+      # @return [Array, nil]
+      private def find_user_errors(hash = data_hash)
+        return nil unless request.is_a?(PostGraphQLRequest)
+
+        hash.each do |k, v|
+          return v if k == 'userErrors'
+          if v.is_a?(Hash)
+            errors = find_user_errors(v)
+            return errors if errors
+          end
+        end
+        nil
       end
 
       # A string rather than an object is returned by Shopify in the case of,
@@ -167,11 +185,11 @@ module Lucid
       #
       # @return [Hash]
       private def user_errors
-        errors = data_hash.dig('data', 'userErrors')
+        errors = find_user_errors
         return {} if errors.nil? || errors.empty?
         errors.map do |error|
           [
-            error['field'],
+            error['field'].join('.'),
             error['message'],
           ]
         end.to_h
