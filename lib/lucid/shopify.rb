@@ -12,6 +12,7 @@ module Lucid
   module Shopify
     autoload :ActivateCharge, 'lucid/shopify/activate_charge'
     autoload :Authorise, 'lucid/shopify/authorise'
+    autoload :BulkRequest, 'lucid/shopify/bulk_request'
     autoload :Client, 'lucid/shopify/client'
     autoload :Container, 'lucid/shopify/container'
     autoload :CreateAllWebhooks, 'lucid/shopify/create_all_webhooks'
