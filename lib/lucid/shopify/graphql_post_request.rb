@@ -4,7 +4,7 @@ require 'lucid/shopify'
 
 module Lucid
   module Shopify
-    class PostGraphQLRequest < Request
+    class GraphQLPostRequest < Request
       # @private
       #
       # @param credentials [Credentials]

@@ -57,7 +57,7 @@ module Lucid
           it 'raises an error on #assert!' do
             expect { response.assert! }.to raise_error do |error|
               expect(error).to be_a(error_class)
-              expect(error.message).to eq("bad response (#{status_code}) 'resource example'")
+              expect(error.message).to eq("bad response (#{status_code}): resource example")
               expect(error.request).to be(request)
               expect(error.response).to be(response)
               expect(error.response).to have_attributes(data_hash: {'errors' => 'example'})
@@ -87,11 +87,12 @@ module Lucid
       end
 
       context 'with graphql user errors' do
+        let(:request) { GraphQLPostRequest.new(credentials, '{}') }
         let(:headers) { {'Content-Type' => 'application/json'} }
-        let(:data) { '{"data":{"userErrors":[{"field":"example","message":"example"}]}}' }
+        let(:data) { '{"data":{"userErrors":[{"field":["path","to","example"],"message":"example"}]}}' }
 
-        it { is_expected.to have_attributes(errors?: true) }
-        it { is_expected.to have_attributes(errors: {'example' => 'example'}) }
+        it { is_expected.to have_attributes(user_errors?: true) }
+        it { is_expected.to have_attributes(user_errors: {'path.to.example' => 'example'}) }
       end
 
       # TODO: #next

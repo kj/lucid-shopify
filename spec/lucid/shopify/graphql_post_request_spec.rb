@@ -4,8 +4,8 @@ require_relative 'request_shared_examples'
 
 module Lucid
   module Shopify
-    RSpec.describe PostGraphQLRequest do
-      subject(:request) { PostGraphQLRequest.new(credentials, '{}', {}) }
+    RSpec.describe GraphQLPostRequest do
+      subject(:request) { GraphQLPostRequest.new(credentials, '{}', {}) }
 
       it_behaves_like 'request' do
         let(:path) { 'graphql' }

@@ -2,6 +2,6 @@
 
 module Lucid
   module Shopify
-    VERSION = '0.50.2'
+    VERSION = '0.51.0'
   end
 end

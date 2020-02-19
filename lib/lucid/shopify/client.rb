@@ -2,7 +2,7 @@
 
 require 'lucid/shopify/container'
 
-%w[delete get post post_graphql put].each { |m| require "lucid/shopify/#{m}_request" }
+%w[delete get post graphql_post put].each { |m| require "lucid/shopify/#{m}_request" }
 
 module Lucid
   module Shopify
@@ -77,9 +77,9 @@ module Lucid
         send_request.(GetRequest.new(*args))
       end
 
-      # @see PostGraphQLRequest#initialize
+      # @see GraphQLPostRequest#initialize
       def post_graphql(*args)
-        send_request.(PostGraphQLRequest.new(*args))
+        send_request.(GraphQLPostRequest.new(*args))
       end
 
       # @see PostRequest#initialize

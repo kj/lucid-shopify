@@ -19,7 +19,7 @@ module Lucid
         # @return [String]
         def message
           if response.errors?
-            "bad response (#{response.status_code}) '#{response.error_messages.first}'"
+            "bad response (#{response.status_code}): #{response.error_messages.first}"
           else
             "bad response (#{response.status_code})"
           end
@@ -29,6 +29,19 @@ module Lucid
       ClientError = Class.new(Error)
       ServerError = Class.new(Error)
       ShopError = Class.new(Error)
+
+      class GraphQLClientError < ClientError
+        def message
+          case
+          when response.errors?
+            "bad response: #{response.error_messages.first}"
+          when response.user_errors?
+            "bad response: #{response.user_error_messages.first}"
+          else
+            "bad response"
+          end
+        end
+      end
 
       extend Dry::Initializer
 
@@ -112,8 +125,8 @@ module Lucid
         end
 
         # GraphQL always has status 200.
-        if request.is_a?(PostGraphQLRequest) && errors?
-          raise ClientError.new(request, self)
+        if request.is_a?(GraphQLPostRequest) && (errors? || user_errors?)
+          raise GraphQLClientError.new(request, self)
         end
 
         self
@@ -131,15 +144,13 @@ module Lucid
 
       # @return [Boolean]
       def errors?
-        return true if user_errors?
-
         data_hash.has_key?('errors') # should be only on 422
       end
 
       # GraphQL user errors.
       #
       # @return [Boolean]
-      private def user_errors?
+      def user_errors?
         errors = find_user_errors
 
         !errors.nil? && !errors.empty?
@@ -151,7 +162,7 @@ module Lucid
       #
       # @return [Array, nil]
       private def find_user_errors(hash = data_hash)
-        return nil unless request.is_a?(PostGraphQLRequest)
+        return nil unless request.is_a?(GraphQLPostRequest)
 
         hash.each do |k, v|
           return v if k == 'userErrors'
@@ -169,7 +180,7 @@ module Lucid
       # @return [Hash]
       def errors
         errors = data_hash['errors']
-        errors = case
+        case
         when errors.nil?
           {}
         when errors.is_a?(String)
@@ -177,14 +188,12 @@ module Lucid
         else
           errors
         end
-
-        errors.merge(user_errors)
       end
 
       # GraphQL user errors.
       #
       # @return [Hash]
-      private def user_errors
+      def user_errors
         errors = find_user_errors
         return {} if errors.nil? || errors.empty?
         errors.map do |error|
@@ -197,7 +206,16 @@ module Lucid
 
       # @return [Array<String>]
       def error_messages
-        errors.map { |field, message| "#{field} #{message}" }
+        errors.map do |field, message|
+          "#{field} #{message}"
+        end
+      end
+
+      # @return [Array<String>]
+      def user_error_messages
+        user_errors.map do |field, message|
+          "#{message} [#{field}]"
+        end
       end
 
       # @param messages [Array<String>]

@@ -40,7 +40,7 @@ module Lucid
       end
 
       it 'sends a graphql post request' do
-        expect(send_throttled_request).to receive(:call).with(instance_of(PostGraphQLRequest))
+        expect(send_throttled_request).to receive(:call).with(instance_of(GraphQLPostRequest))
 
         client.post_graphql(credentials, '{}', {})
       end
