@@ -6,7 +6,7 @@ require 'lucid/shopify/version'
 
 Gem::Specification.new do |s|
   s.add_development_dependency 'dotenv', '~> 2.7'
-  s.add_development_dependency 'rake', '~> 12.3'
+  s.add_development_dependency 'rake', '~> 13.0'
   s.add_development_dependency 'rspec', '~> 3.8'
   s.add_development_dependency 'rubocop', '0.67'
   s.add_runtime_dependency 'dry-configurable', '~> 0.9'
