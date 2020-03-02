@@ -101,20 +101,24 @@ Since API version 2019-10, Shopify has offered an API for bulk requests (using
 the GraphQL API). The gem wraps this API, by writing the result to a temporary
 file and yielding each line of the result to limit memory usage.
 
-    client.bulk(credentials, <<~QUERY) do |product|
+    client.bulk(credentials).around do |&y|
+      db.transaction { y.() }
+    end.(<<~QUERY) do |product|
       {
         products {
           edges {
             node {
               id
-              title
+              handle
             }
           }
         }
       }
     QUERY
-      puts product['id']
-      puts product['title']
+      db[:products].insert(
+        id: product['id'],
+        handle: product['handle'],
+      )
     end
 
 

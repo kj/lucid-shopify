@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'lucid/shopify/bulk_request'
 require 'lucid/shopify/client'
 
 module Lucid
@@ -8,7 +7,6 @@ module Lucid
     RSpec.describe BulkRequest do
       let(:client) { Client.new }
       let(:credentials) { credentials_authenticated }
-      subject(:bulk_request) { BulkRequest.new }
 
       before(:all) do
         Shopify.config.logger = Logger.new(STDOUT)
@@ -20,7 +18,7 @@ module Lucid
 
       it 'yields each line of the result' do
         expect do |b|
-          bulk_request.(client, credentials, <<~QUERY) do |product|
+          client.bulk(credentials).(<<~QUERY) do |product|
             {
               products {
                 edges {
@@ -38,6 +36,8 @@ module Lucid
           end
         end.to yield_control
       end
+
+      # TODO: Test Operation#around.
     end
   end
 end

@@ -63,8 +63,8 @@ module Lucid
       end
 
       # @see BulkRequest#call
-      def bulk(*args, &block)
-        @bulk_request.(self, *args, &block)
+      def bulk(*args)
+        @bulk_request.(self, *args)
       end
 
       # @see DeleteRequest#initialize
