@@ -65,6 +65,8 @@ module Lucid
               expect(error.response).to have_attributes(error_messages: ['resource example'])
               expect(error.response.errors?).to be(true)
               expect(error.response.error_message?(['resource example'])).to be(true)
+              expect(error.response.error_message?([/resource/])).to be(true)
+              expect(error.response.error_message?([/example/])).to be(true)
               expect(error.response.error_message?(['example'])).to be(false)
               expect(error.response.error_message?(['not a message'])).to be(false)
             end

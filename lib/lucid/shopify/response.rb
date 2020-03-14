@@ -218,11 +218,18 @@ module Lucid
         end
       end
 
-      # @param messages [Array<String>]
+      # @param messages [Array<Regexp, String>]
       #
       # @return [Boolean]
       def error_message?(messages)
-        messages.any? { |message| error_messages.include?(message) }
+        messages.any? do |message|
+          case message
+          when Regexp
+            error_messages.any? { |other_message| other_message.match?(message) }
+          when String
+            error_messages.include?(message)
+          end
+        end
       end
 
       # @see Hash#each
