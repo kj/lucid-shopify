@@ -198,7 +198,7 @@ module Lucid
         return {} if errors.nil? || errors.empty?
         errors.map do |error|
           [
-            error['field'].join('.'),
+            error['field'] ? error['field'].join('.') : '.',
             error['message'],
           ]
         end.to_h
