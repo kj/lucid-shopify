@@ -97,6 +97,15 @@ module Lucid
         it { is_expected.to have_attributes(user_errors: {'path.to.example' => 'example'}) }
       end
 
+      context 'with graphql user errors (nil field)' do
+        let(:request) { GraphQLPostRequest.new(credentials, '{}') }
+        let(:headers) { {'Content-Type' => 'application/json'} }
+        let(:data) { '{"data":{"userErrors":[{"field":null,"message":"example"}]}}' }
+
+        it { is_expected.to have_attributes(user_errors?: true) }
+        it { is_expected.to have_attributes(user_errors: {'.' => 'example'}) }
+      end
+
       # TODO: #next
       # TODO: #previous
     end
