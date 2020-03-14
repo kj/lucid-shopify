@@ -48,10 +48,11 @@ module Lucid
         end
 
         # @param query [String] the GraphQL query
+        # @param delay [Integer] delay between polling requests in seconds
         # @param http [HTTP::Client]
         #
         # @yield [Hash] each parsed line of JSONL (streamed to limit memory usage)
-        def call(query, http: Container[:http], &block)
+        def call(query, delay: 1, http: Container[:http], &block)
           id = client.post_graphql(credentials, <<~QUERY)['data']['bulkOperationRunQuery']['bulkOperation']['id']
             mutation {
               bulkOperationRunQuery(
@@ -70,7 +71,7 @@ module Lucid
             }
           QUERY
 
-          url = poll(id)
+          url = poll(id, delay: delay)
 
           # TODO: Verify signature?
 
@@ -93,9 +94,10 @@ module Lucid
         end
 
         # @param id [Integer] of the bulk operation
+        # @param delay [Integer]
         #
         # @return [String] the download URL
-        private def poll(id)
+        private def poll(id, delay:)
           op = client.post_graphql(credentials, <<~QUERY)['data']['currentBulkOperation']
             {
               currentBulkOperation {
@@ -118,7 +120,9 @@ module Lucid
           when 'COMPLETED'
             op['url']
           else
-            poll(id)
+            sleep(delay)
+
+            poll(id, delay: delay)
           end
         end
       end
