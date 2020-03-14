@@ -20,7 +20,7 @@ module Lucid
         @client.post_json(credentials, 'webhooks', webhook: data)
       rescue Response::Error => e
         raise e unless e.response.error_message?([
-          'address for this topic has already been taken'
+          'address for this topic has already been taken',
         ])
       end
     end
