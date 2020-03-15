@@ -73,6 +73,8 @@ module Lucid
 
           url = poll(id, delay: delay)
 
+          return if url.nil?
+
           # TODO: Verify signature?
 
           begin
@@ -96,7 +98,7 @@ module Lucid
         # @param id [Integer] of the bulk operation
         # @param delay [Integer]
         #
-        # @return [String] the download URL
+        # @return [String, nil] the download URL, or nil if the result data is empty
         private def poll(id, delay:)
           op = client.post_graphql(credentials, <<~QUERY)['data']['currentBulkOperation']
             {
