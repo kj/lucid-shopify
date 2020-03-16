@@ -18,7 +18,7 @@ module Lucid
 
       it 'yields each line of the result' do
         expect do |b|
-          client.bulk(credentials).(<<~QUERY) do |product|
+          client.bulk(credentials, <<~QUERY) do |products|
             {
               products {
                 edges {
@@ -30,14 +30,14 @@ module Lucid
               }
             }
           QUERY
-            b.to_proc.(product)
-            expect(product).to include('id' => String)
-            expect(product).to include('title' => String)
+            products.each do |product|
+              b.to_proc.(product)
+              expect(product).to include('id' => String)
+              expect(product).to include('title' => String)
+            end
           end
         end.to yield_control
       end
-
-      # TODO: Test Operation#around.
     end
   end
 end

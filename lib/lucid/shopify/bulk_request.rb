@@ -19,59 +19,20 @@ module Lucid
           param :client
           # @return [Credentials]
           param :credentials
+          # @return [String]
+          param :id
         end
 
-        # Set a block which is called after the file is downloaded, and around
-        # the line by line iteration in {#call}. The block must yield control
-        # back to the caller.
+        # Wait for the operation to complete, then download the JSONL result
+        # data which is yielded as an {Enumerator} to the block. The data is
+        # streamed and parsed line by line to limit memory usage.
         #
-        # @return [self]
-        #
-        # @example
-        #   operation.around do |&y|
-        #     puts 'Before iteration'
-        #     y.()
-        #   ensure
-        #     puts 'After iteration'
-        #   end
-        def around(&block)
-          @around = block
-
-          self
-        end
-
-        # Call the block set by {#around}.
-        #
-        # @yield inside the wrapper block
-        private def call_around(&block)
-          @around.respond_to?(:call) ? @around.(&block) : block.()
-        end
-
-        # @param query [String] the GraphQL query
         # @param delay [Integer] delay between polling requests in seconds
         # @param http [HTTP::Client]
         #
-        # @yield [Hash] each parsed line of JSONL (streamed to limit memory usage)
-        def call(query, delay: 1, http: Container[:http], &block)
-          id = client.post_graphql(credentials, <<~QUERY)['data']['bulkOperationRunQuery']['bulkOperation']['id']
-            mutation {
-              bulkOperationRunQuery(
-                query: """
-                  #{query}
-                """
-              ) {
-                bulkOperation {
-                  id
-                }
-                userErrors {
-                  field
-                  message
-                }
-              }
-            }
-          QUERY
-
-          url = poll(id, delay: delay)
+        # @yield [Enumerator<Hash>] yields each parsed line of JSONL
+        def call(delay: 1, http: Container[:http], &block)
+          url = poll(delay: delay)
 
           return if url.nil?
 
@@ -84,11 +45,9 @@ module Lucid
               file.write(chunk)
             end
             file.rewind
-            call_around do
-              file.each_line do |line|
-                block.(JSON.parse(line))
-              end
-            end
+            block.(Enumerator.new do |y|
+              file.each_line { |line| y << JSON.parse(line) }
+            end)
           ensure
             file.close
             file.unlink
@@ -99,7 +58,7 @@ module Lucid
         # @param delay [Integer]
         #
         # @return [String, nil] the download URL, or nil if the result data is empty
-        private def poll(id, delay:)
+        private def poll(delay:)
           op = client.post_graphql(credentials, <<~QUERY)['data']['currentBulkOperation']
             {
               currentBulkOperation {
@@ -124,20 +83,35 @@ module Lucid
           else
             sleep(delay)
 
-            poll(id, delay: delay)
+            poll(delay: delay)
           end
+        end
+
+        # Cancel the bulk operation.
+        def cancel
+          client.post_graphql(credentials, <<~QUERY)
+            mutation {
+              bulkOperationCancel(id: "#{id}") {
+                userErrors {
+                  field
+                  message
+                }
+              }
+            }
+          QUERY
         end
       end
 
+      # Create and start a new bulk operation via the GraphQL API.
+      #
       # @param client [Client]
       # @param credentials [Credentials]
+      # @param query [String] the GraphQL query
       #
       # @return [Operation]
       #
       # @example
-      #   bulk_request.(client, credentials).around do |&y|
-      #     db.transaction { y.() }
-      #   end.(<<~QUERY) do |product|
+      #   bulk_request.(client, credentials, <<~QUERY).() do |products|
       #     {
       #       products {
       #         edges {
@@ -149,15 +123,49 @@ module Lucid
       #       }
       #     }
       #   QUERY
-      #     db[:products].insert(
-      #       id: product['id'],
-      #       handle: product['handle'],
-      #     )
+      #     db.transaction do
+      #       products.each do |product|
+      #         db[:products].insert(
+      #           id: product['id'],
+      #           handle: product['handle'],
+      #         )
+      #       end
+      #     end
       #   end
-      def call(client, credentials)
+      def call(client, credentials, query)
         Shopify.assert_api_version!('2019-10')
 
-        Operation.new(client, credentials)
+        op = client.post_graphql(credentials, <<~QUERY)['data']['currentBulkOperation']
+          {
+            currentBulkOperation {
+              id
+              status
+              url
+            }
+          }
+        QUERY
+
+        Operation.new(client, credentials, op['id']).cancel if op && op['status'] == 'RUNNING'
+
+        id = client.post_graphql(credentials, <<~QUERY)['data']['bulkOperationRunQuery']['bulkOperation']['id']
+          mutation {
+            bulkOperationRunQuery(
+              query: """
+                #{query}
+              """
+            ) {
+              bulkOperation {
+                id
+              }
+              userErrors {
+                field
+                message
+              }
+            }
+          }
+        QUERY
+
+        Operation.new(client, credentials, id)
       end
     end
   end

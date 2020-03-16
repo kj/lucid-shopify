@@ -101,9 +101,7 @@ Since API version 2019-10, Shopify has offered an API for bulk requests (using
 the GraphQL API). The gem wraps this API, by writing the result to a temporary
 file and yielding each line of the result to limit memory usage.
 
-    client.bulk(credentials).around do |&y|
-      db.transaction { y.() }
-    end.(<<~QUERY) do |product|
+    client.bulk(credentials, <<~QUERY) do |products|
       {
         products {
           edges {
@@ -115,11 +113,18 @@ file and yielding each line of the result to limit memory usage.
         }
       }
     QUERY
-      db[:products].insert(
-        id: product['id'],
-        handle: product['handle'],
-      )
+      db.transaction do
+        products.each do |product|
+          db[:products].insert(
+            id: product['id'],
+            handle: product['handle'],
+          )
+        end
+      end
     end
+
+Bulk requests are limited to one per shop at any one time. Calling a new bulk
+request via lucid-shopify will cancel any request in progress for the shop.
 
 
 ### Pagination

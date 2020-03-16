@@ -62,9 +62,15 @@ module Lucid
         AuthenticatedClient.new(self, credentials)
       end
 
+      # If called with a block, calls {BulkRequest::Operation#call} immediately,
+      # else, returns the {BulkRequest::Operation}.
+      #
       # @see BulkRequest#call
-      def bulk(*args)
-        @bulk_request.(self, *args)
+      # @see BulkRequest::Operation#call
+      def bulk(*args, &block)
+        op = @bulk_request.(self, *args)
+
+        block ? op.(&block) : op
       end
 
       # @see DeleteRequest#initialize
