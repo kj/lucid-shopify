@@ -207,7 +207,7 @@ module Lucid
       # @return [Array<String>]
       def error_messages
         errors.map do |field, message|
-          "#{field} #{message}"
+          "#{message} [#{field}]"
         end
       end
 
