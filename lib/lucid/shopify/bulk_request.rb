@@ -111,7 +111,8 @@ module Lucid
         end
       end
 
-      # Create and start a new bulk operation via the GraphQL API.
+      # Create and start a new bulk operation via the GraphQL API. Any currently
+      # running bulk operations are cancelled.
       #
       # @param client [Client]
       # @param credentials [Credentials]
