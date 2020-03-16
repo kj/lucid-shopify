@@ -32,7 +32,22 @@ module Lucid
         #
         # @yield [Enumerator<Hash>] yields each parsed line of JSONL
         def call(delay: 1, http: Container[:http], &block)
-          url = poll(delay: delay)
+          url = loop do
+            status, url = poll
+
+            case status
+            when 'CANCELED'
+              raise CanceledOperationError
+            when 'EXPIRED'
+              raise ExpiredOperationError
+            when 'FAILED'
+              raise FailedOperationError
+            when 'COMPLETED'
+              break url
+            else
+              sleep(delay)
+            end
+          end
 
           return if url.nil?
 
@@ -54,39 +69,6 @@ module Lucid
           end
         end
 
-        # @param id [Integer] of the bulk operation
-        # @param delay [Integer]
-        #
-        # @return [String, nil] the download URL, or nil if the result data is empty
-        private def poll(delay:)
-          op = client.post_graphql(credentials, <<~QUERY)['data']['currentBulkOperation']
-            {
-              currentBulkOperation {
-                id
-                status
-                url
-              }
-            }
-          QUERY
-
-          raise ObsoleteOperationError if op['id'] != id
-
-          case op['status']
-          when 'CANCELED'
-            raise CanceledOperationError
-          when 'EXPIRED'
-            raise ExpiredOperationError
-          when 'FAILED'
-            raise FailedOperationError
-          when 'COMPLETED'
-            op['url']
-          else
-            sleep(delay)
-
-            poll(delay: delay)
-          end
-        end
-
         # Cancel the bulk operation.
         def cancel
           client.post_graphql(credentials, <<~QUERY)
@@ -99,6 +81,33 @@ module Lucid
               }
             }
           QUERY
+
+          loop do
+            status, _ = poll
+
+            break unless status == 'CANCELING'
+          end
+        end
+
+        # @return [Array(String, String | nil)] the operation status and the
+        #   download URL, or nil if the result data is empty
+        private def poll
+          op = client.post_graphql(credentials, <<~QUERY)['data']['currentBulkOperation']
+            {
+              currentBulkOperation {
+                id
+                status
+                url
+              }
+            }
+          QUERY
+
+          raise ObsoleteOperationError if op['id'] != id
+
+          [
+            op['status'],
+            op['url'],
+          ]
         end
       end
 
