@@ -118,7 +118,7 @@ module Lucid
           raise ShopError.new(request, self), 'Shop is frozen, awaiting payment'
         when 403
           # NOTE: Not sure what this one means (undocumented).
-          if data_hash['errors'] =~ /unavailable shop/i
+          if error_message?(/unavailable shop/i)
             raise ShopError.new(request, self), 'Shop is unavailable'
           else
             raise ClientError.new(request, self)
