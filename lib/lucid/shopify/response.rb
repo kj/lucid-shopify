@@ -111,11 +111,18 @@ module Lucid
       # @raise [ClientError] for status 4xx
       # @raise [ServerError] for status 5xx
       #
-      # @note https://help.shopify.com/en/api/getting-started/response-status-codes
+      # @note https://shopify.dev/concepts/about-apis/response-codes
       def assert!
         case status_code
         when 402
           raise ShopError.new(request, self), 'Shop is frozen, awaiting payment'
+        when 403
+          # NOTE: Not sure what this one means (undocumented).
+          if data_hash['errors'] =~ /unavailable shop/i
+            raise ShopError.new(request, self), 'Shop is unavailable'
+          else
+            raise ClientError.new(request, self)
+          end
         when 423
           raise ShopError.new(request, self), 'Shop is locked'
         when 400..499
