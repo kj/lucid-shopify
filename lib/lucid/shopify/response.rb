@@ -229,12 +229,14 @@ module Lucid
       #
       # @return [Boolean]
       def error_message?(messages)
+        all_messages = error_messages + user_error_messages
+
         messages.any? do |message|
           case message
           when Regexp
-            error_messages.any? { |other_message| other_message.match?(message) }
+            all_messages.any? { |other_message| other_message.match?(message) }
           when String
-            error_messages.include?(message)
+            all_messages.include?(message)
           end
         end
       end

@@ -2,6 +2,7 @@
 
 require 'json'
 require 'lucid/shopify'
+require 'timeout'
 
 module Lucid
   module Shopify
@@ -71,21 +72,48 @@ module Lucid
 
         # Cancel the bulk operation.
         def cancel
-          client.post_graphql(credentials, <<~QUERY)
-            mutation {
-              bulkOperationCancel(id: "#{id}") {
-                userErrors {
-                  field
-                  message
+          begin
+            client.post_graphql(credentials, <<~QUERY)
+              mutation {
+                bulkOperationCancel(id: "#{id}") {
+                  userErrors {
+                    field
+                    message
+                  }
                 }
               }
-            }
-          QUERY
+            QUERY
+          rescue Response::GraphQLClientError => e
+            return if e.response.error_message?([
+              /cannot be canceled when it is completed/,
+            ])
 
-          loop do
-            status, _ = poll
+            raise e
+          end
 
-            break unless status == 'CANCELING'
+          poll_until(['CANCELED', 'COMPLETED'])
+        end
+
+        # Poll until operation status is met.
+        #
+        # @param statuses [Array<Regexp, String>] to terminate polling on
+        # @param timeout [Integer] in seconds
+        #
+        # @raise Timeout::Error
+        def poll_until(statuses, timeout: 60)
+          Timeout.timeout(timeout) do
+            loop do
+              status, _ = poll
+
+              break if statuses.any? do |expected_status|
+                case expected_status
+                when Regexp
+                  status.match?(expected_status)
+                when String
+                  status == expected_status
+                end
+              end
+            end
           end
         end
 
@@ -155,7 +183,12 @@ module Lucid
           }
         QUERY
 
-        Operation.new(client, credentials, op['id']).cancel if op && op['status'] == 'RUNNING'
+        case op&.fetch('status')
+        when 'CANCELING'
+          Operation.new(client, credentials, op['id']).poll_until(['CANCELED'])
+        when 'CREATED', 'RUNNING'
+          Operation.new(client, credentials, op['id']).cancel
+        end
 
         id = client.post_graphql(credentials, <<~QUERY)['data']['bulkOperationRunQuery']['bulkOperation']['id']
           mutation {
