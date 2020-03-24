@@ -14,6 +14,8 @@ module Lucid
       FailedOperationError = Class.new(OperationError)
       ObsoleteOperationError = Class.new(OperationError)
 
+      TimeoutError = Class.new(Error)
+
       class Operation
         include Dry::Initializer.define -> do
           # @return [Client]
@@ -32,6 +34,11 @@ module Lucid
         # @param http [HTTP::Client]
         #
         # @yield [Enumerator<Hash>] yields each parsed line of JSONL
+        #
+        # @raise CanceledOperationError
+        # @raise ExpiredOperationError
+        # @raise FailedOperationError
+        # @raise ObsoleteOperationError
         def call(delay: 1, http: Container[:http], &block)
           url = loop do
             status, url = poll
@@ -71,6 +78,9 @@ module Lucid
         end
 
         # Cancel the bulk operation.
+        #
+        # @raise ObsoleteOperationError
+        # @raise TimeoutError
         def cancel
           begin
             client.post_graphql(credentials, <<~QUERY)
@@ -96,25 +106,24 @@ module Lucid
 
         # Poll until operation status is met.
         #
-        # @param statuses [Array<Regexp, String>] to terminate polling on
+        # @param statuses [Array<String>] to terminate polling on
         # @param timeout [Integer] in seconds
         #
-        # @raise Timeout::Error
+        # @raise ObsoleteOperationError
+        # @raise TimeoutError
         def poll_until(statuses, timeout: 60)
           Timeout.timeout(timeout) do
             loop do
               status, _ = poll
 
-              break if statuses.any? do |expected_status|
-                case expected_status
-                when Regexp
-                  status.match?(expected_status)
-                when String
-                  status == expected_status
-                end
-              end
+              break if statuses.any? { |expected_status| status == expected_status }
             end
           end
+        rescue Timeout::Error
+          raise TimeoutError, 'exceeded %s seconds polling for status %s' % [
+            timeout,
+            statuses.join(', '),
+          ]
         end
 
         # @return [Array(String, String | nil)] the operation status and the
