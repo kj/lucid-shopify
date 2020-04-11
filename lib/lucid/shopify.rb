@@ -45,7 +45,7 @@ module Lucid
     extend Dry::Configurable
 
     setting :api_key
-    setting :api_version, '2020-01'
+    setting :api_version, '2020-04'
     setting :billing_callback_uri
     setting :callback_uri
     setting :logger, Logger.new(File::NULL).freeze

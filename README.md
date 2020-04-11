@@ -35,7 +35,7 @@ Setup
 
     Lucid::Shopify.configure do |config|
       config.api_key = '...'
-      config.api_version = '...' # e.g. '2020-01'
+      config.api_version = '...' # e.g. '2020-04'
       config.billing_callback_uri = '...'
       config.callback_uri = '...' # (for OAuth; unused by this gem)
       config.logger = Logger.new(STDOUT)
