@@ -15,7 +15,7 @@ module Lucid
         case link_header
         # NOTE: There is a strange behaviour where it seems that if the header
         # value exceeds a certain length, it is split into chunks. It seems that
-        # if you use {HTTP::Headers#get}, you will always get {Array<String},
+        # if you use {HTTP::Headers#get}, you will always get {Array<String>},
         # and it is the special behaviour of {HTTP::Headers#[]} causing this.
         #
         # However, why is it split in the first place? Does Shopify send
