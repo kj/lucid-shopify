@@ -29,8 +29,8 @@ module Lucid
       ClientError = Class.new(Error)
       ServerError = Class.new(Error)
       ShopError = Class.new(Error)
-
-      class GraphQLClientError < ClientError
+      AccessTokenError = Class.new(ClientError)
+      GraphQLClientError = Class.new(ClientError) do
         def message
           case
           when response.errors?
@@ -114,6 +114,12 @@ module Lucid
       # @note https://shopify.dev/concepts/about-apis/response-codes
       def assert!
         case status_code
+        when 401
+          if error_message?([/access token/i])
+            raise AccessTokenError.new(request, self), 'Invalid access token'
+          else
+            raise ClientError.new(request, self)
+          end
         when 402
           raise ShopError.new(request, self), 'Shop is frozen, awaiting payment'
         when 403
